@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<!-- Shiro安全管理器 -->
+	<bean id="securityManager"
+		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 定义自定义的Realm -->
+		<property name="realm" ref="loginR"></property>
+		<!-- 设置缓存管理器 -->
+		<property name="cacheManager" ref="cache"></property>
+		<!-- session管理器 -->
+		<property name="sessionManager" ref="sessionManager"></property>
+		<!-- RememberMe 管理器 -->
+		<property name="rememberMeManager" ref="rememberMeManager"></property>
+	</bean>
+
+	<bean id="loginR" class="cn.atc.realm.LoginRealm"></bean>
+
+	<!-- 启动在shiro里面进行annotation的相关验证处理操作 <bean id="serviceDefaultAdvisorAutoProxyCreator" 
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" 
+		depends-on="lifecycleBeanPostProcessor"> 进行目标程序类的代理控制 <property name="proTargetClass" 
+		value="true"></property> </bean> 针对于安全管理进行的AOP配置 <bean id="serviceAuthorizationAttributeSourceAdvisor" 
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"> 
+		<property name="securityManager" ref="securityManager"> </property> </bean> -->
+
+
+
+	<!-- 内置登录 -->
+	<bean id="formAuthenticationFilter"
+		class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+		<property name="usernameParam" value="loginName"></property>
+		<property name="passwordParam" value="password"></property>
+		<property name="rememberMeParam" value="rememberMe"></property>
+		<property name="loginUrl" value="/toLogin"></property>
+	</bean>
+
+	<!-- sessionID的生成管理器 -->
+	<bean id="sessionIdGenerator"
+		class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />
+
+
+	<!-- 配置session DAO的操作处理 针对于session会话的序列化管理 -->
+	<bean id="sessionDAO"
+		class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+		<!-- 配置会话缓存的名字， 名字任意 -->
+		<property name="activeSessionsCacheName"
+			value="shiro-activeSessionCache"></property>
+		<!-- 定义该session DAO 操作中所使用的ID生成器 -->
+		<property name="sessionIdGenerator" ref="sessionIdGenerator"></property>
+	</bean>
+
+
+	<!-- 配置cookie中保存数据的模板(rememberMe) -->
+	<!-- 下面两个是一样的 但是一个都不能修改和删除 -->
+	<!-- 下面两个是一样的 但是一个都不能修改和删除 -->
+	<!-- remenberMe配置 -->
+	<bean id="rememberMeCookie"
+		class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="rememberMe" />
+		<property name="httpOnly" value="true" />
+		<!-- 默认记住7天（单位：秒） -->
+		<property name="maxAge" value="604800" />
+	</bean>
+	<!-- remenberMe配置 -->
+	<bean id="sessionIdCookie"
+		class="org.apache.shiro.web.servlet.SimpleCookie">
+		<!-- 在tomcat运行下 默认使用的cookie的名字为jsessionid -->
+		<constructor-arg value="shiro-session-id" />
+		<!-- 保证该系统不会受到跨域的脚本操作攻击 -->
+		<property name="httpOnly" value="true" />
+		<!-- 定义cookie的过期时间 单位为秒 设置为-1 则浏览器关闭 cookie消失 -->
+		<property name="maxAge" value="-1" />
+	</bean>
+
+	<!-- 定义Remember Me的程序管理类 -->
+	<bean id="rememberMeManager"
+		class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<!-- cipherKey是加密rememberMe Cookie的密钥；默认AES算法 -->
+		<property name="cipherKey"
+			value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" />
+		<!-- 定义rememberme功能实现所需的cookie的处理类 -->
+		<property name="cookie" ref="rememberMeCookie" />
+	</bean>
+
+	<!-- session会话管理器 -->
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<!-- 定义全局的Session会话的超时时间 会覆盖web.xml文件中的超时配置 -->
+		<property name="globalSessionTimeout" value="1000000" />
+		<!-- 删除所有无效的session对象，此时的session保存在内存里 -->
+		<property name="deleteInvalidSessions" value="true" />
+		<!-- 定义使用无效的session定时调度器 -->
+		<property name="sessionValidationScheduler"
+			ref="sessionValidationScheduler" />
+		<!-- 让此session可以使用该定义调度器进行检测 -->
+		<property name="sessionValidationSchedulerEnabled"
+			value="true" />
+		<!-- 定义session可以进行序列化的工具类 -->
+		<property name="sessionDAO" ref="sessionDAO" />
+		<!-- 所有的session将id设置到 Cookie中，需要提供cookie操作模板 -->
+		<property name="sessionIdCookie" ref="sessionIdCookie" />
+		<!-- 模板进行操作的启用 -->
+		<property name="sessionIdCookieEnabled" value="true" />
+	</bean>
+
+	<!-- 会话验证调度器 -->
+	<bean id="sessionValidationScheduler"
+		class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+		<!-- 设置Session的失效扫描间隔 单位为毫秒 -->
+		<property name="sessionValidationInterval" value="100000" />
+		<!-- 会话管理器的程序类的引用 -->
+		<property name="sessionManager" ref="sessionManager" />
+	</bean>
+
+	<!-- 进行shiro缓存的配置(使用ehcache) -->
+	<bean id="cache"
+		class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile"
+			value="classpath:resources/ehcache.xml"></property>
+	</bean>
+
+	<!-- 配置Shiro过滤器 -->
+	<bean id="ShiroFilter"
+		class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 配置的是一个安全管理器 -->
+		<property name="securityManager" ref="securityManager"></property>
+		<!-- 出现错误之后的跳转路径的配置 <property name="loginUrl" value="/login"></property> -->
+		<!-- 认证失败之后的跳转路径的配置 -->
+		<property name="unauthorizedUrl" value="/unauthorizedUrl"></property>
+		<!-- 成功之后的跳转路径的配置 <property name="successUrl" value="/successUrl"></property> -->
+		<property name="filters">
+			<map>
+				<entry key="authc" value-ref="formAuthenticationFilter"></entry>
+			</map>
+		</property>
+		<!-- Shiro里面需要针对于所有的路径进行配置，所有的配置需要通过文本的形式设置 -->
+		<property name="FilterChainDefinitions">
+			<value>
+				<!-- /**=authc 表示所有的url都可以匿名访问，anon是shiro中一个过滤器的简写，关于shiro中的过滤器介绍见 -->
+				/*=anon
+				/page/*=authc
+				/info/*=user
+			</value>
+		</property>
+	</bean>
+
+	<!-- Shiro在spring中的生命周期 -->
+	<bean id="lifecycleBeanPostProcessor"
+		class="org.apache.shiro.spring.LifecycleBeanPostProcessor">
+	</bean>
+
+</beans>

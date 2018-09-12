@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.AdminMapper">
+	<select id="doLogin" parameterType="string" resultType="Admin">
+		select *
+		from admin where loginName =#{loginName}
+	</select>
+
+	<select id="rolesList" parameterType="string" resultType="role">
+		SELECT
+		*
+		FROM role WHERE role.`id` IN(
+		SELECT roleId FROM admin_role ar WHERE
+		ar.`adminId`= #{id})
+	</select>
+
+	<select id="getPermOne" parameterType="string"
+		resultType="Permission">
+		SELECT * FROM permission p WHERE p.`id` IN(
+		SELECT permId
+		FROM role_perm rp
+		WHERE rp.`roleId` IN (
+		SELECT roleid FROM admin_role
+		ar WHERE
+		ar.`adminId`= #{id}
+		)
+		) AND p.`permLevel`= 1
+	</select>
+	
+	<select id="getPermTwo" parameterType="string"
+		resultType="Permission">
+		SELECT * FROM permission p WHERE p.`id` IN(
+		SELECT permId
+		FROM role_perm rp
+		WHERE rp.`roleId` IN (
+		SELECT roleid FROM admin_role
+		ar WHERE
+		ar.`adminId`= #{id}
+		)
+		) AND p.`permLevel`= 2
+	</select>
+	
+	<select id="getPermThree" parameterType="string"
+		resultType="Permission">
+		SELECT * FROM permission p WHERE p.`id` IN(
+		SELECT permId
+		FROM role_perm rp
+		WHERE rp.`roleId` IN (
+		SELECT roleid FROM admin_role
+		ar WHERE
+		ar.`adminId`= #{id}
+		)
+		) AND p.`permLevel`= 3
+	</select>
+</mapper>

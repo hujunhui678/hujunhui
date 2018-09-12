@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.RoleMapper">
+	<select id="getAdminAndRoles" resultType="Role"
+		parameterType="map">
+		SELECT * FROM role
+		<if test="startRow!=null and pageSize!=null">
+			limit #{startRow},#{pageSize}
+		</if>
+	</select>
+
+	<select id="adminAndRolesCount" resultType="integer">
+		SELECT COUNT(1) FROM
+		role
+	</select>
+
+	<insert id="addRole" parameterType="Role">
+		INSERT INTO
+		role(roleName,roleDesc) VALUES(#{roleName},#{roleDesc})
+	</insert>
+
+	<select id="getCountByRoleName" parameterType="String"
+		resultType="Integer">
+		SELECT COUNT(1) FROM role WHERE roleName = #{roleName}
+	</select>
+
+	<select id="getRoleById" parameterType="Integer"
+		resultType="Role">
+		SELECT * FROM role WHERE id = #{id}
+	</select>
+
+	<update id="updateRole" parameterType="Role">
+		UPDATE role SET roleName =
+		#{roleName},roleDesc = #{roleDesc}
+		WHERE id = #{id}
+	</update>
+
+
+	<delete id="delRole" parameterType="string">
+		DELETE FROM role WHERE id in
+		<foreach collection="roleIds" item="ids" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<insert id="addRoleByAdmin" parameterType="map">
+		INSERT INTO admin_role(adminId,roleId)
+		VALUES
+		<foreach collection="roles" item="ids" separator=",">
+			(#{id},#{ids})
+		</foreach>
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

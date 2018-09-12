@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.PersonMapper">
+
+	<resultMap type="Admin" id="adminAndChildDept">
+		<id column="a_id" property="id" />
+		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<association property="childdept" javaType="ChildDept">
+			<result column="childName" property="childName" />
+		</association>
+	</resultMap>
+
+	<select id="getAllAdmin" parameterType="map"
+		resultMap="adminAndChildDept">
+		SELECT
+		a.`id`
+		a_id,a.`name`,a.`phone`,c.`childName` FROM
+		childdept c JOIN admin a
+		WHERE c.`id` = a.`deptChildId`
+		limit
+		#{startRow},#{pageSize}
+	</select>
+
+	<resultMap type="Employee" id="empAndChildDept">
+		<id column="e_id" property="id" />
+		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<association property="childdept" javaType="ChildDept">
+			<result column="childName" property="childName" />
+		</association>
+	</resultMap>
+
+	<select id="getAllEmp" parameterType="map"
+		resultMap="empAndChildDept">
+		SELECT
+		e.`id`
+		e_id,e.`name`,e.`phone`,c.`childName` FROM
+		childdept c JOIN employee e
+		WHERE c.`id` = e.`deptChildId`
+		limit
+		#{startRow},#{pageSize}
+	</select>
+
+
+	<select id="getAdminToCount" resultType="integer">
+		SELECT count(1) FROM
+		childdept c JOIN admin a
+		WHERE c.`id` = a.`deptChildId`
+	</select>
+
+	<select id="getEmpToCount" resultType="integer">
+		SELECT count(1) FROM
+		childdept c JOIN employee e
+		WHERE c.`id` = e.`deptChildId`
+	</select>
+
+	<select id="getAdminPhone" parameterType="string"
+		resultType="integer">
+		SELECT COUNT(1) FROM admin a WHERE a.phone = #{phone}
+	</select>
+
+	<insert id="addAdmin" parameterType="Admin">
+		INSERT INTO
+		admin(NAME,loginName,PASSWORD,gender,phone,cardId,deptChildId)
+		VALUES(#{name},#{loginName},#{password},#{gender},#{phone},#{cardId},#{deptChildId})
+	</insert>
+	
+	<select id="getAdminIdByPhone" parameterType="string" resultType="integer">
+		SELECT id FROM admin WHERE phone = #{phone}
+	</select>
+
+</mapper>
