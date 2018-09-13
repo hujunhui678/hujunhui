@@ -7,6 +7,10 @@
 		<if test="startRow!=null and pageSize!=null">
 			limit #{startRow},#{pageSize}
 		</if>
+		<!-- 查询非本人角色的所有角色 -->
+		<if test="noRole!=null">
+			where roleName != '人事专员'
+		</if>
 	</select>
 
 	<select id="adminAndRolesCount" resultType="integer">

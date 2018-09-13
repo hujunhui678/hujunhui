@@ -66,5 +66,9 @@ public class RoleServiceImp implements RoleService {
 		return roleMapper.addRoleByAdmin(maps);
 	}
 	
-	
+	@Override
+	public List<Role> getRoleNoRole(Map<String, Object> map) {
+		map.put("noRole", "1");
+		return roleMapper.getAdminAndRoles(map);
+	}
 }

@@ -31,6 +31,4 @@ public interface RoleMapper {
 	
 	//添加角色信息
 	Integer addRoleByAdmin(Map<String, Object> maps);
-	
-	// 获取所有admin及权限信息
 }

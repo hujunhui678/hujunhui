@@ -12,9 +12,12 @@ public interface RoleService {
 	// 获取所有角色信息（分页）
 	PageUtil<Role> getAdminAndRoles(Map<String, Object> map);
 
-	// 获取角色集合
+	// 获取角色集合(所有)
 	List<Role> getRole();
 
+	//获取角色集合(人事除外)
+	List<Role> getRoleNoRole(Map<String, Object> map);
+	
 	// 添加角色
 	Integer addRole(Role role);
 
@@ -33,4 +36,5 @@ public interface RoleService {
 	// 添加角色信息
 	Integer addRole(Map<String, Object> maps);
 
+	
 }

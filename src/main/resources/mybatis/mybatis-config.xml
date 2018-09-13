@@ -10,6 +10,7 @@
 
 	<typeAliases>
 		<package name="cn.atc.pojo" />
+		<package name="cn.atc.common" />
 	</typeAliases>
 
 </configuration>  
