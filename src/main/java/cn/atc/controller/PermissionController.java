@@ -44,4 +44,25 @@ public class PermissionController {
 		model.addAttribute("permList",permList);
 		return "perm";
 	}
+	
+	/**
+	 * 根据角色id获取权限
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getPermByRole")
+	@ResponseBody
+	public String getPermByRole(long id) {
+		List<AllPerm> permList = permissionService.getPermByRoleId(id);
+		String json = GsonUtil.GsonString(permList);
+		return json;
+	}
+	
+	@RequestMapping("/getPermByLevel")
+	@ResponseBody
+	public String getPermByLevel(Integer permLevel) {
+		List<Permission> permList = permissionService.getAllPermConverterPerm(permLevel);
+		String json = GsonUtil.GsonString(permList);
+		return json;
+	}
 }

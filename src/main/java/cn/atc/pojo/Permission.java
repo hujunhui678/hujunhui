@@ -10,61 +10,55 @@ public class Permission {
 	private String permURL;// 权限链接URL
 	private int permLevel;//权限等级
 	private long parentPermId; //父级权限ID 
-
+	private String permDesc; //权限描述(2018年9月13日添加)
 	public long getId() {
 		return id;
 	}
-
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	public String getPermNameC() {
 		return permNameC;
 	}
-
 	public void setPermNameC(String permNameC) {
 		this.permNameC = permNameC;
 	}
-
 	public String getPermNameE() {
 		return permNameE;
 	}
-
 	public void setPermNameE(String permNameE) {
 		this.permNameE = permNameE;
 	}
-
 	public String getPermURL() {
 		return permURL;
 	}
-
 	public void setPermURL(String permURL) {
 		this.permURL = permURL;
 	}
-
 	public int getPermLevel() {
 		return permLevel;
 	}
-
 	public void setPermLevel(int permLevel) {
 		this.permLevel = permLevel;
 	}
-
 	public long getParentPermId() {
 		return parentPermId;
 	}
-
 	public void setParentPermId(long parentPermId) {
 		this.parentPermId = parentPermId;
 	}
-
+	public String getPermDesc() {
+		return permDesc;
+	}
+	public void setPermDesc(String permDesc) {
+		this.permDesc = permDesc;
+	}
 	public Permission() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public Permission(long id, String permNameC, String permNameE, String permURL, int permLevel, long parentPermId) {
+	public Permission(long id, String permNameC, String permNameE, String permURL, int permLevel, long parentPermId,
+			String permDesc) {
 		super();
 		this.id = id;
 		this.permNameC = permNameC;
@@ -72,6 +66,7 @@ public class Permission {
 		this.permURL = permURL;
 		this.permLevel = permLevel;
 		this.parentPermId = parentPermId;
+		this.permDesc = permDesc;
 	}
 	
 

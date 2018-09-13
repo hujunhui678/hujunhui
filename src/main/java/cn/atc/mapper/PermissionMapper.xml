@@ -2,14 +2,44 @@
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.atc.mapper.PermissionMapper">
 	<select id="getAllPermOne" resultType="AllPerm">
-		select * from permission where permLevel=1
+		select * from permission
+		where permLevel=1 and permNameC!='人事管理'
+	</select>
+
+	<select id="getAllPermTwo" resultType="PermLv2"
+		parameterType="long">
+		select * from permission where permLevel=2 
+		<if test="parentPermId != -1">
+			and parentPermId=#{parentPermId}
+		</if>
+	</select>
+
+	<select id="getAllPermThr" resultType="Permission"
+		parameterType="long">
+		select * from permission where permLevel=3
+		<if test="parentPermId != -1">
+			and parentPermId=#{parentPermId}
+		</if>
+	</select>
+
+	<select id="getPermByRoleIdOne" parameterType="long"
+		resultType="AllPerm">
+		SELECT * FROM permission p INNER JOIN role_perm rp ON
+		rp.`permId`=p.`id` WHERE rp.`roleId` = #{id}
+		and permLevel=1
 	</select>
 	
-	<select id="getAllPermTwo" resultType="PermLv2" parameterType="long">
-		select * from permission where permLevel=2 and parentPermId=#{parentPermId}
+	<select id="getPermByRoleIdTwo" parameterType="long"
+		resultType="PermLv2">
+		SELECT * FROM permission p INNER JOIN role_perm rp ON
+		rp.`permId`=p.`id` WHERE rp.`roleId` = #{id}
+		and permLevel=2
 	</select>
 	
-	<select id="getAllPermThr" resultType="Permission" parameterType="long">
-		select * from permission where permLevel=3 and parentPermId=#{parentPermId}
+	<select id="getPermByRoleIdThr" parameterType="long"
+		resultType="Permission">
+		SELECT * FROM permission p INNER JOIN role_perm rp ON
+		rp.`permId`=p.`id` WHERE rp.`roleId` = #{id}
+		and permLevel=3
 	</select>
 </mapper>

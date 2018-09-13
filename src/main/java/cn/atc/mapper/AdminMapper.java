@@ -11,13 +11,13 @@ import cn.atc.pojo.Role;
 public interface AdminMapper {
 	Admin doLogin(String loginName);// 登录
 	
-	Set<Role> rolesList(@Param("id") String adminId);// 此用户的所有角色
+	Set<Role> rolesList(@Param("id") String adminId);// 此用户的所有角色(Shiro)
 
-	Set<Permission> getPermOne(@Param("id") String adminId);// 获取当前用户的一级权限
+	Set<Permission> getPermOne(@Param("id") String adminId);// 获取当前用户的一级权限(Shiro)
 	
-	Set<Permission> getPermTwo(@Param("id") String adminId);// 获取当前用户的二级权限
+	Set<Permission> getPermTwo(@Param("id") String adminId);// 获取当前用户的二级权限(Shiro)
 
-	Set<Permission> getPermThree(@Param("id") String adminId);// 获取当前用户的三级权限
+	Set<Permission> getPermThree(@Param("id") String adminId);// 获取当前用户的三级权限(Shiro)
 	
 
 }

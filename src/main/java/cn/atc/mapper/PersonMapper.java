@@ -3,6 +3,7 @@ package cn.atc.mapper;
 import java.util.List;
 import java.util.Map;
 
+import cn.atc.common.AllPerm;
 import cn.atc.pojo.Admin;
 
 public interface PersonMapper {
@@ -23,4 +24,5 @@ public interface PersonMapper {
 	Integer addAdmin(Admin admin);// 新增管理员用户
 	
 	Integer getAdminIdByPhone(String phone);//根据手机号查出该管理员的id;
+	
 }
