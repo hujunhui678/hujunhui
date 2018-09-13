@@ -65,9 +65,69 @@
 		admin(NAME,loginName,PASSWORD,gender,phone,cardId,deptChildId)
 		VALUES(#{name},#{loginName},#{password},#{gender},#{phone},#{cardId},#{deptChildId})
 	</insert>
-	
-	<select id="getAdminIdByPhone" parameterType="string" resultType="integer">
+
+	<select id="getAdminIdByPhone" parameterType="string"
+		resultType="integer">
 		SELECT id FROM admin WHERE phone = #{phone}
 	</select>
+	<resultMap type="Admin" id="getNameAndChi">
+		<result column="name" property="name" />
+		<association property="childdept" javaType="ChildDept">
+			<id column="id" property="id" />
+			<result column="childName" property="childName" />
+		</association>
+	</resultMap>
+
+	<select id="getAdminNameAndChildDept" parameterType="integer"
+		resultMap="getNameAndChi">
+		SELECT a.`name`,c.`id`,c.`childName` FROM admin a JOIN
+		childdept c ON a.`deptChildId` = c.`id`
+		WHERE a.`id` = #{id}
+	</select>
+
+
+	<select id="getAdminAllRole" parameterType="integer"
+		resultType="Admin_Role">
+		SELECT r.roleId FROM admin_role r WHERE r.`adminId` = #{id}
+	</select>
+
+	<update id="updateAdmin" parameterType="Admin">
+		update admin
+		<set>
+			<trim suffixOverrides=",">
+				<if test="name != null and name != ''">
+					name = #{name},
+				</if>
+				<if test="deptChildId != null and deptChildId != ''">
+					deptChildId = #{deptChildId},
+				</if>
+			</trim>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<delete id="delAdminRole" parameterType="integer">
+		delete from admin_role
+		where adminId = #{adminId}
+	</delete>
+
+
+	<delete id="delAdmin" parameterType="string">
+		DELETE FROM Admin WHERE id in
+		<foreach collection="adminIds" item="ids" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<delete id="delEmp" parameterType="string">
+		DELETE FROM employee WHERE id in
+		<foreach collection="empIds" item="ids" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
 
 </mapper>

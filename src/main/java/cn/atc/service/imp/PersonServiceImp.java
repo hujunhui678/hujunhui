@@ -1,5 +1,6 @@
 package cn.atc.service.imp;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import cn.atc.mapper.PersonMapper;
 import cn.atc.pojo.Admin;
+import cn.atc.pojo.Admin_Role;
+import cn.atc.pojo.Role;
 import cn.atc.service.PersonService;
 import cn.atc.util.PageUtil;
 
@@ -54,6 +57,36 @@ public class PersonServiceImp implements PersonService {
 	@Override
 	public Integer getAdminIdByPhone(String phone) {
 		return personMapper.getAdminIdByPhone(phone);
+	}
+
+	@Override
+	public List<Admin> getAdminNameAndChildDept(Integer id) {
+		return personMapper.getAdminNameAndChildDept(id);
+	}
+
+	@Override
+	public List<Admin_Role> getAdminAllRole(Integer id) {
+		return personMapper.getAdminAllRole(id);
+	}
+
+	@Override
+	public Integer updateAdmin(Admin admin) {
+		return personMapper.updateAdmin(admin);
+	}
+
+	@Override
+	public Integer delAdminRole(Integer adminId) {
+		return personMapper.delAdminRole(adminId);
+	}
+
+	@Override
+	public Integer delAdmin(String[] ids) {
+		return personMapper.delAdmin(ids);
+	}
+
+	@Override
+	public Integer delEmp(String[] ids) {
+		return personMapper.delEmp(ids);
 	}
 
 }

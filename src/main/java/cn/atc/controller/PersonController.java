@@ -87,7 +87,8 @@ public class PersonController {
 		admin.setLoginName(admin.getPhone());// 默认手机号为登录号
 		admin.setPassword(MD5Util.generate("123"));// 默认密码为123
 		Integer count = personService.addAdmin(admin);
-		if (count >= 1) {
+		if (count >= 1 && roles.length > 0) {
+			//插入管理员角色表
 			Integer adminId = personService.getAdminIdByPhone(admin.getPhone());
 			if (adminId != null) {
 				Map<String, Object> maps = new HashMap<String, Object>();
@@ -96,8 +97,61 @@ public class PersonController {
 				Integer role = roleService.addRole(maps);
 				return "true";
 			}
+		}else if (count >= 1) {
+			return "true";
 		}
 		return "false";
+	}
+
+	// 修改人员的信息
+	@RequestMapping("/toEditPerson")
+	@ResponseBody
+	public String toEditPerson(String isPerson, Integer id) {
+		AdminAndRole adminAndRole = new AdminAndRole(roleService.getRole(), childDeptService.getChildDept(),
+				personService.getAdminAllRole(id), personService.getAdminNameAndChildDept(id));
+		String json = GsonUtil.GsonString(adminAndRole);
+		return json;
+	}
+
+	// 修改管理员
+	@RequestMapping("/editPerson")
+	@ResponseBody
+	public String editPerson(String[] roles, Admin admin) {
+		// 修改管理员的信息
+		Integer editAdmin = personService.updateAdmin(admin);
+		if (editAdmin > 0) {
+			// 删除其下所有角色，重新插入
+			Integer delResult = personService.delAdminRole((int) admin.getId());
+			if (delResult > 0) {
+				Map<String, Object> maps = new HashMap<String, Object>();
+				maps.put("roles", roles);
+				maps.put("id", admin.getId());
+				Integer role = roleService.addRole(maps);
+				return "true";
+			}
+		}
+		return "false";
+	}
+
+	// 删除操作 --> 管理员或雇员
+	@RequestMapping("/delPerson")
+	@ResponseBody
+	public String delAdmin(String[] ids, String isPerson, Model model) {
+		String result = "no";
+		Integer delResult = 0;
+		if (isPerson.equals("管理员")) {
+			for (String id: ids) {
+				//先删除此管理员对应的所有角色信息。
+				personService.delAdminRole(Integer.parseInt(id));
+			}
+			delResult = personService.delAdmin(ids);
+		} else {
+			delResult = personService.delEmp(ids);
+		}
+		if (delResult > 0) {
+			result = "ok";
+		}
+		return result;
 	}
 
 }

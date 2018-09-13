@@ -94,10 +94,10 @@ public class MainController {
 		return result.toString();
 	}
 
-	// 修改角色信息
+	// 删除角色信息
 	@RequestMapping("/delRole")
 	@ResponseBody
-	public String delRole(String[] ids, Model model) {
+	public String delRole(String[] ids,Model model) {
 		// 批量删除角色
 		Integer delResult = 0;
 		String result = "";
