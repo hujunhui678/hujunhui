@@ -3,7 +3,11 @@ package cn.atc.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.atc.pojo.Admin;
+import cn.atc.pojo.Admin_Role;
+import cn.atc.pojo.Role;
 import cn.atc.util.PageUtil;
 
 public interface PersonService {
@@ -19,4 +23,22 @@ public interface PersonService {
 	Integer addAdmin(Admin admin);// 新增管理员用户
 
 	Integer getAdminIdByPhone(String phone);// 根据手机号查出该管理员的id;
+
+	// 获得要修改的管理员的姓名和所属部门信息
+	List<Admin> getAdminNameAndChildDept(Integer id);
+
+	// 获得要修改的管理员的角色集合
+	List<Admin_Role> getAdminAllRole(Integer id);
+
+	// 修改管理员的信息(名字和子部门编号)
+	Integer updateAdmin(Admin admin);
+
+	// 删除此管理员所有的角色
+	Integer delAdminRole(@Param("adminId") Integer adminId);
+
+	// 删除管理员
+	Integer delAdmin(@Param("ids") String[] ids);
+
+	// 删除雇员
+	Integer delEmp(@Param("ids") String[] ids);
 }

@@ -49,12 +49,15 @@
 	<article class="cl pd-20" style="margin-right:50px;">
 	<form action="#" method="post" class="form form-horizontal"
 		id="form-admin-add" style="line-height: 30px;">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">添加的人员：</label>
+		<div class="row cl" style="display: none;">
+			<label class="form-label col-xs-4 col-sm-3">修改的人员：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="${param.isPerson}"
 					placeholder="" id="isPerson" name="" disabled="disabled"
-					style="width: 100px; height: 30px">
+					style="width: 100px; height: 30px"> <input type="text"
+					class="input-text" value="${param.id}" placeholder="" id="id"
+					name="" disabled="disabled" style="width: 100px; height: 30px">
+
 			</div>
 		</div>
 		<div class="row cl">
@@ -63,37 +66,6 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder=""
 					id="adminName" name="adminName">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red">*</span>性别：</label>
-			<div class="formControls col-xs-8 col-sm-9 skin-minimal"
-				style="width: 600px; margin-left: 30px">
-				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="男" checked /> <label
-						for="sex-1">男</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-2" name="sex" value="女" /> <label
-						for="sex-2">女</label>
-				</div>
-			</div>
-		</div>
-		<span class="" id="warningPhone"
-			style="display: none; margin-left: 220px;"> </span>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red">*</span>手机：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder=""
-					id="phone" name="phone">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">身份证号：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" id="cardId">
 			</div>
 		</div>
 		<div class="row cl">
@@ -115,10 +87,11 @@
 				<input class="btn btn-primary radius" type="button" id="sub"
 					value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
 			</div>
+			<c:if test="">
+			</c:if>
 		</div>
 	</form>
 	</article>
-
 	<!--_footer 作为公共模版分离出去-->
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath }/statics/lib/jquery/1.9.1/jquery.min.js"></script>
@@ -140,21 +113,36 @@
 		src="${pageContext.request.contextPath }/statics/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 	<script type="text/javascript">
 		$(function() {
+			//进入修改控制器，获取要修改的人员的信息
 			var isPerson = $("#isPerson").val();
+			var id = $("#id").val();
 			$
 					.post(
-							"toAddPerson",
-							null,
+							"toEditPerson",
+							{
+								'isPerson' : isPerson,
+								'id' : id
+							},
 							function(data) {
 								var roleList = data.roleList;
 								var childDeptList = data.childDeptList;
+								var AdminroleList = data.AdminRoleList;
+								var AdminchildDeptList = data.childDeptId;
+								$("#adminName").val(AdminchildDeptList[0].name);
 								if (isPerson == "管理员") {
 									for (i in roleList) {
-										$("#checkBoxRole")
-												.append(
-														"<label class='middle'><input name='roleId' class='ace' type='checkbox' id='id-disable-check' value='"+roleList[i].id+"'><span class='lbl'>"
-																+ roleList[i].roleName
-																+ "</span></label>&nbsp;&nbsp;");
+										var checkStr = "<label class='middle'><input name='roleId' class='ace' type='checkbox' id='id-disable-check' value='"
+												+ roleList[i].id + "'";
+										for (j in AdminroleList) {
+											if (AdminroleList[j].roleId == roleList[i].id) {
+												checkStr += " checked = checked";
+											}
+										}
+										checkStr = checkStr
+												+ " ><span class='lbl'>"
+												+ roleList[i].roleName
+												+ "</span></label>&nbsp;&nbsp;";
+										$("#checkBoxRole").append(checkStr);
 										if (i != 0 && i % 4 == 0) {
 											$("#checkBoxRole").append("<br/>");
 										}
@@ -163,109 +151,57 @@
 									$("#role").hide();
 								}
 								for (i in childDeptList) {
-									$("#childDeptNo")
-											.append(
-													"<option value='"+childDeptList[i].id+"'>"
-															+ childDeptList[i].childName
-															+ "</option>");
+									var optionStr = "<option value='"
+											+ childDeptList[i].id + "'";
+									if (AdminchildDeptList[0].childdept.id == childDeptList[i].id) {
+										optionStr += " selected ";
+									}
+									optionStr = optionStr + ">"
+											+ childDeptList[i].childName
+											+ "</option>";
+									$("#childDeptNo").append(optionStr);
 								}
-
 							}, "json");
-			//添加用户
-			$("#sub").click(
-					function() {
-						var arr = new Array();
-						$(".ace:checked").each(function(i) {
-							arr[i] = $(this).val();
-						});
-						var vals = arr.join(",");
-						var isPerson = $("#isPerson").val();
-						var adminName = $("#adminName").val();
-						var phone = $("#phone").val();
-						var cardId = $("#cardId").val();
-						var childDeptNo = $("#childDeptNo").val();
-						var gender = $("input[type='radio']:checked").val();
-						if (adminName == "" || adminName.length < 2
-								|| phone == "" || phone.length < 11) {
-							return;
-						}
-						$.post("addPerson", {
-							'isPerson' : isPerson,
-							'roles' : vals,
-							'name' : adminName,
-							'phone' : phone,
-							'cardId' : cardId,
-							'gender' : gender,
-							'deptChildId' : childDeptNo
-						}, function(data) {
-							if (data == "true") {
-								layer.msg('添加成功!', {
-									icon : 1,
-									time : 1000
-								}, function() {
-									parent.location.reload();
-									layer_close();
-								});
-							}
-						});
-					});
-			//手机号查重
-			$("#phone").blur(
-					function() {
-						var phone = $(this).val();
-						if (phone == "" || phone.length < 11) {
-							$("#warningPhone").hide();
-							$("#sub").attr("disabled", "disabled");
-							return;
-						}
-						$.post("selPhone?phone=" + phone, null, function(data) {
-							if (data == "true") {
-								$("#warningPhone").hide();
-								$("#sub").removeAttr("disabled");
-							} else if (data == "false") {
-								$("#warningPhone").attr("class",
-										"label label-sm label-warning").show()
-										.html("手机号重复");
-								$("#sub").attr("disabled", "disabled");
-							} else {
-								$("#warningPhone").attr("display", "none");
-							}
-						})
-					});
-
-			$('.skin-minimal input').iCheck({
-				checkboxClass : 'icheckbox-blue',
-				radioClass : 'iradio-blue',
-				increaseArea : '20%'
+		});
+		//修改用户
+		$("#sub").click(function() {
+			var arr = new Array();
+			$(".ace:checked").each(function(i) {
+				arr[i] = $(this).val();
 			});
-
-			$("#form-admin-add").validate({
-				rules : {
-					adminName : {
-						required : true,
-						minlength : 2,
-						maxlength : 6
-					},
-					sex : {
-						required : true,
-					},
-					phone : {
-						required : true,
-						isPhone : true,
-					},
-					adminRole : {
-						required : true,
-					},
-				},
-				onkeyup : false,
-				focusCleanup : true,
-				success : "valid",
-				submitHandler : function(form) {
-					$(form).ajaxSubmit();
-					var index = parent.layer.getFrameIndex(window.name);
-					parent.layer.close(index);
+			var vals = arr.join(",");
+			var adminName = $("#adminName").val();
+			var childDeptNo = $("#childDeptNo").val();
+			var id = $("#id").val();
+			if (adminName == "" || adminName.length < 2) {
+				return;
+			}
+			if(vals.length < 1){
+				layer.alert('至少赋予一个角色!', {icon: 5});
+					 return ;
+			}
+			$.post("editPerson", {
+				'roles' : vals,
+				'id' : id,
+				'name' : adminName,
+				'deptChildId' : childDeptNo
+			}, function(data) {
+				if (data == "true") {
+					layer.msg('修改成功!', {
+						icon : 1,
+						time : 1000
+					}, function() {
+						parent.location.reload();
+						layer_close();
+					});
 				}
 			});
+		});
+
+		$('.skin-minimal input').iCheck({
+			checkboxClass : 'icheckbox-blue',
+			radioClass : 'iradio-blue',
+			increaseArea : '20%'
 		});
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
