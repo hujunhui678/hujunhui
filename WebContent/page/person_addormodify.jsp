@@ -191,14 +191,22 @@
 						}
 						$.post("addPerson", {
 							'isPerson' : isPerson,
-							'roles':vals,
+							'roles' : vals,
 							'name' : adminName,
 							'phone' : phone,
 							'cardId' : cardId,
 							'gender' : gender,
 							'deptChildId' : childDeptNo
 						}, function(data) {
-							alert(data);
+							if (data == "true") {
+								layer.msg('添加成功!', {
+									icon : 1,
+									time : 1000
+								}, function() {
+									parent.location.reload();
+									layer_close();
+								});
+							}
 						});
 					});
 			//手机号查重
