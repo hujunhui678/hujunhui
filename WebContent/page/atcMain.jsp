@@ -8,25 +8,34 @@
 <meta charset="utf-8" />
 <title>奥特佳新能源科技有限公司</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="${pageContext.request.contextPath}/statics/assets/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/assets/css/font-awesome.min.css" />
+<link
+	href="${pageContext.request.contextPath}/statics/assets/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/statics/assets/css/font-awesome.min.css" />
 <!--[if IE 7]>
 		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
 		<![endif]-->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/assets/css/ace.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/assets/css/ace-rtl.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/assets/css/ace-skins.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/style.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/statics/assets/css/ace.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/statics/assets/css/ace-rtl.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/statics/assets/css/ace-skins.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/statics/css/style.css" />
 <!--[if lte IE 8]>
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
-<script src="${pageContext.request.contextPath}/statics/assets/js/ace-extra.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/assets/js/ace-extra.min.js"></script>
 <!--[if lt IE 9]>
 		<script src="assets/js/html5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 <!--[if !IE]> -->
-<script src="${pageContext.request.contextPath}/statics/js/jquery-1.9.1.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/js/jquery-1.9.1.min.js"></script>
 <!-- <![endif]-->
 <!--[if IE]>
          <script type="text/javascript">window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");</script>
@@ -36,16 +45,26 @@
 		document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"
 				+ "<"+"script>");
 </script>
-<script src="${pageContext.request.contextPath}/statics/assets/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/statics/assets/js/typeahead-bs2.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/assets/js/bootstrap.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/assets/js/typeahead-bs2.min.js"></script>
 <!--[if lte IE 8]>
 		  <script src="assets/js/excanvas.min.js"></script>
 		<![endif]-->
-<script src="${pageContext.request.contextPath}/statics/assets/js/ace-elements.min.js"></script>
-<script src="${pageContext.request.contextPath}/statics/assets/js/ace.min.js"></script>
-<script src="${pageContext.request.contextPath}/statics/assets/layer/layer.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/statics/assets/laydate/laydate.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/statics/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/assets/js/ace-elements.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/assets/js/ace.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/assets/layer/layer.js"
+	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/assets/laydate/laydate.js"
+	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/statics/js/jquery.nicescroll.js"
+	type="text/javascript"></script>
 
 <style type="text/css">
 #advice {
@@ -63,6 +82,11 @@
 
 <script type="text/javascript">
 	$(function() {
+		$("body").keydown(function() {
+			if (event.keyCode == "13") {//keyCode=13是回车键；数字不同代表监听的按键不同
+				$(".layui-layer-btn0").click();
+			}
+		});
 		var cid = $('#nav_list> li>.submenu');
 		cid.each(function(i) {
 			$(this).attr('id', "Sort_link_" + i);
@@ -161,95 +185,132 @@
 	//})		
 	//	});
 	/*********************点击事件*********************/
-	$(document).ready(
-			function() {
-				$('#nav_list,.link_cz').find('li.home').on(
-						'click',
-						function() {
-							$('#nav_list,.link_cz').find('li.home')
-									.removeClass('active');
-							$(this).addClass('active');
-						});
-				//时间设置
-				function currentTime() {
-					var d = new Date(), str = '';
-					str += d.getFullYear() + '年';
-					str += d.getMonth() + 1 + '月';
-					str += d.getDate() + '日';
-					str += d.getHours() + '时';
-					str += d.getMinutes() + '分';
-					str += d.getSeconds() + '秒';
-					return str;
-				}
+	$(document)
+			.ready(
+					function() {
+						$('#nav_list,.link_cz').find('li.home').on(
+								'click',
+								function() {
+									$('#nav_list,.link_cz').find('li.home')
+											.removeClass('active');
+									$(this).addClass('active');
+								});
+						//时间设置
+						function currentTime() {
+							var d = new Date(), str = '';
+							str += d.getFullYear() + '年';
+							str += d.getMonth() + 1 + '月';
+							str += d.getDate() + '日';
+							str += d.getHours() + '时';
+							str += d.getMinutes() + '分';
+							str += d.getSeconds() + '秒';
+							return str;
+						}
 
-				setInterval(function() {
-					$('#time').html(currentTime)
-				}, 1000);
-				//修改密码
-				$('.change_Password').on(
-						'click',
-						function() {
-							layer.open({
-								type : 1,
-								title : '修改密码',
-								area : [ '300px', '300px' ],
-								shadeClose : true,
-								content : $('#change_Pass'),
-								btn : [ '确认修改' ],
-								yes : function(index, layero) {
-									if ($("#password").val() == "") {
-										layer.alert('原密码不能为空!', {
-											title : '提示框',
-											icon : 0,
+						setInterval(function() {
+							$('#time').html(currentTime)
+						}, 1000);
+						//修改密码
+						$('.change_Password')
+								.on(
+										'click',
+										function() {
+											layer
+													.open({
+														type : 1,
+														title : '修改密码',
+														area : [ '300px',
+																'300px' ],
+														shadeClose : true,
+														content : $('#change_Pass'),
+														btn : [ '确认修改' ],
+														yes : function(index,
+																layero) {
+															if ($("#password")
+																	.val() == "") {
+																layer
+																		.alert(
+																				'原密码不能为空!',
+																				{
+																					title : '提示框',
+																					icon : 0,
 
+																				});
+																return false;
+															}
+															if ($("#Nes_pas")
+																	.val() == "") {
+																layer
+																		.alert(
+																				'新密码不能为空!',
+																				{
+																					title : '提示框',
+																					icon : 0,
+
+																				});
+																return false;
+															}
+
+															if ($("#c_mew_pas")
+																	.val() == "") {
+																layer
+																		.alert(
+																				'确认新密码不能为空!',
+																				{
+																					title : '提示框',
+																					icon : 0,
+
+																				});
+																return false;
+															}
+															if (!$("#c_mew_pas").val
+																	|| $(
+																			"#c_mew_pas")
+																			.val() != $(
+																			"#Nes_pas")
+																			.val()) {
+																layer
+																		.alert(
+																				'密码不一致!',
+																				{
+																					title : '提示框',
+																					icon : 0,
+
+																				});
+																return false;
+															} else {
+																layer
+																		.alert(
+																				'修改成功！',
+																				{
+																					title : '提示框',
+																					icon : 1,
+																				});
+																layer
+																		.close(index);
+															}
+														}
+													});
 										});
-										return false;
-									}
-									if ($("#Nes_pas").val() == "") {
-										layer.alert('新密码不能为空!', {
-											title : '提示框',
-											icon : 0,
 
+						$('#Exit_system')
+								.on(
+										'click',
+										function() {
+											layer
+													.confirm(
+															'是否确定退出系统？',
+															{
+																btn : [ '是',
+																		'否' ],//按钮
+																icon : 1,
+															},
+															function() {
+																location.href = "${pageContext.request.contextPath}/page/loginout";
+															});
 										});
-										return false;
-									}
-
-									if ($("#c_mew_pas").val() == "") {
-										layer.alert('确认新密码不能为空!', {
-											title : '提示框',
-											icon : 0,
-
-										});
-										return false;
-									}
-									if (!$("#c_mew_pas").val
-											|| $("#c_mew_pas").val() != $(
-													"#Nes_pas").val()) {
-										layer.alert('密码不一致!', {
-											title : '提示框',
-											icon : 0,
-
-										});
-										return false;
-									} else {
-										layer.alert('修改成功！', {
-											title : '提示框',
-											icon : 1,
-										});
-										layer.close(index);
-									}
-								}
-							});
-						});
-				$('#Exit_system').on('click', function() {
-					layer.confirm('是否确定退出系统？', {
-						btn : [ '是', '否' ],//按钮
-						icon : 1,
-					}, function() {
-						location.href = "${pageContext.request.contextPath}/page/loginout";
 					});
-				});
-			});
+
 	function link_operating(name, title) {
 		var cid = $(this).name;
 		var cname = $(this).title;
@@ -280,7 +341,8 @@
 		<div class="navbar-container" id="navbar-container">
 			<div class="navbar-header pull-left">
 				<a href="#" class="navbar-brand"> <small> <img
-						src="${pageContext.request.contextPath}/statics/images/logo.png" width="470px">
+						src="${pageContext.request.contextPath}/statics/images/logo.png"
+						width="470px">
 				</small>
 				</a>
 				<!-- /.brand -->
@@ -306,7 +368,8 @@
 						</ul></li>
 					<li class="blue" id="adviceLi"><a data-toggle="dropdown"
 						id="advice" class="dropdown-toggle" href="#"><i class=""><img
-								src="${pageContext.request.contextPath}/statics/images/advice.png" height="25px" width="20px"></i><span
+								src="${pageContext.request.contextPath}/statics/images/advice.png"
+								height="25px" width="20px"></i><span
 							class="badge badge-important">8</span></a>
 						<ul
 							class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
@@ -355,8 +418,8 @@
 
 					<li class="blue" id="prettyFriendLi"><a data-toggle="dropdown"
 						class="dropdown-toggle" href="#" id="prettyFriend"><i class=""><img
-								src="${pageContext.request.contextPath}/statics/images/prettyFriend.png" height="25px"
-								width="25px"></i></a>
+								src="${pageContext.request.contextPath}/statics/images/prettyFriend.png"
+								height="25px" width="25px"></i></a>
 						<ul
 							class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
 							<li class="dropdown-header"><i class="icon-warning-sign"></i>当前拥有角色</li>
@@ -424,25 +487,27 @@
 				<div id="menu_style" class="menu_style">
 					<ul class="nav nav-list" id="nav_list">
 						<li class="home"><a href=""
-							name="${pageContext.request.contextPath }/page/home.jsp" class="iframeurl" title=""><i
-								class="icon-home"></i><span class="menu-text"> 系统首页 </span></a></li>
+							name="${pageContext.request.contextPath }/page/home.jsp"
+							class="iframeurl" title=""><i class="icon-home"></i><span
+								class="menu-text"> 系统首页 </span></a></li>
 						<c:forEach var="item" items="${permOne}">
-								<ul class="nav nav-list" id="nav_list">
-									<li><a href="#" class="dropdown-toggle"> <i
-											class="icon-desktop"></i> <span class="menu-text">
-												${item.permNameC } </span> <b class="arrow icon-angle-down"></b></a>
-										<ul class="submenu">
-											<c:forEach var="itemTwo" items="${permTwo }">
-												<c:if test="${itemTwo.parentPermId eq item.id}">
-													<li class="home"><a href="javascript:void(0)"
-														name="${pageContext.request.contextPath }${itemTwo.permURL}" title="${itemTwo.permNameC }" class="iframeurl"><i
-															class="icon-double-angle-right"></i>${itemTwo.permNameC }</a>
-													</li>
-												</c:if>
-											</c:forEach>
-										</ul>
-								</ul>
-							</c:forEach>
+							<ul class="nav nav-list" id="nav_list">
+								<li><a href="#" class="dropdown-toggle"> <i
+										class="icon-desktop"></i> <span class="menu-text">
+											${item.permNameC } </span> <b class="arrow icon-angle-down"></b></a>
+									<ul class="submenu">
+										<c:forEach var="itemTwo" items="${permTwo }">
+											<c:if test="${itemTwo.parentPermId eq item.id}">
+												<li class="home"><a href="javascript:void(0)"
+													name="${pageContext.request.contextPath }${itemTwo.permURL}"
+													title="${itemTwo.permNameC }" class="iframeurl"><i
+														class="icon-double-angle-right"></i>${itemTwo.permNameC }</a>
+												</li>
+											</c:if>
+										</c:forEach>
+									</ul>
+							</ul>
+						</c:forEach>
 				</div>
 				<script type="text/javascript">
 					$("#menu_style").niceScroll({
@@ -474,7 +539,7 @@
 					} catch (e) {
 					}
 				</script>
-				<div class="breadcrumbs" id="breadcrumbs" style="padding-top:10px">
+				<div class="breadcrumbs" id="breadcrumbs" style="padding-top: 10px">
 					<ul class="breadcrumb">
 						<li><i class="icon-home home-icon"></i> <a href="home.jsp">首页</a>
 						</li>
@@ -488,7 +553,8 @@
 
 				<iframe id="iframe"
 					style="border: 0; width: 100%; background-color: #FFF;"
-					name="iframe" frameborder="0" src="${pageContext.request.contextPath }/page/home.jsp"> </iframe>
+					name="iframe" frameborder="0"
+					src="${pageContext.request.contextPath }/page/home.jsp"> </iframe>
 
 
 				<!-- /.page-content -->
