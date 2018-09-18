@@ -1,5 +1,7 @@
 package cn.atc.controller;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.atc.common.AllPerm;
 import cn.atc.pojo.Permission;
 import cn.atc.pojo.Role;
+import cn.atc.pojo.Role_perm;
 import cn.atc.service.PermissionService;
 import cn.atc.service.RoleService;
 import cn.atc.util.GsonUtil;
@@ -64,5 +67,34 @@ public class PermissionController {
 		List<Permission> permList = permissionService.getAllPermConverterPerm(permLevel);
 		String json = GsonUtil.GsonString(permList);
 		return json;
+	}
+	
+	/**
+	 * 添加权限及角色权限
+	 * @param permission
+	 * @param role_perm
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/addPerm")
+	@ResponseBody	
+	public String addPermission(Permission permission) {
+		permission.setPermLevel(permission.getPermLevel()+1);
+		Boolean result = false;
+		try {
+			result = permissionService.insertPerm(permission);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "false";
+		}
+		return result.toString();
+	}
+	
+	@RequestMapping("/insertRolePerm")
+	@ResponseBody
+	public String insertRolePerm(String[] permIds,Integer roleId,Map<String, Object> map) {
+		map.put("roleId", roleId);
+		map.put("permIds", permIds);
+		return permissionService.insertRolePermByRoleIdAndPermId(map)?"true":"false";
 	}
 }

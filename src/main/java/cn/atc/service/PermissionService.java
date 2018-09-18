@@ -1,6 +1,7 @@
 package cn.atc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.atc.common.AllPerm;
 import cn.atc.pojo.Permission;
@@ -26,4 +27,10 @@ public interface PermissionService {
 	 * @return
 	 */
 	List<Permission> getAllPermConverterPerm(Integer permLevel);
+	
+	// 添加权限
+	boolean insertPerm(Permission permission);
+	
+	// 添加角色权限连接表数据
+	boolean insertRolePermByRoleIdAndPermId(Map<String, Object> map);
 }
