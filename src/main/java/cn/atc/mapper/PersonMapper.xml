@@ -89,19 +89,24 @@
 		childdept c ON a.`deptChildId` = c.`id`
 		WHERE a.`id` = #{id}
 	</select>
-	
-	
-	<resultMap type="Admin" id="getEmpAndChi">
+
+
+	<resultMap type="Employee" id="getEmpAndChi">
 		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<result column="address" property="address" />
 		<association property="childdept" javaType="ChildDept">
 			<id column="id" property="id" />
 			<result column="childName" property="childName" />
 		</association>
 	</resultMap>
-	
+
 	<select id="getEmpAndChildDept" parameterType="integer"
 		resultMap="getEmpAndChi">
-		
+		SELECT en.`name`,en.`phone`,en.`address`,c.`id`,c.`childName` FROM employee
+		en
+		JOIN childdept c ON en.`deptChildId` = c.`id`
+		WHERE en.`id` = #{id}
 	</select>
 
 	<select id="getAdminAllRole" parameterType="integer"

@@ -65,7 +65,7 @@
 				class="c-red">*</span>姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder=""
-					id="adminName" name="adminName">
+					id="EmpName" name="EmpName">
 			</div>
 		</div>
 		<div class="row cl">
@@ -73,7 +73,7 @@
 				class="c-red">*</span>电话：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder=""
-					id="adminName" name="adminName">
+					id="phone" name="phone">
 			</div>
 		</div>
 		<div class="row cl">
@@ -81,7 +81,7 @@
 				class="c-red">*</span>地址：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder=""
-					id="adminName" name="adminName">
+					id="address" name="address">
 			</div>
 		</div>
 		<div class="row cl">
@@ -127,51 +127,39 @@
 			//进入修改控制器，获取要修改的人员的信息
 			var isPerson = $("#isPerson").val();
 			var id = $("#id").val();
-			$
-					.post(
-							"toEditEmp",
-							{
-								'isPerson' : isPerson,
-								'id' : id
-							},
-							function(data) {
-								var childDeptList = data.childDeptList;
-								var AdminchildDeptList = data.childDeptId;
-								$("#adminName").val(AdminchildDeptList[0].name);
-								for (i in childDeptList) {
-									var optionStr = "<option value='"
-											+ childDeptList[i].id + "'";
-									if (AdminchildDeptList[0].childdept.id == childDeptList[i].id) {
-										optionStr += " selected ";
-									}
-									optionStr = optionStr + ">"
-											+ childDeptList[i].childName
-											+ "</option>";
-									$("#childDeptNo").append(optionStr);
-								}
-							}, "json");
+			$.post("toEditEmp", {
+				'isPerson' : isPerson,
+				'id' : id
+			}, function(data) {
+				var childDeptList = data.childDeptList;
+				var employee = data.employeeAnd;
+				$("#EmpName").val(employee[0].name);
+				$("#phone").val(employee[0].phone);
+				$("#address").val(employee[0].address);
+				for (i in childDeptList) {
+					var optionStr = "<option value='" + childDeptList[i].id
+							+ "'";
+					if (employee[0].childdept.id == childDeptList[i].id) {
+						optionStr += " selected ";
+					}
+					optionStr = optionStr + ">" + childDeptList[i].childName
+							+ "</option>";
+					$("#childDeptNo").append(optionStr);
+				}
+			}, "json");
 		});
 		//修改用户
 		$("#sub").click(function() {
-			var arr = new Array();
-			$(".ace:checked").each(function(i) {
-				arr[i] = $(this).val();
-			});
-			var vals = arr.join(",");
-			var adminName = $("#adminName").val();
+			var EmpName = $("#EmpName").val();
+			var phone = $("#phone").val();
+			var address = $("#address").val();
 			var childDeptNo = $("#childDeptNo").val();
 			var id = $("#id").val();
-			if (adminName == "" || adminName.length < 2) {
-				return;
-			}
-			if(vals.length < 1){
-				layer.alert('至少赋予一个角色!', {icon: 5});
-					 return ;
-			}
-			$.post("editPerson", {
-				'roles' : vals,
+			$.post("editEmp", {
 				'id' : id,
-				'name' : adminName,
+				'name' : EmpName,
+				'phone' : phone,
+				'address' : address,
 				'deptChildId' : childDeptNo
 			}, function(data) {
 				if (data == "true") {

@@ -100,4 +100,9 @@ public class PersonServiceImp implements PersonService {
 		return personMapper.updateEmp(emp);
 	}
 
+	@Override
+	public List<Employee> getEmpAndChildDept(Integer id) {
+		return personMapper.getEmpAndChildDept(id);
+	}
+
 }

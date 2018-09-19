@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 
 import cn.atc.common.AdminAndRole;
+import cn.atc.common.EmpAndRole;
 import cn.atc.pojo.Admin;
 import cn.atc.pojo.Employee;
 import cn.atc.pojo.Role;
@@ -114,8 +115,8 @@ public class PersonController {
 		}
 		return "false";
 	}
-	
-	// 修改人员的信息
+
+	// 获得要修改管理员的信息
 	@RequestMapping("/toEditPerson")
 	@ResponseBody
 	public String toEditPerson(String isPerson, Integer id) {
@@ -124,13 +125,13 @@ public class PersonController {
 		String json = GsonUtil.GsonString(adminAndRole);
 		return json;
 	}
-	// 修改人员的信息
+
+	// 获得要修改雇员的信息
 	@RequestMapping("/toEditEmp")
 	@ResponseBody
 	public String toEditEmp(String isPerson, Integer id) {
-		AdminAndRole adminAndRole = new AdminAndRole(roleService.getRole(), childDeptService.getChildDept(),
-				personService.getAdminAllRole(id), personService.getAdminNameAndChildDept(id));
-		String json = GsonUtil.GsonString(adminAndRole);
+		EmpAndRole ear = new EmpAndRole(childDeptService.getChildDept(), personService.getEmpAndChildDept(id));
+		String json = GsonUtil.GsonString(ear);
 		return json;
 	}
 
@@ -150,6 +151,17 @@ public class PersonController {
 				Integer role = roleService.addRole(maps);
 				return "true";
 			}
+		}
+		return "false";
+	}
+
+	// 修改雇员
+	@RequestMapping("/editEmp")
+	@ResponseBody
+	public String editEmp(Employee employee) {
+		Integer editAdmin = personService.updateEmp(employee);
+		if (editAdmin > 0) {
+			return "true";
 		}
 		return "false";
 	}
