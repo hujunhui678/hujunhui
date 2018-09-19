@@ -65,6 +65,11 @@
 		admin(NAME,loginName,PASSWORD,gender,phone,cardId,deptChildId)
 		VALUES(#{name},#{loginName},#{password},#{gender},#{phone},#{cardId},#{deptChildId})
 	</insert>
+	<insert id="addEmp" parameterType="Employee">
+		INSERT INTO
+		employee(NAME,gender,phone,cardId,address,deptChildId)
+		VALUES(#{name},#{gender},#{phone},#{cardId},#{address},#{deptChildId})
+	</insert>
 
 	<select id="getAdminIdByPhone" parameterType="string"
 		resultType="integer">
@@ -84,7 +89,20 @@
 		childdept c ON a.`deptChildId` = c.`id`
 		WHERE a.`id` = #{id}
 	</select>
-
+	
+	
+	<resultMap type="Admin" id="getEmpAndChi">
+		<result column="name" property="name" />
+		<association property="childdept" javaType="ChildDept">
+			<id column="id" property="id" />
+			<result column="childName" property="childName" />
+		</association>
+	</resultMap>
+	
+	<select id="getEmpAndChildDept" parameterType="integer"
+		resultMap="getEmpAndChi">
+		
+	</select>
 
 	<select id="getAdminAllRole" parameterType="integer"
 		resultType="Admin_Role">
@@ -97,6 +115,29 @@
 			<trim suffixOverrides=",">
 				<if test="name != null and name != ''">
 					name = #{name},
+				</if>
+				<if test="deptChildId != null and deptChildId != ''">
+					deptChildId = #{deptChildId},
+				</if>
+			</trim>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<update id="updateEmp" parameterType="Employee">
+		update Employee
+		<set>
+			<trim suffixOverrides=",">
+				<if test="name != null and name != ''">
+					name = #{name},
+				</if>
+				<if test="phone != null and phone != ''">
+					phone = #{phone},
+				</if>
+				<if test="address != null and address != ''">
+					address = #{address},
 				</if>
 				<if test="deptChildId != null and deptChildId != ''">
 					deptChildId = #{deptChildId},
@@ -124,8 +165,8 @@
 
 	<delete id="delEmp" parameterType="string">
 		DELETE FROM employee WHERE id in
-		<foreach collection="empIds" item="ids" open="("
-			separator="," close=")">
+		<foreach collection="empIds" item="ids" open="(" separator=","
+			close=")">
 			#{ids}
 		</foreach>
 	</delete>

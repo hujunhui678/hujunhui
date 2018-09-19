@@ -132,7 +132,7 @@ button {
 									<td>${item.phone }</td>
 									<td>${item.childdept.childName }</td>
 									<td class="f-14"><a title="编辑" href="javascript:;"
-										onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/person_modify.jsp',${item.id },'800','400')"
+										onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/',${item.id },'800','400')"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6df;</i></a>
 										<a title="删除" href="javascript:;"
 										onclick="person_del(this,${item.id})" class="ml-5"
@@ -212,7 +212,11 @@ button {
 		 /*管理员-编辑*/
 			function person_edit(title, url, id, w, h) {
 				var isPerson = $(".select").val();
-				layer_show(title, url+"?isPerson="+isPerson+"&id="+id, w, h);
+				if(isPerson == "管理员"){
+					layer_show(title, url+"person_modify.jsp?isPerson="+isPerson+"&id="+id, w, h);
+				}else{
+					layer_show(title, url+"emp_modify.jsp?isPerson="+isPerson+"&id="+id, w, h);
+				}
 			}
 		/*管理员-删除*/
 		function person_del(obj, id) {

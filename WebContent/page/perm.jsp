@@ -254,7 +254,7 @@
 		$.post("addPerm",{'permNameC':permNameC,'permNameE':permNameE,'permURL':permURL,'permLevel':permLevel,'parentPermId':parentPermId,'permDesc':permDesc},function(result){
 			layer.msg('已保存', {
 				icon : 1,
-				time : 3000
+				time : 1000
 			},function(){
 				window.location.reload();
 			});
