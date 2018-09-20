@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import cn.atc.mapper.PersonMapper;
 import cn.atc.pojo.Admin;
 import cn.atc.pojo.Admin_Role;
+import cn.atc.pojo.Employee;
 import cn.atc.pojo.Role;
 import cn.atc.service.PersonService;
 import cn.atc.util.PageUtil;
@@ -87,6 +88,21 @@ public class PersonServiceImp implements PersonService {
 	@Override
 	public Integer delEmp(String[] ids) {
 		return personMapper.delEmp(ids);
+	}
+
+	@Override
+	public Integer addEmp(Employee employee) {
+		return personMapper.addEmp(employee);
+	}
+
+	@Override
+	public Integer updateEmp(Employee emp) {
+		return personMapper.updateEmp(emp);
+	}
+
+	@Override
+	public List<Employee> getEmpAndChildDept(Integer id) {
+		return personMapper.getEmpAndChildDept(id);
 	}
 
 }

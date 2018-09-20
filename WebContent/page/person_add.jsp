@@ -90,7 +90,7 @@
 					id="phone" name="phone">
 			</div>
 		</div>
-		<div class="row cl">
+		<div class="row cl" id="flag">
 			<label class="form-label col-xs-4 col-sm-3">身份证号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" id="cardId">
@@ -160,6 +160,8 @@
 										}
 									}
 								} else {
+									//添加地址表单
+									$("#flag").before("<div class='row cl'><label class='form-label col-xs-4 col-sm-3'>地址：</label><div class='formControls col-xs-8 col-sm-9'><input type='text' class='input-text' id='address'></div></div>");
 									$("#role").hide();
 								}
 								for (i in childDeptList) {
@@ -183,35 +185,59 @@
 						var adminName = $("#adminName").val();
 						var phone = $("#phone").val();
 						var cardId = $("#cardId").val();
+						var address = $("#address").val()
 						var childDeptNo = $("#childDeptNo").val();
 						var gender = $("input[type='radio']:checked").val();
 						if (adminName == "" || adminName.length < 2
 								|| phone == "" || phone.length < 11) {
 							return;
 						}
-						if(vals.length < 1){
+						if(vals.length < 1 && isPerson == "管理员"){
 							layer.alert('至少赋予一个角色!', {icon: 5});
 	     					 return ;
 						}
-						$.post("addPerson", {
-							'isPerson' : isPerson,
-							'roles' : vals,
-							'name' : adminName,
-							'phone' : phone,
-							'cardId' : cardId,
-							'gender' : gender,
-							'deptChildId' : childDeptNo
-						}, function(data) {
-							if (data == "true") {
-								layer.msg('添加成功!', {
-									icon : 1,
-									time : 1000
-								}, function() {
-									parent.location.reload();
-									layer_close();
-								});
-							}
-						});
+
+						if(isPerson == "管理员"){
+							$.post("addPerson", {
+								'isPerson' : isPerson,
+								'roles' : vals,
+								'name' : adminName,
+								'phone' : phone,
+								'cardId' : cardId,
+								'gender' : gender,
+								'deptChildId' : childDeptNo
+							}, function(data) {
+								if (data == "true") {
+									layer.msg('添加成功!', {
+										icon : 1,
+										time : 1000
+									}, function() {
+										parent.location.reload();
+										layer_close();
+									});
+								}
+							});
+						}else if(isPerson == "雇员"){
+							$.post("addEmp", {
+								'name' : adminName,
+								'phone' : phone,
+								'cardId' : cardId,
+								'gender' : gender,
+								'address' : address,
+								'deptChildId' : childDeptNo
+							}, function(data) {
+								if (data == "true") {
+									layer.msg('添加成功!', {
+										icon : 1,
+										time : 1000
+									}, function() {
+										parent.location.reload();
+										layer_close();
+									});
+								}
+							});
+							
+						}
 					});
 			//手机号查重
 			$("#phone").blur(
@@ -272,6 +298,5 @@
 			});
 		});
 	</script>
-	<!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>

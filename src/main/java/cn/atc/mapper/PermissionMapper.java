@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import cn.atc.common.AllPerm;
 import cn.atc.common.PermLv2;
 import cn.atc.pojo.Permission;
+import cn.atc.pojo.Role_perm;
 
 public interface PermissionMapper {
 	// 获取1J权限
@@ -28,4 +29,12 @@ public interface PermissionMapper {
 	// 获取角色的所有三级权限
 	List<Permission> getPermByRoleIdThr(long id);
 	
+	// 添加权限
+	Integer insertPerm(Permission permission);
+	
+	//根据角色ID删除所有与角色相关的角色权限
+	Integer deleteRolePermByRoleId(@Param("roleId")Integer roleId);
+	
+	//根据角色ID和权限ID添加角色权限连接表
+	Integer insertRolePermByRoleIdAndPermId(Role_perm role_perm);
 }

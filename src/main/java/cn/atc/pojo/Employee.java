@@ -7,10 +7,19 @@ public class Employee {
 	private long id;// 编号
 	private String name;// 姓名
 	private String phone;// 电话
+	private String gender;//性别
 	private String cardId;// 身份证号
 	private String address;// 地址
 	private long deptChildId;// 子部门编号外键
 	private ChildDept childdept;
+	
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 	public long getId() {
 		return id;

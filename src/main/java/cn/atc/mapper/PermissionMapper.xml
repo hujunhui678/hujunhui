@@ -8,7 +8,7 @@
 
 	<select id="getAllPermTwo" resultType="PermLv2"
 		parameterType="long">
-		select * from permission where permLevel=2 
+		select * from permission where permLevel=2
 		<if test="parentPermId != -1">
 			and parentPermId=#{parentPermId}
 		</if>
@@ -28,18 +28,32 @@
 		rp.`permId`=p.`id` WHERE rp.`roleId` = #{id}
 		and permLevel=1
 	</select>
-	
+
 	<select id="getPermByRoleIdTwo" parameterType="long"
 		resultType="PermLv2">
 		SELECT * FROM permission p INNER JOIN role_perm rp ON
 		rp.`permId`=p.`id` WHERE rp.`roleId` = #{id}
 		and permLevel=2
 	</select>
-	
+
 	<select id="getPermByRoleIdThr" parameterType="long"
 		resultType="Permission">
 		SELECT * FROM permission p INNER JOIN role_perm rp ON
 		rp.`permId`=p.`id` WHERE rp.`roleId` = #{id}
 		and permLevel=3
 	</select>
+
+	<insert id="insertPerm" parameterType="Permission">
+		insert into permission
+		(permNameC,permNameE,permURL,permLevel,parentPermId,permDesc) values
+		(#{permNameC},#{permNameE},#{permURL},#{permLevel},#{parentPermId},#{permDesc})
+	</insert>
+	
+	<delete id="deleteRolePermByRoleId" parameterType="integer">
+		delete from role_perm where roleId=#{roleId}
+	</delete>
+	
+	<insert id="insertRolePermByRoleIdAndPermId" parameterType="Role_perm">
+		insert into role_perm (roleId,permId) values (#{roleId},#{permId})
+	</insert>
 </mapper>

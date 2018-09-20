@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 
 import cn.atc.common.AdminAndRole;
+import cn.atc.common.EmpAndRole;
 import cn.atc.pojo.Admin;
+import cn.atc.pojo.Employee;
 import cn.atc.pojo.Role;
 import cn.atc.service.ChildDeptService;
 import cn.atc.service.PersonService;
@@ -83,12 +85,12 @@ public class PersonController {
 	// 添加管理员
 	@RequestMapping("/addPerson")
 	@ResponseBody
-	public String addRole(String isPerson, String[] roles, Admin admin) {
+	public String addAdmin(String isPerson, String[] roles, Admin admin) {
 		admin.setLoginName(admin.getPhone());// 默认手机号为登录号
 		admin.setPassword(MD5Util.generate("123"));// 默认密码为123
 		Integer count = personService.addAdmin(admin);
 		if (count >= 1 && roles.length > 0) {
-			//插入管理员角色表
+			// 插入管理员角色表
 			Integer adminId = personService.getAdminIdByPhone(admin.getPhone());
 			if (adminId != null) {
 				Map<String, Object> maps = new HashMap<String, Object>();
@@ -97,19 +99,39 @@ public class PersonController {
 				Integer role = roleService.addRole(maps);
 				return "true";
 			}
-		}else if (count >= 1) {
+		} else if (count >= 1) {
 			return "true";
 		}
 		return "false";
 	}
 
-	// 修改人员的信息
+	// 添加雇员
+	@RequestMapping("/addEmp")
+	@ResponseBody
+	public String addEmp(Employee employee) {
+		Integer result = personService.addEmp(employee);
+		if (result > 0) {
+			return "true";
+		}
+		return "false";
+	}
+
+	// 获得要修改管理员的信息
 	@RequestMapping("/toEditPerson")
 	@ResponseBody
 	public String toEditPerson(String isPerson, Integer id) {
 		AdminAndRole adminAndRole = new AdminAndRole(roleService.getRole(), childDeptService.getChildDept(),
 				personService.getAdminAllRole(id), personService.getAdminNameAndChildDept(id));
 		String json = GsonUtil.GsonString(adminAndRole);
+		return json;
+	}
+
+	// 获得要修改雇员的信息
+	@RequestMapping("/toEditEmp")
+	@ResponseBody
+	public String toEditEmp(String isPerson, Integer id) {
+		EmpAndRole ear = new EmpAndRole(childDeptService.getChildDept(), personService.getEmpAndChildDept(id));
+		String json = GsonUtil.GsonString(ear);
 		return json;
 	}
 
@@ -133,6 +155,17 @@ public class PersonController {
 		return "false";
 	}
 
+	// 修改雇员
+	@RequestMapping("/editEmp")
+	@ResponseBody
+	public String editEmp(Employee employee) {
+		Integer editAdmin = personService.updateEmp(employee);
+		if (editAdmin > 0) {
+			return "true";
+		}
+		return "false";
+	}
+
 	// 删除操作 --> 管理员或雇员
 	@RequestMapping("/delPerson")
 	@ResponseBody
@@ -140,8 +173,8 @@ public class PersonController {
 		String result = "no";
 		Integer delResult = 0;
 		if (isPerson.equals("管理员")) {
-			for (String id: ids) {
-				//先删除此管理员对应的所有角色信息。
+			for (String id : ids) {
+				// 先删除此管理员对应的所有角色信息。
 				personService.delAdminRole(Integer.parseInt(id));
 			}
 			delResult = personService.delAdmin(ids);
