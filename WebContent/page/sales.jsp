@@ -24,7 +24,11 @@
 	href="${pageContext.request.contextPath }/statics/static/h-ui.admin/css/style.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/statics/css/jquery.pagination.css" />
-<script src="${pageContext.request.contextPath }/statics/js/jquery-1.10.2.js"></script>
+
+
+
+<script
+	src="${pageContext.request.contextPath }/statics/js/jquery-1.10.2.js"></script>
 <script
 	src="${pageContext.request.contextPath }/statics/js/jquery.pagination.min.js"></script>
 
@@ -77,7 +81,6 @@ button {
 </style>
 </head>
 <body>
-
 	<!--/_menu 作为公共模版分离出去-->
 	<section>
 		<div>
@@ -86,10 +89,21 @@ button {
 					<span class="l"> <a href="javascript:;" onclick="datadel()"
 						class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
 							批量删除</a> <a class="btn btn-primary radius" href="javascript:;"
-						onclick="admin_role_add('添加角色','${pageContext.request.contextPath}/page/role_addormodify.jsp','800','300')"><i
-							class="Hui-iconfont">&#xe600;</i> 添加角色</a>
-							
-					</span> <span class="r">共有数据：<strong>${page.totalCount }</strong> 条
+						onclick="admin_add('添加人员','${pageContext.request.contextPath}/page/sales_add.jsp','900','400')"><i
+							class="Hui-iconfont">&#xe600;</i> 添加订单</a> <span class="select-box"
+						style="width: 100px; margin-left: 20px;">
+
+							<div class="layui-input-block">
+								<select name="city" lay-verify="required" class="select"
+									name="brandclass" size="1">
+									<option value="管理员" style="align: center;"
+										<c:if test="${sel eq '管理员' }">selected</c:if>>管理员</option>
+									<option value="雇员" <c:if test="${sel eq '雇员' }">selected</c:if>>雇员</option>
+								</select>
+							</div>
+
+					</span>
+					</span> <span class="r">共有数据：<strong>${pageUtil.totalCount }</strong> 条
 					</span>
 				</div>
 				<div class="mt-10">
@@ -97,41 +111,47 @@ button {
 						class="table table-border table-bordered table-hover table-bg">
 						<thead>
 							<tr>
-								<th scope="col" colspan="6">角色管理</th>
+								<th scope="col" colspan="8">销售订单管理</th>
 							</tr>
 							<tr class="text-c">
 								<th width="25"><input type="checkbox" value="" name=""></th>
 								<th width="40">序号</th>
-								<th width="200">角色名</th>
-								<th width="400">描述</th>
+								<th width="200">成品类别</th>
+								<th width="200">订购数量</th>
+								<th width="200">客户公司</th>
+								<th width="200">联系方式</th>
+								<th width="200">订单日期</th>
 								<th width="70">操作</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="item" items="${page.lists }" varStatus="index">
+							<c:forEach var="item" items="${pageUtil.lists }" varStatus="index">
 								<tr class="text-c">
 									<td><input type="checkbox" value="${item.id}" name=""
 										id="check"></td>
-									<td>${index.count }</td>
-									<td>${item.roleName}</td>
-									<td>${item.roleDesc }</td>
+									<td>${index.count}</td>
+									<td>${item.productType}</td>
+									<td>${item.orderNum }</td>
+									<td>${item.clientCompany}</td>
+									<td>${item.clientContact}</td>
+									<td>${item.orderDate}</td>
 									<td class="f-14"><a title="编辑" href="javascript:;"
-										onclick="admin_role_edit('编辑角色','${pageContext.request.contextPath}/page/role_addormodify.jsp',${item.id },'800','300')"
+										onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/person_modify.jsp',${item.id },'800','400')"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6df;</i></a>
 										<a title="删除" href="javascript:;"
-										onclick="admin_role_del(this,${item.id})" class="ml-5"
+										onclick="person_del(this,${item.id})" class="ml-5"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 								</tr>
-								
+
 							</c:forEach>
-							<input id="totalPage" value=${page.totalPage } type="hidden">
-							<input id="currentPage" value="${page.currentPage}" type="hidden">
+							<input id="totalPage" value=${pageUtil.totalPage } type="hidden">
+							<input id="currentPage" value="${pageUtil.currentPage}" type="hidden">
 						</tbody>
 					</table>
 
 
 					<div class="box">
-						<div id="pagination1" class="page fl"></div>
+						<div id="pagination1" class="page fl" ></div>
 						<div class="info fl" style="display:none">
 							<p>
 								<span id="current1"></span>
@@ -143,6 +163,7 @@ button {
 						$(function() {
 							var a = $("#totalPage").val();
 							var b = $("#currentPage").val();
+							 var sel = $(".select").val();
 							$("#pagination1")
 									.pagination(
 											{
@@ -151,13 +172,11 @@ button {
 												callback : function(current) {
 													$("#current1")
 															.text(current);
-													window.location.href = "role?currentPage="
+													window.location.href = "sales?currentPage="
 															+ current;
 												}
 								});
 						});
-						
-						
 					</script>
 				</div>
 			</div>
@@ -181,47 +200,42 @@ button {
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath }/statics/lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
-		/* $(function(){
-			var delResult = $("#result").val();
-			if(delResult == "ok"){
-				layer.msg('已删除!', {
-					icon : 1,
-					time : 1000
-				});
+		 $(function(){
+			 $(".select").change(function(){
+				 var sel = $(".select").val();
+				 window.location.href = "person?sel="+sel;
+			 });
+		}) 
+		/*管理员-添加*/
+		function admin_add(title, url, w, h) {
+			var isPerson = $(".select").val();
+			layer_show(title, url+"?isPerson="+isPerson, w, h);
+			/* $.post("toAddPerson?isPerson="+isPerson+"&url="+url,null,function(data){
+			},"text"); */
+		}
+		 /*管理员-编辑*/
+			function person_edit(title, url, id, w, h) {
+				var isPerson = $(".select").val();
+				layer_show(title, url+"?isPerson="+isPerson+"&id="+id, w, h);
 			}
-		}) */
-		/*管理员-角色-添加*/
-		function admin_role_add(title, url, w, h) {
-			layer_show(title, url, w, h);
-		}
-		/*管理员-角色-编辑*/
-		function admin_role_edit(title, url, id, w, h) {
-			$.post("getRoleById?id="+id,null,function(json){
-				var newUrl = url+"?id="+json.id+"&roleName="+json.roleName+"&roleDesc="+json.roleDesc+"&roleUpdate=yes";
-				layer_show(title, newUrl, w, h,id);
-			},"JSON");
-		}
-		/*管理员-角色-删除*/
-		function admin_role_del(obj, id) {
-			layer.confirm('角色删除须谨慎，确认要删除吗？', function(index) {
-				if(id != ""){
-	     			$.post("delRole?ids="+id,null,function(data){
-	     				if(data == "ok"){
-	     					layer.msg('已删除!', {
-	     						icon : 1,
-	     						time : 1000
-	     					},function(){
-	     						window.location.reload();
-	     						});
-	     				}else if(data == "error"){
-	     					layer.alert('该角色下有人员，无法删除!', {icon: 2});
-	     					 return ;
-	     				}
-	     			},"text");
-	            }
-			});
-		}
-		
+		/*管理员-删除*/
+		function person_del(obj, id) {
+			var isPerson = $(".select").val();
+				layer.confirm('将会删除所有信息,确认要删除此'+isPerson+'吗？',{icon:3}, function(index) {
+					if(id != ""){
+		     			$.post("delPerson?ids="+id+"&isPerson="+isPerson,null,function(data){
+		     				if(data == "ok"){
+		     					layer.msg('已删除!', {
+		     						icon : 1,
+		     						time : 1000
+		     					},function(){
+		     						window.location.reload();
+		     					});
+		     				}
+		     			},"text");
+		            }
+				});
+		};
 		function datadel(obj){
             var arr = new Array();
             $("#check:checked").each(function(i){
@@ -229,12 +243,13 @@ button {
             });
             var vals = arr.join(",");
 			if(vals == ""){
-				layer.alert('请先选择要删除的角色信息!', {icon: 5});
+				layer.alert('请先选择要删除的人员!', {icon: 5});
 				 return ;
 			}
+			var isPerson = $(".select").val();
 			layer.confirm('确认进行批量删除吗？', {icon:3}, function() {
             if(vals != ""){
-     			$.post("delRole?ids="+vals,null,function(data){
+     			$.post("delPerson?ids="+vals+"&isPerson="+isPerson,null,function(data){
      				if(data == "ok"){
      					layer.msg('已删除!', {
      						icon : 1,
@@ -242,10 +257,7 @@ button {
      					},function(){
      						window.location.reload();
      						});
-     				}else if(data == "error"){
-     					layer.alert('该角色下有人员，无法删除!', {icon: 2});
-    					 return ;
-    				}
+     				}
      			},"text");
             }
 			});

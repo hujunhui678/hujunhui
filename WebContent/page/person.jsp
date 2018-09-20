@@ -123,7 +123,7 @@ button {
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="item" items="${page.lists }" varStatus="index">
+							<c:forEach var="item" items="${pageUtil.lists }" varStatus="index">
 								<tr class="text-c">
 									<td><input type="checkbox" value="${item.id}" name=""
 										id="check"></td>
@@ -148,7 +148,7 @@ button {
 
 					<div class="box">
 						<div id="pagination1" class="page fl"></div>
-						<div class="info fl">
+						<div class="info fl"  style="display:none">
 							<p>
 								<span id="current1"></span>
 							</p>

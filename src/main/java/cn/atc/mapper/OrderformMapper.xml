@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.OrderformMapper">
+				
+		<select id="queryAll" resultType="Orderform">
+				SELECT o.id,f.productType,o.orderNum,c.clientCompany,c.clientContact,o.orderDate FROM orderform AS o
+			INNER JOIN finishedproductstype AS f
+		ON o.finishedType=f.id
+			INNER JOIN CLIENT AS c
+				ON o.clientId=c.id
+			
+				limit #{startRow},#{pageSize}
+		</select>
+			<select id="Count" resultType="integer">
+				select count(id) from orderform
+			</select>
+
+</mapper>
