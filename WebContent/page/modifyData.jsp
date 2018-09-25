@@ -114,9 +114,8 @@
 							<tr class="text-c">
 								<th width="25"><label><input type="checkbox"
 										class="ace"><span class="lbl"></span></label></th>
-								<th width="80">ID</th>
-								<th width="100">类型</th>
-								<th>内容</th>
+								<th width="55">编号</th>
+								<th width="12%">内容</th>
 								<th width="17%">登录地点</th>
 								<th width="10%">用户名</th>
 								<th width="120">客户端IP</th>
@@ -124,17 +123,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><label><input type="checkbox" class="ace"><span
-										class="lbl"></span></label></td>
-								<td>15686</td>
-								<td>1</td>
-								<td>登录成功!</td>
-								<td>江苏南京</td>
-								<td>admin</td>
-								<td>61.233.7.80</td>
-								<td>2014-6-11 11:11:42</td>
-							</tr>
+							<c:forEach var="log" items="${loginLog.lists}">
+								<tr>
+									<td><label><input type="checkbox" class="ace"><span
+											class="lbl"></span></label></td>
+									<td>${log.id}</td>
+									<td>登录成功!</td>
+									<td>${log.loginAddress}</td>
+									<td>${log.loginName}</td>
+									<td>${log.loginIP}</td>
+									<td><fmt:formatDate value="${log.loginTime}"
+											pattern="yyyy-MM-dd HH:mm:ss" /></td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -342,19 +343,27 @@
 	function updatePwd() {
 		var id = $("#id").val();
 		var pwd = $("#c_password").val();
-		$.post("updatePwd.html", {
-			'id' : id,
-			'password' : pwd
-		}, function(data) {
-			if (data == "true") {
-				layer.msg('密码重置成功,需重新登录...', {
-					icon : 1,
-					time : 2000
-				}, function() {
-					parent.location.href="${pageContext.request.contextPath }/page/loginout";
-				});
-			}
-		},"text");
+		$
+				.post(
+						"updatePwd.html",
+						{
+							'id' : id,
+							'password' : pwd
+						},
+						function(data) {
+							if (data == "true") {
+								layer
+										.msg(
+												'密码重置成功,需重新登录...',
+												{
+													icon : 1,
+													time : 2000
+												},
+												function() {
+													parent.location.href = "${pageContext.request.contextPath }/page/loginout";
+												});
+							}
+						}, "text");
 	}
 </script>
 <script>

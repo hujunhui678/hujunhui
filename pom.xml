@@ -196,6 +196,7 @@
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
 		</dependency>
+		
 		<!-- 时间相关 -->
 		<dependency>
 			<groupId>joda-time</groupId>

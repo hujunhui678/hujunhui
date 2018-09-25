@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.LogMapper">
+	<select id="getAllLog" parameterType="map" resultType="LoginLog">
+		SELECT * FROM loginlog
+		<trim prefix="where" prefixOverrides="and">
+			<if test="loginName != null and loginName != ''">
+				loginName = #{loginName}
+			</if>
+			<if test="name != null and name != ''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="loginTime != null and loginTime != ''">
+				and loginTime like concat(#{loginTime},'%')
+			</if>
+		</trim>
+		order by loginTime desc
+		limit #{startRow},#{pageSize}
+	</select>
+
+	<select id="count" parameterType="map" resultType="integer">
+		SELECT count(1) FROM loginlog
+		<trim prefix="where" prefixOverrides="and">
+			<if test="loginName != null and loginName != ''">
+				loginName = #{loginName}
+			</if>
+			<if test="name != null and name != ''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="loginTime != null and loginTime != ''">
+				and loginTime like concat(#{loginTime},'%')
+			</if>
+		</trim>
+	</select>
+</mapper>

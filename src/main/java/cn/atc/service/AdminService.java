@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import cn.atc.pojo.Admin;
+import cn.atc.pojo.LoginLog;
 
 public interface AdminService {
 
@@ -16,7 +17,11 @@ public interface AdminService {
 
 	Integer updateAdmin(Admin admin);// 修改管理员信息
 
+	Admin getAdminByLoginName(@Param("loginName") String loginName);// 获取管理员信息
+
 	Integer getAdminByLoginNameModifyCount(@Param("id") Integer id);// 查看该管理员是否修改过登录名
 
-	Integer updatePwd(Admin admin);//修改密码
+	Integer updatePwd(Admin admin);// 修改密码
+
+	Integer addLoginLog(LoginLog log);// 登录成功之后插入登录日志表
 }
