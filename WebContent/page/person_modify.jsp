@@ -80,7 +80,7 @@
 		<div class="row cl" id="role">
 			<label class="form-label col-xs-4 col-sm-3">角色：</label>
 			<div class="formControls col-xs-8 col-sm-9" id="checkBoxRole"
-				style="width: 600px; margin-left: 10px"></div>
+				style="width: 500px; margin-left: 10px"></div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">

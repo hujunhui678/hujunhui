@@ -69,7 +69,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span
 				class="c-red">*</span>性别：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal"
-				style="width: 600px; margin-left: 30px">
+				style="width: 500px; margin-left: 30px">
 				<div class="radio-box">
 					<input name="sex" type="radio" id="sex-1" value="男" checked /> <label
 						for="sex-1">男</label>
