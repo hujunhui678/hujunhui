@@ -2,6 +2,8 @@ package cn.atc.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import cn.atc.pojo.Role;
 import cn.atc.service.ChildDeptService;
 import cn.atc.service.PersonService;
 import cn.atc.service.RoleService;
+import cn.atc.util.DateConverter;
 import cn.atc.util.GsonUtil;
 import cn.atc.util.MD5Util;
 import cn.atc.util.PageUtil;
@@ -85,9 +88,10 @@ public class PersonController {
 	// 添加管理员
 	@RequestMapping("/addPerson")
 	@ResponseBody
-	public String addAdmin(String isPerson, String[] roles, Admin admin) {
+	public String addAdmin(String isPerson, String[] roles, Admin admin) throws Exception {
 		admin.setLoginName(admin.getPhone());// 默认手机号为登录号
 		admin.setPassword(MD5Util.generate("123"));// 默认密码为123
+		admin.setEntryTime(DateConverter.getNowDateShort());//入职时间
 		Integer count = personService.addAdmin(admin);
 		if (count >= 1 && roles.length > 0) {
 			// 插入管理员角色表

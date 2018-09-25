@@ -132,7 +132,6 @@
 				<span class="label label-warning radius">未签收</span>
 			</c:if>
 		 </td>
-		 
 		 <td>
 	     <a onClick="Delivery_stop(this,'10001')"  href="javascript:;" title="订单详细"  class="btn btn-xs btn-success"><i class="fa fa-cubes bigger-120"></i></a> 
 	     <a title="订单详细"  href="order_detailed.html"  class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a> 
@@ -157,24 +156,59 @@
  <div id="Delivery_stop" style=" display:none">
   <div class="">
     <div class="content_style">
-  <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">快递公司 </label>
-       <div class="col-sm-9"><select class="form-control" id="form-field-select-1">
-																<option value="">--选择快递--</option>
-																<option value="1">天天快递</option>
-																<option value="2">圆通快递</option>
-																<option value="3">中通快递</option>
-																<option value="4">顺丰快递</option>
-																<option value="5">申通快递</option>
-																<option value="6">邮政EMS</option>
-																<option value="7">邮政小包</option>
-																<option value="8">韵达快递</option>
+  	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">订单号 </label>
+       <div class="col-sm-9"><input type="text" id="form-field-1" class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	</div>
+	<!-- 订单需求 -->
+	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">零件型号 </label>
+       <div class="col-sm-3"><select class="form-control" id="form-field-select-1">
+																<option value="0">请选择</option>
 															</select></div>
 	</div>
-   <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 快递号 </label>
-    <div class="col-sm-9"><input type="text" id="form-field-1" placeholder="快递号" class="col-xs-10 col-sm-5" style="margin-left:0px;"></div>
+	
+	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">订单号 </label>
+       <div class="col-sm-9"><input type="text" id="form-field-1" class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
 	</div>
-    <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">货到付款 </label>
-     <div class="col-sm-9"><label><input name="checkbox" type="checkbox" class="ace" id="checkbox"><span class="lbl"></span></label></div>
+	
+   <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">采购员 </label>
+       <div class="col-sm-9"><input type="text" id="form-field-1" class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	</div>
+    <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">采购时间 </label>
+       <div class="col-sm-9"><input type="text" id="form-field-1"  class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	</div>
+	<%-- <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">收货人 </label>
+       <c:if test="${item.auditState.id==1 }">
+			<span class="label label-warning radius" style="margin-left:15px;margin-top:3px;">${item.auditState.auditStateName }</span>
+		</c:if>
+		<c:if test="${item.auditState.id==2 }">
+			<span class="label label-danger radius">${item.auditState.auditStateName }</span>
+		</c:if>
+		<c:if test="${item.auditState.id==3 }">
+			<span class="label label-success radius">${item.auditState.auditStateName }</span>
+		</c:if>
+	</div> --%>
+		<%-- <c:if test=""></c:if> 已审核 --%>
+	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">审核人 </label>
+      <div class="col-sm-9"><input type="text" id="form-field-1"  class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	</div>
+	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1" >签收状态 </label>
+		<span class="label label-success radius" style="margin-left:15px;margin-top:3px;">已签收</span>
+   	 	<%-- <c:if test="${item.isSignin==1 }">
+			<span class="label label-success radius">已签收</span>
+		</c:if>
+		<c:if test="${item.isSignin==0 }">
+			<span class="label label-warning radius">未签收</span>
+		</c:if> --%>
+	</div>
+	<%-- <c:if test=""></c:if> 已收货 --%>
+	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">收货人 </label>
+       <div class="col-sm-9"><input type="text" id="form-field-1"  class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	</div>
+	<%-- <c:if test=""></c:if> 审核未通过 --%>
+	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">审核未通过原因 </label>
+       <div class="col-sm-9" style="position:relative;right:10px">
+			 <textarea class="col-xs-10 col-sm-11" rows="5" cols="20"></textarea>
+		</div>
 	</div>
  </div>
   </div>
@@ -242,7 +276,7 @@ function Delivery_stop(obj,id){
         title: '发货',
 		maxmin: true, 
 		shadeClose:false,
-        area : ['1000px' , ''],
+        area : ['500px' , ''],
         content:$('#Delivery_stop'),
 		btn:['确定','取消'],
 		yes: function(index, layero){		

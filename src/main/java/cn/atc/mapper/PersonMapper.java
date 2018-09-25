@@ -38,7 +38,9 @@ public interface PersonMapper {
 	List<Admin> getAdminNameAndChildDept(Integer id);
 	// 获得要修改的雇员信息和所属部门信息
 	List<Employee> getEmpAndChildDept(Integer id);
-
+	
+	
+	
 	// 获得要修改的管理员的角色集合
 	List<Admin_Role> getAdminAllRole(Integer id);
 

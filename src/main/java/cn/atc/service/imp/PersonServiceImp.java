@@ -22,7 +22,7 @@ public class PersonServiceImp implements PersonService {
 	@Override
 	public PageUtil<Admin> getAllAdmin(Map<String, Object> maps) {
 		PageUtil<Admin> page = new PageUtil<Admin>();
-		maps.put("pageSize", 2);
+		maps.put("pageSize", 4);
 		page.setPageSize(Integer.parseInt(maps.get("pageSize").toString()));
 		page.setTotalCount(personMapper.getAdminToCount());
 		page.setCurrentPage(Integer.parseInt(maps.get("pageIndex").toString()));

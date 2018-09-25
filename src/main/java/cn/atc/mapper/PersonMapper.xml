@@ -62,8 +62,8 @@
 
 	<insert id="addAdmin" parameterType="Admin">
 		INSERT INTO
-		admin(NAME,loginName,PASSWORD,gender,phone,cardId,deptChildId)
-		VALUES(#{name},#{loginName},#{password},#{gender},#{phone},#{cardId},#{deptChildId})
+		admin(NAME,loginName,PASSWORD,gender,phone,cardId,deptChildId,entryTime)
+		VALUES(#{name},#{loginName},#{password},#{gender},#{phone},#{cardId},#{deptChildId},#{entryTime})
 	</insert>
 	<insert id="addEmp" parameterType="Employee">
 		INSERT INTO
@@ -103,7 +103,8 @@
 
 	<select id="getEmpAndChildDept" parameterType="integer"
 		resultMap="getEmpAndChi">
-		SELECT en.`name`,en.`phone`,en.`address`,c.`id`,c.`childName` FROM employee
+		SELECT
+		en.`name`,en.`phone`,en.`address`,c.`id`,c.`childName` FROM employee
 		en
 		JOIN childdept c ON en.`deptChildId` = c.`id`
 		WHERE en.`id` = #{id}

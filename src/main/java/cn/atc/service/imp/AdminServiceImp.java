@@ -33,4 +33,24 @@ public class AdminServiceImp implements AdminService {
 		return map;
 	}
 
+	@Override
+	public Admin getAdmin(Integer id) {
+		return adminMapper.getAdmin(id);
+	}
+
+	@Override
+	public Integer updateAdmin(Admin admin) {
+		return adminMapper.updateAdmin(admin);
+	}
+
+	@Override
+	public Integer getAdminByLoginNameModifyCount(Integer id) {
+		return adminMapper.getAdminByLoginNameModifyCount(id);
+	}
+
+	@Override
+	public Integer updatePwd(Admin admin) {
+		return adminMapper.updatePwd(admin);
+	}
+
 }

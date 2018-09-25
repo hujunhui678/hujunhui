@@ -45,7 +45,7 @@ public class MainController {
 			currentPage = 1;
 		}
 		map.put("currentPage", currentPage);
-		map.put("pageSize", 3);
+		map.put("pageSize",6);
 		PageUtil<Role> page = roleService.getAdminAndRoles(map);
 		model.addAttribute("page", page);
 		model.addAttribute("pageIndex", currentPage);

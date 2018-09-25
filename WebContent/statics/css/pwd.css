@@ -1,0 +1,108 @@
+.ywz_zhucexiaobo {
+	width: 620px;
+	margin: 20px auto 0px auto;
+	padding-bottom: 10px;
+	padding-top: 5px;
+}
+
+.ywz_zhuce_youjian {
+	float: left;
+	width: 100px;
+	margin: 0px 0 0 0;
+	font-size: 14px;
+	text-align: right;
+}
+
+.ywz_zhuce_xiaoxiaobao {
+	float: left;
+	width: 226px;
+}
+
+.ywz_zhuce_kuangzi {
+	float: left;
+	width: 226px;
+	height: 38px;
+	color: #171717;
+}
+
+.ywz_zhuce_huixian {
+	float: left;
+	background: #d6d3d3;
+	width: 50px;
+	height: 4px;
+	margin-top: 15px;
+	margin-left:15px;
+	_height: 2px;
+	font-size: 0px;
+}
+
+.ywz_zhuce_hongxianwenzi {
+	float: left;
+	width: 62px;
+	margin-left: 5px;
+	text-align: center;
+	color: #b0adad;
+	font-size: 12px;
+}
+
+.ywz_zhuce_kuangwenzi1 {
+	float: left;
+	background: url(images/dengl_06.jpg) no-repeat;
+	border: 0;
+	color: #3e3e3e;
+	width: 210px;
+	height: 40px;
+	line-height: 35px;
+	padding-left: 25px;
+	_padding-left: 20px;
+	outline: medium;
+} /*框*/
+.ywz_zhuce_hongxian {
+	float: left;
+	background: #ff3300;
+	width: 50px;
+	height: 4px;
+	margin-top: 15px;
+	margin-left:15px;
+	_height: 2px;
+	font-size: 0px;
+}
+
+.ywz_zhuce_hongxian2 {
+	float: left;
+	background: #099;
+	width: 50px;
+	height: 4px;
+	margin-top: 15px;
+	margin-left:15px;
+	_height: 2px;
+	font-size: 0px;
+}
+
+.ywz_zhuce_hongxian3 {
+	float: left;
+	background: #060;
+	width: 50px;
+	height: 4px;
+	margin-top: 15px;
+	margin-left:15px;
+	_height: 2px;
+	font-size: 0px;
+}
+
+.ywz_zhuce_yongyu1 {
+	float: left;
+	color: #C00;
+	font-size: 12px;
+	padding-left: 10px;
+	margin-top: 3px;
+	_padding-left: 0px;
+} /*后面的文字*/
+.ywz_zhuce_yongyu1 a {
+	color: #C00;
+	text-decoration: none;
+}
+
+.ywz_zhuce_yongyu1 a:hover {
+	color: #C00;
+}
