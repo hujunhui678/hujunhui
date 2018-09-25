@@ -51,13 +51,13 @@ public class CommonController {
 
 	@RequestMapping("updatePwd.html")
 	@ResponseBody
-	public boolean updatePwd(Admin admin) {
+	public String updatePwd(Admin admin) {
 		String old = admin.getPassword();
 		admin.setPassword(MD5Util.generate(old));
 		Integer result = adminMapper.updatePwd(admin);
 		if (result > 0) {
-			return true;
+			return "true";
 		}
-		return false;
+		return "false";
 	}
 }
