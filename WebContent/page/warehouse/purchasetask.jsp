@@ -63,10 +63,10 @@
          <div class="side_list"><div class="widget-header header-color-green2"><h4 class="lighter smaller">采购单零件类型分类</h4></div>
          <div class="widget-body">         
          <ul class="b_P_Sort_list">
-             	<li><i class="orange  fa fa-reorder"></i><a href="#">全部订单</a></li>
+             	<li class="partTypeClass"><i class="orange  fa fa-reorder"></i><a href="#">全部订单</a></li>
              
              	<c:forEach var="item" items="${partClassifyList }">
-	             	<li><i class="fa fa-sticky-note green " style="margin-right:20px"></i><a href="#" onclick="">${item.partName }</a></li>
+	             	<li class="partTypeClass"><i class="fa fa-sticky-note green " style="margin-right:20px"></i><a href="#" onclick="">${item.partName }</a></li>
              	</c:forEach>
              	
         </ul>
@@ -80,10 +80,20 @@
      
      <form action="" method="post">
 	      <ul class="search_content clearfix">
-	       <li><label class="l_f">采购单编号</label><input name="" type="text" class="text_add" placeholder="采购单编号" style=" width:250px"></li>
-	       <li><label class="l_f">时间</label><input class="inline laydate-icon" id="start" style=" margin-left:10px;"></li>
+	       <li><label class="l_f" style="margin-right:10px">审核状态</label>
+	       	<select style=" width:100px" name="auditStateId">
+	       		<option value="0">请选择</option>
+	       		<c:forEach var="item" items="${auditStateList }">
+	       			<option value="${item.id }">${item.auditStateName }</option>
+	       		</c:forEach>
+	       	</select>
+	       </li>
+	       <li><label class="l_f">采购单编号</label><input name="purchaseOrderId" type="text" class="text_add" value="${purchaseOrderId }" placeholder="采购单编号" style=" width:250px"></li>
+	       <li><label class="l_f">采购时间</label><input class="inline laydate-icon" id="start" name="purchaseTime" style=" margin-left:10px;" value="${ purchaseTime}"></li>
 	       <li style="width:90px;"><button type="button" class="btn_search"><i class="fa fa-search"></i>查询</button></li>
 	      </ul>
+	      <!-- 存储零件类型 -->
+	      <input type="hidden" id="partType" value="${partType }">
       </form>
       
     </div>
@@ -133,11 +143,11 @@
 			</c:if>
 		 </td>
 		 <td>
-	     <a onClick="Delivery_stop(this,'10001')"  href="javascript:;" title="订单详细"  class="btn btn-xs btn-success"><i class="fa fa-cubes bigger-120"></i></a> 
-	     <a title="订单详细"  href="order_detailed.html"  class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a> 
+	     <a title="订单详细" id="openDesc" orderId="${item.id }" class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a> 
 	     <shiro:hasPermission name="purchasetask:remove">
-		 	<a title="删除" href="javascript:;"  onclick="Order_form_del(this,'1')" class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
+		 	<a title="删除" href="javascript:;"   class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
 		 </shiro:hasPermission>
+		 <!-- onclick="Delivery_stop(this,'${item.id}')" -->
 	     </td>
 	     
 	     </tr>
@@ -155,60 +165,37 @@
  <!--发货-->
  <div id="Delivery_stop" style=" display:none">
   <div class="">
-    <div class="content_style">
+    <div class="content_style" style="margin-top:30px">
   	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">订单号 </label>
-       <div class="col-sm-9"><input type="text" id="form-field-1" class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+       <div class="col-sm-9"><input type="text"  class="col-xs-10 col-sm-11" readonly id="id" style="margin-left:0px;"></div>
 	</div>
 	<!-- 订单需求 -->
-	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">零件型号 </label>
-       <div class="col-sm-3"><select class="form-control" id="form-field-select-1">
-																<option value="0">请选择</option>
-															</select></div>
-	</div>
-	
-	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">订单号 </label>
-       <div class="col-sm-9"><input type="text" id="form-field-1" class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">订单需求 </label>
+       <div class="col-sm-9" name="aboutPartType" style="margin-top:5px;margin-left:15px;">
+			
+		</div>
 	</div>
 	
    <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">采购员 </label>
-       <div class="col-sm-9"><input type="text" id="form-field-1" class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+       <div class="col-sm-9"><input type="text"  class="col-xs-10 col-sm-11" readonly id="buyer" style="margin-left:0px;"></div>
 	</div>
     <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">采购时间 </label>
-       <div class="col-sm-9"><input type="text" id="form-field-1"  class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+       <div class="col-sm-9"><input type="text"  class="col-xs-10 col-sm-11" readonly id="purchaseTime" style="margin-left:0px;"></div>
 	</div>
-	<%-- <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">收货人 </label>
-       <c:if test="${item.auditState.id==1 }">
-			<span class="label label-warning radius" style="margin-left:15px;margin-top:3px;">${item.auditState.auditStateName }</span>
-		</c:if>
-		<c:if test="${item.auditState.id==2 }">
-			<span class="label label-danger radius">${item.auditState.auditStateName }</span>
-		</c:if>
-		<c:if test="${item.auditState.id==3 }">
-			<span class="label label-success radius">${item.auditState.auditStateName }</span>
-		</c:if>
-	</div> --%>
+	
+	
+	<div class="form-group" id="shenhe">
+	</div>
 		<%-- <c:if test=""></c:if> 已审核 --%>
-	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">审核人 </label>
-      <div class="col-sm-9"><input type="text" id="form-field-1"  class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	<div class="form-group" id="shenheren">
 	</div>
-	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1" >签收状态 </label>
-		<span class="label label-success radius" style="margin-left:15px;margin-top:3px;">已签收</span>
-   	 	<%-- <c:if test="${item.isSignin==1 }">
-			<span class="label label-success radius">已签收</span>
-		</c:if>
-		<c:if test="${item.isSignin==0 }">
-			<span class="label label-warning radius">未签收</span>
-		</c:if> --%>
+	<div class="form-group" id="qianshou">
 	</div>
 	<%-- <c:if test=""></c:if> 已收货 --%>
-	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">收货人 </label>
-       <div class="col-sm-9"><input type="text" id="form-field-1"  class="col-xs-10 col-sm-11" disabled value="" style="margin-left:0px;"></div>
+	<div class="form-group" id="shouhuoren">
 	</div>
 	<%-- <c:if test=""></c:if> 审核未通过 --%>
-	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">审核未通过原因 </label>
-       <div class="col-sm-9" style="position:relative;right:10px">
-			 <textarea class="col-xs-10 col-sm-11" rows="5" cols="20"></textarea>
-		</div>
+	<div class="form-group" id="weitongguoyuanyin">
 	</div>
  </div>
   </div>
@@ -234,8 +221,67 @@
 		side_title:'.b_n_btn',		
 		content:null,
 		left_css:'.left_Treeview,.list_right_style'
-		
-		
+	});
+	//点击采购单零件类型分类后存储到隐藏域中
+	$(".partTypeClass").click(function(){
+		$("#partType").val($(this).children("a").html());
+	});
+	//点击订单详细按钮后弹出的东西
+	$("#openDesc").click(function(){
+		var orderId = $(this).attr("orderId");
+		$.post("getPurchaseOrderDesc?orderId="+orderId,null,function(data){
+			$("div[name='aboutPartType']").html("<span class='col-xs-10 col-sm-3'>分类 </span><span class='col-xs-10 col-sm-3'>类别 </span><span class='col-xs-10 col-sm-3'>数量 </span><br/>");
+			$("#id").val(data[0].purchaseOrderId);
+			$("#buyer").val(data[0].purchaseOrder.buyerEmp.name);
+			$("#purchaseTime").val(data[0].purchaseOrder.purchaseTime);
+			for(var i in data){
+				$("div[name='aboutPartType']").append("<br/><span class='col-xs-10 col-sm-3'>"+data[i].partType.partClassify.partName+"</span><span class='col-xs-10 col-sm-3'>"+data[i].partType.partType+" </span><span class='col-xs-10 col-sm-3'>"+data[i].orderNum+" </span><br/>");
+			}
+			$("div[name='aboutPartType']").append("<br/>");
+			$("#shenhe").html("<label class='col-sm-2 control-label no-padding-right' for='form-field-1' >审核状态 </label>");
+			if(data[0].purchaseOrder.auditState.id==1){
+				$("#shenheren").remove();
+				$("#shenhe").append("<span class='label label-warning radius' style='margin-left:15px;margin-top:3px;'>"+data[0].purchaseOrder.auditState.auditStateName+"</span>");
+			}else if(data[0].purchaseOrder.auditState.id==2){
+				$("#shenheren").remove();
+				$("#shenhe").append("<span class='label label-danger radius' style='margin-left:15px;margin-top:3px;'>"+data[0].purchaseOrder.auditState.auditStateName+"</span>");
+				$("#weitongguoyuanyin").html("<label class='col-sm-2 control-label no-padding-right' for='form-field-1'>审核未通过原因 </label>");
+				$("#weitongguoyuanyin").append("<textarea class='col-xs-10 col-sm-8' rows='5' cols='15' readonly>"+data[0].purchaseOrder.notPassDesc+"</textarea>");
+			}else if(data[0].purchaseOrder.auditState.id==3){
+				$("#shenheren").html("<label class='col-sm-2 control-label no-padding-right' for='form-field-1'>审核人 </label>");
+				$("#shenhe").append("<span class='label label-success radius' style='margin-left:15px;margin-top:3px;'>"+data[0].purchaseOrder.auditState.auditStateName+"</span>");
+				$("#shenheren").append("<div class='col-sm-9'><input type='text'   class='col-xs-10 col-sm-11' readonly id='auditor' style='margin-left:0px;' value='"+data[0].purchaseOrder.auditorEmp.name+"'></div>");
+			}
+			$("#qianshou").html("<label class='col-sm-2 control-label no-padding-right' for='form-field-1' >签收状态 </label>");
+			if(data[0].purchaseOrder.isSignin==0){
+				$("#shouhuoren").remove();
+				$("#qianshou").append("<span class='label label-warning radius' style='margin-left:15px;margin-top:3px;'>未签收</span>");
+			}else if(data[0].purchaseOrder.isSignin==1){
+				$("#shouhuoren").html("<label class='col-sm-2 control-label no-padding-right' for='form-field-1'>收货人 </label>");
+				$("#qianshou").append("<span class='label label-success radius' style='margin-left:15px;margin-top:3px;'>已签收</span>");
+				$("#shouhuoren").append("<div class='col-sm-9'><input type='text'   class='col-xs-10 col-sm-11' readonly style='margin-left:0px;' value='"+data[0].purchaseOrder.consigneeEmp.name+"'></div>");
+			}
+		},"json");
+		layer.open({
+	        type: 1,
+	        title: '发货',
+			maxmin: true, 
+			shadeClose:false,
+	        area : ['500px' , '750px'],
+	        content:$('#Delivery_stop'),
+			btn:['导出至Excel表格','关闭'],
+			yes: function(index, layero){		
+			if($('#form-field-1').val()==""){
+				layer.alert('快递号不能为空！',{
+	               title: '提示框',				
+				  icon:0,		
+				  }) 
+				
+				}
+				layer.close();    		  
+			
+			}
+		})
 	});
 });
 //左侧显示隐藏
@@ -271,6 +317,7 @@ function Order_form_del(obj,id){
 }
 /**发货**/
 function Delivery_stop(obj,id){
+		
 	layer.open({
         type: 1,
         title: '发货',
@@ -278,7 +325,7 @@ function Delivery_stop(obj,id){
 		shadeClose:false,
         area : ['500px' , ''],
         content:$('#Delivery_stop'),
-		btn:['确定','取消'],
+		btn:['确定','关闭'],
 		yes: function(index, layero){		
 		if($('#form-field-1').val()==""){
 			layer.alert('快递号不能为空！',{
@@ -286,15 +333,8 @@ function Delivery_stop(obj,id){
 			  icon:0,		
 			  }) 
 			
-			}else{			
-			 layer.confirm('提交成功！',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style=" display:none" class="btn btn-xs btn-success" onClick="member_stop(this,id)" href="javascript:;" title="已发货"><i class="fa fa-cubes bigger-120"></i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发货</span>');
-		$(obj).remove();
-		layer.msg('已发货!',{icon: 6,time:1000});
-			});  
-			layer.close(index);    		  
-		  }
+			}
+			layer.close();    		  
 		
 		}
 	})
