@@ -19,5 +19,11 @@ public interface AdminMapper {
 
 	Set<Permission> getPermThree(@Param("id") String adminId);// 获取当前用户的三级权限(Shiro)
 	
+	Admin getAdmin(@Param("id")Integer id);//获取要修改资料的管理员信息
 
+	Integer updateAdmin(Admin admin);//修改管理员信息
+	
+	Integer getAdminByLoginNameModifyCount(@Param("id") Integer id);//查看该管理员是否修改过登录名
+	
+	Integer updatePwd(Admin admin);//修改密码
 }

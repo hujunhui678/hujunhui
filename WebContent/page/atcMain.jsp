@@ -360,7 +360,7 @@
 							class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 							<li><a href="javascript:void(0" name="Systems.html"
 								title="系统设置" class="iframeurl"><i class="icon-cog"></i>网站设置</a></li>
-							<li><a href="javascript:void(0)" name="admin_info.html"
+							<li><a href="javascript:void(0)" name="modifyData.html?id=${admin.id}"
 								title="个人信息" class="iframeurl"><i class="icon-user"></i>个人资料</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:ovid(0)" id="Exit_system"><i
@@ -409,12 +409,6 @@
 							<li><a href="#"> 查看所有通知 <i class="icon-arrow-right"></i>
 							</a></li>
 						</ul></li>
-
-
-
-
-
-
 
 					<li class="blue" id="prettyFriendLi"><a data-toggle="dropdown"
 						class="dropdown-toggle" href="#" id="prettyFriend"><i class=""><img
@@ -617,20 +611,6 @@
 		<p class="l_f">版权所有：徐州北大青鸟 苏ICP备11011739号</p>
 		<p class="r_f">地址：江苏省徐州市解放南路181号</p>
 	</div>
-	<!--修改密码样式-->
-	<div class="change_Pass_style" id="change_Pass">
-		<ul class="xg_style">
-			<li><label class="label_name">原&nbsp;&nbsp;密&nbsp;码</label><input
-				name="原密码" type="password" class="" id="password"></li>
-			<li><label class="label_name">新&nbsp;&nbsp;密&nbsp;码</label><input
-				name="新密码" type="password" class="" id="Nes_pas"></li>
-			<li><label class="label_name">确认密码</label><input name="再次确认密码"
-				type="password" class="" id="c_mew_pas"></li>
-		</ul>
-	</div>
-	<!-- /.main-container -->
-	<!-- basic scripts -->
-
 </body>
 </html>
 

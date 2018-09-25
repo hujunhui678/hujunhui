@@ -1,18 +1,22 @@
 package cn.atc.pojo;
 
-import java.util.List;
+import java.util.Date;
+
 
 public class Admin {
 	private long id;
 	private String name;
 	private String loginName;
 	private String password;
+	private String address;
 	private String gender;
 	private String phone;
 	private String cardId;
+	private Integer loginNameModifyCount;
 	private Integer deptChildId;
-	
-	private ChildDept childdept;//该管理员所属的子部门
+	private Date entryTime;
+
+	private ChildDept childdept;// 该管理员所属的子部门
 
 	public long getId() {
 		return id;
@@ -70,6 +74,14 @@ public class Admin {
 		this.deptChildId = deptChildId;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public ChildDept getChilddept() {
 		return childdept;
 	}
@@ -85,5 +97,20 @@ public class Admin {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	
+
+	public Integer getLoginNameModifyCount() {
+		return loginNameModifyCount;
+	}
+
+	public void setLoginNameModifyCount(Integer loginNameModifyCount) {
+		this.loginNameModifyCount = loginNameModifyCount;
+	}
+
+	public Date getEntryTime() {
+		return entryTime;
+	}
+
+	public void setEntryTime(Date entryTime) {
+		this.entryTime = entryTime;
+	}
 }
