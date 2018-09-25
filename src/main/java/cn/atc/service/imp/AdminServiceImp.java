@@ -1,5 +1,7 @@
 package cn.atc.service.imp;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +12,12 @@ import org.springframework.stereotype.Service;
 
 import cn.atc.mapper.AdminMapper;
 import cn.atc.pojo.Admin;
+import cn.atc.pojo.LoginLog;
 import cn.atc.service.AdminService;
+import cn.atc.util.AddressUtils;
+import cn.atc.util.DateConverter;
+import cn.atc.util.OutIp;
+import net.sf.json.JSONObject;
 
 @Service
 public class AdminServiceImp implements AdminService {
@@ -51,6 +58,19 @@ public class AdminServiceImp implements AdminService {
 	@Override
 	public Integer updatePwd(Admin admin) {
 		return adminMapper.updatePwd(admin);
+	}
+
+	@Override
+	public Integer addLoginLog(LoginLog log) {
+		log.setLoginIP(OutIp.INTRANET_IP);// 获得本机外网IP
+		log.setLoginAddress("江苏徐州");
+		log.setLoginTime(DateConverter.getSqlDate());
+		return adminMapper.addLoginLog(log);
+	}
+
+	@Override
+	public Admin getAdminByLoginName(String loginName) {
+		return adminMapper.getAdminByLoginName(loginName);
 	}
 
 }
