@@ -269,6 +269,7 @@
 						title : '提示框',
 						icon : 1,
 					});
+					$("#count").val("1");
 					$("#msg").html("");
 					$('#Personal').find('.xinxi').removeClass("hover");
 					$('#Personal').find('.text_info').removeClass("add").attr(
@@ -332,22 +333,28 @@
 					});
 					return false;
 				} else {
-					var id = $("#id").val();
-					var pwd = $("#c_password").val();
-					$.post("updatePwd.html", {
-						'id' : id,
-						'password' : pwd,
-					}, function(data) {
-						alert(data);
-					});
-					layer.alert('密码重置成功,需重新登录...', {
-						title : '提示框',
-						icon : 1,
-					});
-					parent.location.href = "${pageContext.request.contextPath }/page/loginout";
+					updatePwd();
 				}
 			}
 		});
+	}
+	//修改密码
+	function updatePwd() {
+		var id = $("#id").val();
+		var pwd = $("#c_password").val();
+		$.post("updatePwd.html", {
+			'id' : id,
+			'password' : pwd
+		}, function(data) {
+			if (data == "true") {
+				layer.msg('密码重置成功,需重新登录...', {
+					icon : 1,
+					time : 2000
+				}, function() {
+					parent.location.href="${pageContext.request.contextPath }/page/loginout";
+				});
+			}
+		},"text");
 	}
 </script>
 <script>
