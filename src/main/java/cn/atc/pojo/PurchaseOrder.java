@@ -1,6 +1,7 @@
 package cn.atc.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,6 +27,15 @@ public class PurchaseOrder {
 	private Employee consigneeEmp;
 	private AuditState auditState;
 	private Employee auditorEmp;
+	private List<PurchaseOrderDesc> purchaseOrderDescList;
+	
+	
+	public List<PurchaseOrderDesc> getPurchaseOrderDescList() {
+		return purchaseOrderDescList;
+	}
+	public void setPurchaseOrderDescList(List<PurchaseOrderDesc> purchaseOrderDescList) {
+		this.purchaseOrderDescList = purchaseOrderDescList;
+	}
 	public long getId() {
 		return id;
 	}
@@ -104,9 +114,13 @@ public class PurchaseOrder {
 	public void setAuditorEmp(Employee auditorEmp) {
 		this.auditorEmp = auditorEmp;
 	}
+	public PurchaseOrder() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public PurchaseOrder(long id, long buyer, Date purchaseTime, Integer isSignin, long consignee, Integer auditStateId,
 			String notPassDesc, long auditor, Date auditTime, Employee buyerEmp, Employee consigneeEmp,
-			AuditState auditState, Employee auditorEmp) {
+			AuditState auditState, Employee auditorEmp, List<PurchaseOrderDesc> purchaseOrderDescList) {
 		super();
 		this.id = id;
 		this.buyer = buyer;
@@ -121,10 +135,7 @@ public class PurchaseOrder {
 		this.consigneeEmp = consigneeEmp;
 		this.auditState = auditState;
 		this.auditorEmp = auditorEmp;
-	}
-	public PurchaseOrder() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.purchaseOrderDescList = purchaseOrderDescList;
 	}
 	
 	
