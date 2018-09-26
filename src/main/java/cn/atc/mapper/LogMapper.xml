@@ -32,4 +32,9 @@
 			</if>
 		</trim>
 	</select>
+
+	<delete id="delLog" parameterType="integer">
+		DELETE FROM loginlog
+		WHERE DATEDIFF(CURDATE(), loginTime)>=#{day}
+	</delete>
 </mapper>

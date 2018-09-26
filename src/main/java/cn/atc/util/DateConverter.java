@@ -17,8 +17,31 @@ public class DateConverter {
 	}
 
 	/**
+	 * 获取当前时间，返回String
+	 * 
+	 * @return返回长时间格式 yyyy-MM-dd HH:mm:ss
+	 */
+	public static String getDate() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date = formatter.format(new Date());
+		return date;
+	}
+
+	/**
+	 * 获取当前时间，返回String
+	 * 
+	 * @return返回长时间格式 yyyy年MM月dd日 HH时mm分ss秒
+	 */
+	public static String getDateByChinese() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
+		String date = formatter.format(new Date());
+		return date;
+	}
+
+	/**
 	 * 获取现在时间
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 * 
 	 * @return返回短时间格式 yyyy-MM-dd
 	 */
