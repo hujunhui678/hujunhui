@@ -1,10 +1,10 @@
 package cn.atc.service;
 
-import java.util.List;
 import java.util.Map;
 
 import cn.atc.pojo.PurchaseOrder;
+import cn.atc.util.PageUtil;
 
 public interface PurchaseOrderService {
-	List<PurchaseOrder> getPurchaseOrdersByCondition(Map<String, Object> map);
+	PageUtil<PurchaseOrder> getPurchaseOrdersByCondition(Map<String, Object> map);
 }

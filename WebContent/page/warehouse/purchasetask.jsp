@@ -28,13 +28,42 @@
         <script src="${pageContext.request.contextPath }/statics/assets/laydate/laydate.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath }/statics/assets/js/jquery.easy-pie-chart.min.js"></script>
         <script src="${pageContext.request.contextPath }/statics/js/lrtk.js" type="text/javascript" ></script>
-<title>采购任务单</title>
+        <script src="${pageContext.request.contextPath }/statics/assets/laydate/laydate.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/statics/css/jquery.pagination.css" />
+		<script src="${pageContext.request.contextPath }/statics/js/jquery.pagination.min.js"></script>
+		<title>采购任务单</title>
 </head>
 
 <body>
 <div class="margin clearfix">
  <div class="cover_style" id="cover_style">
-    <div class="top_style Order_form" id="Order_form_style">
+ 
+ <div class="search_style">
+     
+     <form id="orderForm" action="${pageContext.request.contextPath }/page/purchasetask" method="post">
+	      <ul class="search_content clearfix">
+	       <li><label class="l_f" style="margin-right:10px">审核状态</label>
+	       	<select style=" width:100px" name="auditStateId">
+	       		<option value="0">请选择</option>
+	       		<c:forEach var="item" items="${auditStateList }">
+	       			<option value="${item.id }" <c:if test="${auditStateId==item.id }">selected</c:if>>${item.auditStateName }</option>
+	       		</c:forEach>
+	       	</select>
+	       </li>
+	       <li><label class="l_f">采购单编号</label><input name="purchaseOrderId" type="text" class="text_add" value="${purchaseOrderId }" placeholder="采购单编号" style=" width:250px"></li>
+	       <li><label class="l_f">采购时间</label><input class="inline laydate-icon" id="start" name="purchaseTime" style=" margin-left:10px;" value="${ purchaseTime}"></li>
+	       <li style="width:90px;"><button type="button" class="btn_search" onclick="javascript:document.forms[0].submit()"><i class="fa fa-search"></i>查询</button></li>
+	      </ul>
+	      <!-- 存储零件类型 -->
+	      <input type="hidden" id="partType" name="partType" value="${partType }">
+	      <!-- 存储总页数 -->
+		  <input id="totalPage" value=${page.totalPage } type="hidden">
+	      <!-- 存储当前页 -->
+		  <input id="currentPage" name="currentPage" value="${page.currentPage}" type="hidden">
+      </form>
+    </div>
+ 
+    <!-- <div class="top_style Order_form" id="Order_form_style">
       <div class="type_title">购物产品比例
       <div class="btn_style">  
       <a href="javascript:ovid()"  class="xianshi_btn Statistic_btn">显示</a> 
@@ -52,7 +81,7 @@
        <div class="proportion"> <div class="easy-pie-chart percentage" data-percent="65" data-color="#c316a9"><span class="percent">65</span>%</div><span class="name">家用电器</span></div>
        <div class="proportion"> <div class="easy-pie-chart percentage" data-percent="56" data-color="#13a9e1"><span class="percent">56</span>%</div><span class="name">卫浴</span></div>  
     </div>
-    </div>
+    </div> -->
     <!--内容-->
    <div class="centent_style" id="centent_style">
      <div id="covar_list" class="order_list">
@@ -63,12 +92,10 @@
          <div class="side_list"><div class="widget-header header-color-green2"><h4 class="lighter smaller">采购单零件类型分类</h4></div>
          <div class="widget-body">         
          <ul class="b_P_Sort_list">
-             	<li class="partTypeClass"><i class="orange  fa fa-reorder"></i><a href="#">全部订单</a></li>
-             
+             	<li class="partTypeClass" partType="0"><i style="margin-left:20px" class="orange  fa fa-reorder"></i><span style="margin-left:20px">全部订单</span></li>
              	<c:forEach var="item" items="${partClassifyList }">
-	             	<li class="partTypeClass"><i class="fa fa-sticky-note green " style="margin-right:20px"></i><a href="#" onclick="">${item.partName }</a></li>
+	             	<li class="partTypeClass"  partType="${item.id }" <c:if test="${partType==item.id }">style="background-color:#438EB9"</c:if> ><i style="margin-left:20px" class="fa fa-sticky-note green " style="margin-right:5px"></i><span style="margin-left:40px">${item.partName }</span></li>
              	</c:forEach>
-             	
         </ul>
        </div>
       </div>  
@@ -76,27 +103,7 @@
      </div>
      <!--左侧样式-->
      <div class="list_right_style">
-     <div class="search_style">
-     
-     <form action="" method="post">
-	      <ul class="search_content clearfix">
-	       <li><label class="l_f" style="margin-right:10px">审核状态</label>
-	       	<select style=" width:100px" name="auditStateId">
-	       		<option value="0">请选择</option>
-	       		<c:forEach var="item" items="${auditStateList }">
-	       			<option value="${item.id }">${item.auditStateName }</option>
-	       		</c:forEach>
-	       	</select>
-	       </li>
-	       <li><label class="l_f">采购单编号</label><input name="purchaseOrderId" type="text" class="text_add" value="${purchaseOrderId }" placeholder="采购单编号" style=" width:250px"></li>
-	       <li><label class="l_f">采购时间</label><input class="inline laydate-icon" id="start" name="purchaseTime" style=" margin-left:10px;" value="${ purchaseTime}"></li>
-	       <li style="width:90px;"><button type="button" class="btn_search"><i class="fa fa-search"></i>查询</button></li>
-	      </ul>
-	      <!-- 存储零件类型 -->
-	      <input type="hidden" id="partType" value="${partType }">
-      </form>
-      
-    </div>
+    
       <!--订单列表展示-->
        <table class="table table-striped table-bordered table-hover" id="sample-table">
 		<thead>
@@ -113,7 +120,7 @@
 		</thead>
 	<tbody>
      
-     <c:forEach var="item" items="${purchaseOrderList }">
+     <c:forEach var="item" items="${page.lists }">
 	     <tr>
 	     <td><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
 	     <td>${item.id }</td>
@@ -143,7 +150,7 @@
 			</c:if>
 		 </td>
 		 <td>
-	     <a title="订单详细" id="openDesc" orderId="${item.id }" class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a> 
+	     <a title="订单详细" style="cursor:pointer" class="openDesc" orderId="${item.id }" class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a> 
 	     <shiro:hasPermission name="purchasetask:remove">
 		 	<a title="删除" href="javascript:;"   class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
 		 </shiro:hasPermission>
@@ -157,6 +164,15 @@
      <tr>
      </tbody>
      </table>
+					<div class="box">
+						<div id="pagination1" class="page fl"></div>
+						<div class="info fl">
+							<p>
+								<span id="current1"></span>
+							</p>
+						</div>
+					</div>
+     
      </div>
    </div>
  </div>
@@ -203,7 +219,30 @@
 </body>
 </html>
 <script>
+//分页
+$(function() {
+	var a = $("#totalPage").val();
+	var b = $("#currentPage").val();
+	$("#pagination1").pagination({
+						currentPage : parseInt(b),
+						totalPage : a,
+						callback : function(current) {
+							$("#current1").text(current);
+							$("#currentPage").val(current);
+							$("#orderForm").submit();
+						}
+		});
+});
+//左侧栏鼠标悬浮样式
  $(function() { 
+	 $(".partTypeClass").mouseover(function(){
+		  $(this).css("background-color","#438EB9");
+		  $(this).siblings(".partTypeClass").css("background-color","white");
+	});
+	 $(".partTypeClass").mouseout(function(){
+		  $(".	partTypeClass").css("background-color","white");
+	});
+	 
 	$("#cover_style").fix({
 		float : 'top',
 		minStatue : false,
@@ -222,12 +261,13 @@
 		content:null,
 		left_css:'.left_Treeview,.list_right_style'
 	});
-	//点击采购单零件类型分类后存储到隐藏域中
+	//点击采购单零件类型分类后存储到隐藏域中并提交表单
 	$(".partTypeClass").click(function(){
-		$("#partType").val($(this).children("a").html());
+		$("#partType").val($(this).attr("partType"));
+		$("#orderForm").submit();
 	});
 	//点击订单详细按钮后弹出的东西
-	$("#openDesc").click(function(){
+	$(".openDesc").click(function(){
 		var orderId = $(this).attr("orderId");
 		$.post("getPurchaseOrderDesc?orderId="+orderId,null,function(data){
 			$("div[name='aboutPartType']").html("<span class='col-xs-10 col-sm-3'>分类 </span><span class='col-xs-10 col-sm-3'>类别 </span><span class='col-xs-10 col-sm-3'>数量 </span><br/>");
@@ -264,7 +304,7 @@
 		},"json");
 		layer.open({
 	        type: 1,
-	        title: '发货',
+	        title: '订单详情',
 			maxmin: true, 
 			shadeClose:false,
 	        area : ['500px' , '750px'],
@@ -353,9 +393,7 @@ $('.Order_form,.order_detailed').on('click', function(){
 	parent.$('.Current_page').attr({"name":herf,"href":"javascript:void(0)"}).css({"color":"#4c8fbd","cursor":"pointer"});
 	//parent.$('.Current_page').html("<a href='javascript:void(0)' name="+herf+" class='iframeurl'>" + cnames + "</a>");
     parent.layer.close(index);
-	
 });
-
 //初始化宽度、高度  
   var heights=$(".top_style").outerHeight()+47; 
  $(".centent_style").height($(window).height()-heights); 
@@ -382,7 +420,6 @@ var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
 					size:103
 				}).css('color', $(this).data('color'));
 			});
-		
 			$('[data-rel=tooltip]').tooltip();
 			$('[data-rel=popover]').popover({html:true});
 </script>
@@ -396,8 +433,6 @@ jQuery(function($) {
 		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
 		  {"orderable":false,"aTargets":[0,1,2,3,4,5,6,7,8,9]}// 制定列不参与排序
 		] } );
-				
-				
 				$('table th input:checkbox').on('click' , function(){
 					var that = this;
 					$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -407,8 +442,5 @@ jQuery(function($) {
 					});
 						
 				});
-			
-			
-			
 			});
 </script>

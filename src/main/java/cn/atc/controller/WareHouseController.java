@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.atc.pojo.AuditState;
@@ -18,6 +19,7 @@ import cn.atc.service.PartClassifyService;
 import cn.atc.service.PurchaseOrderDescService;
 import cn.atc.service.PurchaseOrderService;
 import cn.atc.util.GsonUtil;
+import cn.atc.util.PageUtil;
 
 /**
  * 仓库管理控制器
@@ -53,16 +55,17 @@ public class WareHouseController {
 	}
 
 	//跳转到采购任务单页
-	@RequestMapping("/purchasetask")
-	public String purchasetask(Model model,Map<String, Object> map,String partType,Integer auditStateId,Integer purchaseOrderId,String purchaseTime) {
+	@RequestMapping(value="/purchasetask")
+	public String purchasetask(Model model,Map<String, Object> map,String partType,String auditStateId,String purchaseOrderId,String purchaseTime,String currentPage,String totalPage) {
 		map.put("auditStateId",auditStateId);
 		map.put("purchaseOrderId", purchaseOrderId);
 		map.put("purchaseTime", purchaseTime);
 		map.put("partType", partType);
+		map.put("currentPage",currentPage);
 		// 获取所有零件类别
 		List<PartClassify> partClassifies = partClassifyService.getAllPartClassifies();
 		// 获取采购订单表基础数据
-		List<PurchaseOrder> purchaseOrderList = purchaseOrderService.getPurchaseOrdersByCondition(map);
+		PageUtil<PurchaseOrder> purchaseOrderList = purchaseOrderService.getPurchaseOrdersByCondition(map);
 		// 获取所有审核状态
 		List<AuditState> auditStates = auditStateService.getAuditStates();
 		model.addAttribute("partClassifyList", partClassifies);
@@ -76,6 +79,8 @@ public class WareHouseController {
 		model.addAttribute("purchaseTime", purchaseTime);
 		// 存储零件类别，便于跳转时携带条件
 		model.addAttribute("partType", partType);
+		// 存储page对象
+		model.addAttribute("page",purchaseOrderList);
 		return "/warehouse/purchasetask";
 	}
 	
