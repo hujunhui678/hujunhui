@@ -21,15 +21,15 @@
 			<result column="isSignin" property="isSignin" />
 			<result column="notPassDesc" property="notPassDesc" />
 			<result column="auditTime" property="auditTime" />
-			<association property="buyerEmp" javaType="Employee">
+			<association property="buyerEmp" javaType="Admin">
 				<id property="id" column="buyerId" />
 				<result column="buyerName" property="name" />
 			</association>
-			<association property="consigneeEmp" javaType="Employee">
+			<association property="consigneeEmp" javaType="Admin">
 				<id property="id" column="consigneeId" />
 				<result column="consigneeName" property="name" />
 			</association>
-			<association property="auditorEmp" javaType="Employee">
+			<association property="auditorEmp" javaType="Admin">
 				<id property="id" column="auditorId" />
 				<result column="auditorName" property="name" />
 			</association>
@@ -54,10 +54,10 @@
 		INNER JOIN partclassify p3 ON p3.`id` = p2.`partClassId`
 		INNER JOIN purchaseOrder p4 ON p4.id=p1.purchaseOrderId
 		INNER JOIN
-		employee e1 ON p4.`buyer`=e1.`id`
-		INNER JOIN employee e2 ON
+		Admin e1 ON p4.`buyer`=e1.`id`
+		INNER JOIN Admin e2 ON
 		p4.`auditor`=e2.`id`
-		INNER JOIN employee e3 ON p4.`consignee`=e3.`id`
+		INNER JOIN Admin e3 ON p4.`consignee`=e3.`id`
 		INNER JOIN auditstate a ON p4.`auditStateId`=a.`id`
 		<where>
 			p1.`purchaseOrderId` = #{orderId}

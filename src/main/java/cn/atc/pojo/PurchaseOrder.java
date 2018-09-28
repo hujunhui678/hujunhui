@@ -23,10 +23,10 @@ public class PurchaseOrder {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss" )
 	private Date auditTime;//审核完成时间
 	
-	private Employee buyerEmp;
-	private Employee consigneeEmp;
+	private Admin buyerEmp;
+	private Admin consigneeEmp;
 	private AuditState auditState;
-	private Employee auditorEmp;
+	private Admin auditorEmp;
 	private List<PurchaseOrderDesc> purchaseOrderDescList;
 	
 	
@@ -90,37 +90,37 @@ public class PurchaseOrder {
 	public void setAuditTime(Date auditTime) {
 		this.auditTime = auditTime;
 	}
-	public Employee getBuyerEmp() {
-		return buyerEmp;
-	}
-	public void setBuyerEmp(Employee buyerEmp) {
-		this.buyerEmp = buyerEmp;
-	}
-	public Employee getConsigneeEmp() {
-		return consigneeEmp;
-	}
-	public void setConsigneeEmp(Employee consigneeEmp) {
-		this.consigneeEmp = consigneeEmp;
-	}
 	public AuditState getAuditState() {
 		return auditState;
 	}
 	public void setAuditState(AuditState auditState) {
 		this.auditState = auditState;
 	}
-	public Employee getAuditorEmp() {
-		return auditorEmp;
-	}
-	public void setAuditorEmp(Employee auditorEmp) {
-		this.auditorEmp = auditorEmp;
-	}
 	public PurchaseOrder() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public Admin getBuyerEmp() {
+		return buyerEmp;
+	}
+	public void setBuyerEmp(Admin buyerEmp) {
+		this.buyerEmp = buyerEmp;
+	}
+	public Admin getConsigneeEmp() {
+		return consigneeEmp;
+	}
+	public void setConsigneeEmp(Admin consigneeEmp) {
+		this.consigneeEmp = consigneeEmp;
+	}
+	public Admin getAuditorEmp() {
+		return auditorEmp;
+	}
+	public void setAuditorEmp(Admin auditorEmp) {
+		this.auditorEmp = auditorEmp;
+	}
 	public PurchaseOrder(long id, long buyer, Date purchaseTime, Integer isSignin, long consignee, Integer auditStateId,
-			String notPassDesc, long auditor, Date auditTime, Employee buyerEmp, Employee consigneeEmp,
-			AuditState auditState, Employee auditorEmp, List<PurchaseOrderDesc> purchaseOrderDescList) {
+			String notPassDesc, long auditor, Date auditTime, Admin buyerEmp, Admin consigneeEmp, AuditState auditState,
+			Admin auditorEmp, List<PurchaseOrderDesc> purchaseOrderDescList) {
 		super();
 		this.id = id;
 		this.buyer = buyer;
@@ -137,6 +137,5 @@ public class PurchaseOrder {
 		this.auditorEmp = auditorEmp;
 		this.purchaseOrderDescList = purchaseOrderDescList;
 	}
-	
 	
 }

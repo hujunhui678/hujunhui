@@ -15,6 +15,7 @@
         <link href="${pageContext.request.contextPath }/statics/assets/css/codemirror.css" rel="stylesheet">
         <link rel="stylesheet" href="${pageContext.request.contextPath }/statics/assets/css/ace.min.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath }/statics/font/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/statics/css/jquery.pagination.css" />
         <!--[if lte IE 8]>
 		  <link rel="stylesheet" href="${pageContext.request.contextPath }/statics/assets/css/ace-ie.min.css" />
 		<![endif]-->
@@ -28,9 +29,9 @@
         <script src="${pageContext.request.contextPath }/statics/assets/laydate/laydate.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath }/statics/assets/js/jquery.easy-pie-chart.min.js"></script>
         <script src="${pageContext.request.contextPath }/statics/js/lrtk.js" type="text/javascript" ></script>
-        <script src="${pageContext.request.contextPath }/statics/assets/laydate/laydate.js" type="text/javascript"></script>
-		<link rel="stylesheet" href="${pageContext.request.contextPath }/statics/css/jquery.pagination.css" />
 		<script src="${pageContext.request.contextPath }/statics/js/jquery.pagination.min.js"></script>
+		<script src="${pageContext.request.contextPath }/statics/assets/js/ace-elements.min.js"></script>
+		<script src="${pageContext.request.contextPath }/statics/assets/js/ace.min.js"></script>
 		<title>采购任务单</title>
 </head>
 
@@ -39,7 +40,16 @@
  <div class="cover_style" id="cover_style">
  
  <div class="search_style">
-     
+     <c:if test="${notSigninCount>0 }">
+     	<div class="Shops_Audit" style="margin-bottom:10px">
+		   <div class="prompt">当前共有<b>${notSigninCount }</b>份采购单请求签收</div>
+		 </div>
+     </c:if>
+     <c:if test="${notSigninCount==0 }">
+     	<div class="Shops_Audit" style="margin-bottom:10px">
+		   <div class="prompt">当前没有采购单请求签收</div>
+		 </div>
+     </c:if>
      <form id="orderForm" action="${pageContext.request.contextPath }/page/purchasetask" method="post">
 	      <ul class="search_content clearfix">
 	       <li><label class="l_f" style="margin-right:10px">审核状态</label>
@@ -103,7 +113,6 @@
      </div>
      <!--左侧样式-->
      <div class="list_right_style">
-    
       <!--订单列表展示-->
        <table class="table table-striped table-bordered table-hover" id="sample-table">
 		<thead>
@@ -123,7 +132,7 @@
      <c:forEach var="item" items="${page.lists }">
 	     <tr>
 	     <td><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-	     <td>${item.id }</td>
+	     <td>ATC${item.id }</td>	
 	     <td class="order_product_name">
 	      	${item.buyerEmp.name }
 	     </td>
@@ -150,7 +159,10 @@
 			</c:if>
 		 </td>
 		 <td>
-	     <a title="订单详细" style="cursor:pointer" class="openDesc" orderId="${item.id }" class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a> 
+	     <a title="订单详细" style="cursor:pointer" xiangxi="openDesc" orderId="${item.id }" class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a>
+	     <c:if test="${item.isSignin==0 }">
+	     	<a qianshou="qianshou" shenhe="${item.auditState.id }" qianshouren="${admin.id }" href="javascript:;" title="确认签收" orderId="${item.id }" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
+	     </c:if>
 	     <shiro:hasPermission name="purchasetask:remove">
 		 	<a title="删除" href="javascript:;"   class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
 		 </shiro:hasPermission>
@@ -182,6 +194,8 @@
  <div id="Delivery_stop" style=" display:none">
   <div class="">
     <div class="content_style" style="margin-top:30px">
+    
+    
   	<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">订单号 </label>
        <div class="col-sm-9"><input type="text"  class="col-xs-10 col-sm-11" readonly id="id" style="margin-left:0px;"></div>
 	</div>
@@ -213,12 +227,48 @@
 	<%-- <c:if test=""></c:if> 审核未通过 --%>
 	<div class="form-group" id="weitongguoyuanyin">
 	</div>
+
+<!-- 判断出库时库存是否充足 -->
+<!-- 	<div class="form-group" style="margin-bottom:20px;"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"></label>
+    	<div class="col-sm-9" style="margin-left:30px">
+    		<button id="chaxun" class="btn btn-info" style="margin-left:37px;margin-top:20px">检测库存是否充足</button>
+    	</div>
+    </div> -->
+	
+	
  </div>
   </div>
  </div>
 </body>
 </html>
 <script>
+//判断出库时零件是否充足
+/* $("#chaxun").click(function(){
+	var isMiss;
+	var json;
+	var orderId = $("#id").val().substring(3);
+	$.post("comparisonMaterial",{'orderId':orderId},function(data){
+		if(data.length==0){
+			isMiss = true;
+		}else{
+			json=data;
+		}
+	},"json");
+	layer.msg('查询中...', {
+		icon : 16,
+		time : 3000
+	},function(){
+		if(isMiss){
+			alert("充足");
+		}else{
+			alert(json);
+		}
+	});
+}); */
+
+$('#id-button-borders').attr('checked' , 'checked').on('click', function(){
+		$('#default-buttons .btn').toggleClass('no-border');
+});
 //分页
 $(function() {
 	var a = $("#totalPage").val();
@@ -266,12 +316,37 @@ $(function() {
 		$("#partType").val($(this).attr("partType"));
 		$("#orderForm").submit();
 	});
+	//点击订单签收后改变数据库状态
+	$("[qianshou='qianshou']").click(function(){
+		var auditStateId = $(this).attr("shenhe");
+		if(auditStateId!=3){
+			layer.msg('审核未通过无法签收!', {
+				icon : 8,	
+				time : 1000
+			},function(){
+				
+			});
+			return;
+		}
+		var id = $(this).attr("orderId");
+		var adminId = $(this).attr("qianshouren");
+		$.post("updateIsSigninById",{'id':id,'adminId':adminId},function(data){
+			if(data=="yes"){
+				layer.msg('已保存!', {
+					icon : 1,
+					time : 1000
+				},function(){
+					window.location.reload();
+				})
+			}
+		},"text");
+	});
 	//点击订单详细按钮后弹出的东西
-	$(".openDesc").click(function(){
+	$("[xiangxi='openDesc']").click(function(){
 		var orderId = $(this).attr("orderId");
 		$.post("getPurchaseOrderDesc?orderId="+orderId,null,function(data){
 			$("div[name='aboutPartType']").html("<span class='col-xs-10 col-sm-3'>分类 </span><span class='col-xs-10 col-sm-3'>类别 </span><span class='col-xs-10 col-sm-3'>数量 </span><br/>");
-			$("#id").val(data[0].purchaseOrderId);
+			$("#id").val("ATC"+data[0].purchaseOrderId);
 			$("#buyer").val(data[0].purchaseOrder.buyerEmp.name);
 			$("#purchaseTime").val(data[0].purchaseOrder.purchaseTime);
 			for(var i in data){
@@ -357,7 +432,6 @@ function Order_form_del(obj,id){
 }
 /**发货**/
 function Delivery_stop(obj,id){
-		
 	layer.open({
         type: 1,
         title: '发货',
@@ -423,6 +497,7 @@ var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
 			$('[data-rel=tooltip]').tooltip();
 			$('[data-rel=popover]').popover({html:true});
 </script>
+
 <script>
 //订单列表
 jQuery(function($) {
@@ -444,3 +519,4 @@ jQuery(function($) {
 				});
 			});
 </script>
+
