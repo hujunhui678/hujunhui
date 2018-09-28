@@ -60,4 +60,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		return page;
 	}
 
+	@Override
+	public Integer updateIsSigninById(Map<String, Object>map) {
+		return purchaseOrderMapper.updateIsSigninById(map);
+	}
 }

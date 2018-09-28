@@ -81,10 +81,12 @@
 				<div class="border clearfix">
 					<span class="l_f"> <a href="javascript:ovid()"
 						class="btn btn-danger"><i class="icon-trash"></i>批量删除</a>
-					</span> <span style=" display: block;margin:2px 0 0 10px;"> <select id="delLog">
-							<option>清空5天前的记录</option>
-							<option>清空15天前的记录</option>
-							<option>清空30天前的记录</option>
+					</span> <span style="display: block; margin: 2px 0 0 10px;"> <select
+						id="delLog">
+							<option value="0">请选择删除的记录</option>
+							<option value="5">清空5天前的记录</option>
+							<option value="15">清空15天前的记录</option>
+							<option value="30">清空30天前的记录</option>
 					</select>
 					</span> <span class="r_f">共：<b>${page.totalCount }</b>条
 					</span>
@@ -106,13 +108,12 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="log" items="${page.lists}">
+							<c:forEach var="log" items="${page.lists}" varStatus="index">
 								<tr>
 									<td><label><input type="checkbox" class="ace" /><span
 											class="lbl"></span></label></td>
-									<td>${log.id}</td>
-									<td><u style="cursor: pointer" class="text-primary"
-										onclick="member_show('张三','member-show.html','10001','500','400')">${log.name}</u></td>
+									<td>${index.count}</td>
+									<td>${log.name}</td>
 									<td>${log.loginAddress}</td>
 									<td>${log.loginIP}</td>
 									<td><fmt:formatDate value="${log.loginTime}"
@@ -170,10 +171,32 @@
 </html>
 <script>
 	jQuery(function($) {
-		$("#delLog").change(function(){
-			layer.confirm("记录删除无法恢复,请慎重!",{icon:8},function(){
-				
-				
+		$("#delLog").change(function() {
+			var day = $("#delLog").val();
+			if (day == "0") {
+				layer.alert('请先选择要删除的记录!', {
+					icon : 5,
+					time : 2000
+				});
+				return;
+			}
+			
+			layer.confirm("记录删除无法恢复,请慎重!", {
+				icon : 8
+			}, function() {
+				$.post("delLog", {
+					'day' : day
+				}, function(data) {
+					if (data == "ok") {
+						layer.msg('已清空!', {
+							icon : 1,
+							time : 2000
+						}, function() {
+							window.location.reload();
+						});
+					}
+				}, "text");
+
 			});
 		});
 		var oTable1 = $('#sample-table').dataTable({

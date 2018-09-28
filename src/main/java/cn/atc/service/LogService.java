@@ -10,5 +10,6 @@ import cn.atc.util.PageUtil;
 
 public interface LogService {
 	PageUtil<LoginLog> getAllLog(Map<String,Object> maps);//查看登录的日志
+	Integer delLog(@Param("day")Integer day);//删除几天前的登录日志
 	
 }

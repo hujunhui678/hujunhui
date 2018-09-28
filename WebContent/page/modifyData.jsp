@@ -394,4 +394,3 @@
 				});
 	});
 </script>
-<script src="${pageContext.request.contextPath }/statics/js/pwd.js"></script>

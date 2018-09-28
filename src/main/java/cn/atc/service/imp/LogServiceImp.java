@@ -31,5 +31,10 @@ public class LogServiceImp implements LogService {
 		return page;
 	}
 
+	@Override
+	public Integer delLog(Integer day) {
+		return logMapper.delLog(day);
+	}
+
 
 }

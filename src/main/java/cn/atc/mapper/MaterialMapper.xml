@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.MaterialMapper">
+	<resultMap type="Material" id="cusMaterial">
+		<id column="id" property="id"/>
+		<result column="matType" property="matType"/>
+		<result column="inventoryNum" property="inventoryNum"/>
+		<result column="purchaseWay" property="purchaseWay"/>
+		<result column="remark" property="remark"/>
+		<association property="partType" javaType="PartType">
+			<id column="pid" property="id"/>
+			<result column="partClassId" property="partClassId"/>
+			<result column="partType" property="partType"/>
+		</association>
+	</resultMap>
+	<select id="getMaterialsByCondition" resultMap="cusMaterial" parameterType="map">
+		SELECT m.*,p.`id` AS 'pid',p.`partClassId`,p.`partType` FROM material m
+		INNER JOIN parttype p ON m.`matType`=p.`id`
+		<where>
+			<if test="partType!=null and partType!= ''">
+				and p.partType LIKE CONCAT('%',#{partType},'%')
+			</if>
+			<if test="partClassId!=null and partClassId!= '' and partClassId!=0">
+				and p.partClassId = #{partClassId}
+			</if>
+		</where>
+		limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="getMaterialsCountByCondition" parameterType="map" resultType="int">
+		SELECT COUNT(m.id) FROM material m
+		INNER JOIN parttype p ON m.`matType`=p.`id`
+		<where>
+			<if test="partType!=null and partType!= ''">
+				and p.partType LIKE CONCAT('%',#{partType},'%')
+			</if>
+			<if test="partClassId!=null and partClassId!= '' and partClassId!=0">
+				and p.partClassId = #{partClassId}
+			</if>
+		</where>
+	</select>
+</mapper>

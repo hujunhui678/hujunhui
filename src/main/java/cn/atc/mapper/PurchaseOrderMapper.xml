@@ -9,15 +9,15 @@
 		<result column="isSignin" property="isSignin" />
 		<result column="notPassDesc" property="notPassDesc" />
 		<result column="auditTime" property="auditTime" />
-		<association property="buyerEmp" javaType="Employee">
+		<association property="buyerEmp" javaType="Admin">
 			<id property="id" column="buyerId" />
 			<result column="buyerName" property="name" />
 		</association>
-		<association property="consigneeEmp" javaType="Employee">
+		<association property="consigneeEmp" javaType="Admin">
 			<id property="id" column="consigneeId" />
 			<result column="consigneeName" property="name" />
 		</association>
-		<association property="auditorEmp" javaType="Employee">
+		<association property="auditorEmp" javaType="Admin">
 			<id property="id" column="auditorId" />
 			<result column="auditorName" property="name" />
 		</association>
@@ -46,11 +46,9 @@
 		INNER JOIN parttype p2 ON p2.`id`= p1.`partTypeId`
 		INNER JOIN partclassify p3 ON p3.`id` = p2.`partClassId`
 		INNER JOIN purchaseOrder p4 ON p4.id=p1.purchaseOrderId
-		INNER JOIN
-		employee e1 ON p4.`buyer`=e1.`id`
-		INNER JOIN employee e2 ON
-		p4.`auditor`=e2.`id`
-		INNER JOIN employee e3 ON p4.`consignee`=e3.`id`
+		LEFT JOIN admin e1 ON p4.`buyer`=e1.`id`
+		LEFT JOIN admin e2 ON p4.`auditor`=e2.`id`
+		LEFT JOIN admin e3 ON p4.`consignee`=e3.`id`
 		INNER JOIN auditstate a ON p4.`auditStateId`=a.`id`
 		<where>
 			<if test="auditStateId!='' and auditStateId!=0">
@@ -67,6 +65,7 @@
 			</if>
 		</where>
 		GROUP BY p4.`id`
+		ORDER BY isSignin
 		limit #{startRow},#{pageSize}
 	</select>
 
@@ -77,11 +76,9 @@
 		INNER JOIN parttype p2 ON p2.`id`= p1.`partTypeId`
 		INNER JOIN partclassify p3 ON p3.`id` = p2.`partClassId`
 		INNER JOIN purchaseOrder p4 ON p4.id=p1.purchaseOrderId
-		INNER JOIN
-		employee e1 ON p4.`buyer`=e1.`id`
-		INNER JOIN employee e2 ON
-		p4.`auditor`=e2.`id`
-		INNER JOIN employee e3 ON p4.`consignee`=e3.`id`
+		LEFT JOIN Admin e1 ON p4.`buyer`=e1.`id`
+		LEFT JOIN admin e2 ON p4.`auditor`=e2.`id`
+		LEFT JOIN Admin e3 ON p4.`consignee`=e3.`id`
 		INNER JOIN auditstate a ON p4.`auditStateId`=a.`id`
 		<where>
 			<if test="auditStateId!='' and auditStateId!=0">
@@ -99,7 +96,10 @@
 		</where>
 		GROUP BY p4.`id`
 		)a
-		
 	</select>
+	
+	<update id="updateIsSigninById" parameterType="map">
+		update purchaseorder set isSignin=1,consignee=#{adminId} where id=#{id}
+	</update>
 
 </mapper>

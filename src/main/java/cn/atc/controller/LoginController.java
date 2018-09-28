@@ -36,11 +36,9 @@ public class LoginController {
 		token.setRememberMe(isRemember);
 		try {
 			subject.login(token);
-			System.out.println(code);
 			if (code != null && !"".equals(code) && sessionCode != null && !"".equals(sessionCode)) {
 				if (code.equalsIgnoreCase(sessionCode)) {// 忽略大小写
 					// 登录成功
-					System.out.println("登录成功");
 					// 插入登录日志表..
 					Admin admin = adminService.getAdminByLoginName(loginName);
 					LoginLog log = new LoginLog();

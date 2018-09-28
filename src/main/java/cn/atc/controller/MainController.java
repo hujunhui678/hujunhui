@@ -1,9 +1,11 @@
 package cn.atc.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.atc.pojo.Admin;
 import cn.atc.pojo.Role;
 import cn.atc.service.RoleService;
+import cn.atc.util.DateConverter;
 import cn.atc.util.GsonUtil;
+import cn.atc.util.OutIp;
 import cn.atc.util.PageUtil;
 
 @Controller
@@ -27,8 +31,27 @@ public class MainController {
 	private RoleService roleService;
 
 	@RequestMapping("/goMain")
-	public String LoginSuccess() {
+	public String LoginSuccess(HttpSession session) {
+		String date = DateConverter.getDateByChinese();
+		session.setAttribute("date", date);
+		// 获取IP地址
+		String ip = OutIp.INTRANET_IP;
+		session.setAttribute("ip", ip);
 		return "atcMain";
+	}
+
+	@RequestMapping("/goHome")
+	public String goHome(HttpSession session) {
+		Date date = DateConverter.getSqlDate();// 获取当前时间
+		String date2 = DateConverter.getDate();
+		System.out.println(date2);
+		session.setAttribute("date", date);
+		session.setAttribute("date2", date2);
+		// 获取IP地址
+		String ip = OutIp.INTRANET_IP;
+		session.setAttribute("ip", ip);
+		System.out.println(ip);
+		return "home";
 	}
 
 	@RequestMapping("/loginout")
@@ -45,7 +68,7 @@ public class MainController {
 			currentPage = 1;
 		}
 		map.put("currentPage", currentPage);
-		map.put("pageSize",6);
+		map.put("pageSize", 6);
 		PageUtil<Role> page = roleService.getAdminAndRoles(map);
 		model.addAttribute("page", page);
 		model.addAttribute("pageIndex", currentPage);
@@ -97,7 +120,7 @@ public class MainController {
 	// 删除角色信息
 	@RequestMapping("/delRole")
 	@ResponseBody
-	public String delRole(String[] ids,Model model) {
+	public String delRole(String[] ids, Model model) {
 		// 批量删除角色
 		Integer delResult = 0;
 		String result = "";
@@ -106,7 +129,7 @@ public class MainController {
 		} catch (Exception e) {
 			result = "error";
 		}
-		
+
 		if (delResult > 0) {
 			result = "ok";
 		}
