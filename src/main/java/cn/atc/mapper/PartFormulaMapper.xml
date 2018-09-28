@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.PartFormulaMapper">
+
+	<resultMap type="PartFormula" id="partform">
+		<id column="id" property="id" />
+		<result column="formulaName" property="formulaName" />
+		<result column="createTime" property="createTime" />
+		<association property="finishedProductsType"
+			javaType="FinishedProductsType">
+			<result column="productName" property="productName" />
+		</association>
+		<association property="admin" javaType="Admin">
+			<result column="name" property="name" />
+		</association>
+		<collection property="partFormulaDesc"
+			ofType="PartFormulaDesc">
+			<result column="requirement" property="requirement" />
+		</collection>
+		<collection property="partType" ofType="PartType">
+			<result column="partType" property="partType" />
+			<result column="partClassId" property="partClassId" />
+		</collection>
+		<collection property="partClassify" ofType="PartClassify">
+			<result column="partName" property="partName" />
+		</collection>
+	</resultMap>
+
+	<select id="getAllPartFrom" parameterType="map"
+		resultMap="partform">
+		SELECT
+		pf.`id`,pf.`formulaName`,pf.`createTime`,pty.`partType`,
+		pty.`partClassId`,pc.`partName`,pfd.`requirement`,
+		fin.`productName`,admin.`name` FROM partformula pf
+		JOIN partformuladesc
+		pfd
+		ON pf.`id` = pfd.`partformulaId`
+		JOIN finishedproductstype fin
+		ON
+		pfd.`finishedProductsTypeId` = fin.`id`
+		JOIN parttype pty
+		ON
+		pfd.`partTypeId` = pty.`id`
+		JOIN partclassify pc
+		ON pty.`partClassId` =
+		pc.`id`
+		JOIN admin
+		ON pf.`compilers` = admin.`id`
+		<trim prefix="where" prefixOverrides="and">
+			<if test="id != null and id != ''">
+				pf.id = #{id}
+			</if>
+			<if test="productName != null and productName != ''">
+				and fin.`productName` like concat('%',#{productName},'%')
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and pf.`createTime` like concat(#{createTime},'%')
+			</if>
+		</trim>
+		<if test="id == null or id == ''">
+			GROUP BY pf.id
+			limit
+			#{startRow},#{pageSize}
+		</if>
+	</select>
+
+	<select id="count" parameterType="map" resultType="integer">
+		SELECT
+		COUNT(1) FROM (
+		SELECT COUNT(1) FROM partformula pf
+		JOIN
+		partformuladesc
+		pfd
+		ON
+		pf.`id` =
+		pfd.`partformulaId`
+		JOIN
+		finishedproductstype fin
+		ON
+		pfd.`finishedProductsTypeId` = fin.`id`
+		JOIN
+		parttype pty
+		ON
+		pfd.`partTypeId` = pty.`id`
+		JOIN partclassify pc
+		ON
+		pty.`partClassId` =
+		pc.`id`
+		JOIN admin
+		ON pf.`compilers` = admin.`id`
+		<trim prefix="where" prefixOverrides="and">
+			<if test="productName != null and productName != ''">
+				 fin.`productName` like concat('%',#{productName},'%')
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and pf.`createTime` like concat(#{createTime},'%')
+			</if>
+		</trim>
+		GROUP BY pf.id
+		)part
+	</select>
+</mapper>

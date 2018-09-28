@@ -41,6 +41,7 @@ public class LoginController {
 					// 登录成功
 					// 插入登录日志表..
 					Admin admin = adminService.getAdminByLoginName(loginName);
+					session.setAttribute("admin", admin);
 					LoginLog log = new LoginLog();
 					log.setLoginName(loginName);
 					log.setName(admin.getName());
