@@ -4,5 +4,4 @@
 	<select id="getAllPartClassifies" resultType="PartClassify">
 		select * from partclassify
 	</select>
-	
 </mapper>

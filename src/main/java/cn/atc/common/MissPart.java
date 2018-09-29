@@ -1,5 +1,7 @@
 package cn.atc.common;
 
+import java.util.List;
+
 import cn.atc.pojo.PartClassify;
 import cn.atc.pojo.PartType;
 
@@ -15,6 +17,9 @@ public class MissPart {
 	
 	private PartClassify partClassify; // 零件类别
 	private PartType partType;// 零件类型
+	
+	private List<PartClassify> partClassies; // 零件类别
+	private List<PartType> partTypes;// 零件类型
 	public long getPartTypeId() {
 		return partTypeId;
 	}
@@ -44,6 +49,12 @@ public class MissPart {
 		this.missNum = missNum;
 		this.partClassify = partClassify;
 		this.partType = partType;
+	}
+	
+	public MissPart(List<PartClassify> partClassies, List<PartType> partTypes) {
+		super();
+		this.partClassies = partClassies;
+		this.partTypes = partTypes;
 	}
 	public PartClassify getPartClassify() {
 		return partClassify;
