@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.FinishedProductsStockMapper">
+	<resultMap type="FinishedProductsStock"
+		id="finishedProductsStocksByCondition">
+		<id property="id" column="id" />
+		<result property="productId" column="productId" />
+		<result property="inventoryNum" column="inventoryNum" />
+		<result property="purchaseWay" column="purchaseWay" />
+		<result property="remark" column="remark" />
+		<association property="finishedProductsType"
+			javaType="FinishedProductsType">
+			<id property="id" column="productId" />
+			<result property="productType" column="productType" />
+			<result property="productName" column="productName" />
+		</association>
+	</resultMap>
+	<select id="getFinishedProductsStocks" parameterType="map" resultMap="finishedProductsStocksByCondition">
+		SELECT
+		k.*,e.`productName`,e.`productType` FROM finishedProductsStock k
+		LEFT
+		JOIN finishedproductstype e ON k.`productId`=e.`id`
+		LIMIT #{startRow},#{pageSize}
+	</select>
+
+
+	<select id="getFinishedProductsStocksCount" resultType="int">
+		SELECT COUNT(k.`id`) FROM finishedProductsStock k
+		LEFT JOIN finishedproductstype e ON k.`productId`=e.`id`
+	</select>
+</mapper>

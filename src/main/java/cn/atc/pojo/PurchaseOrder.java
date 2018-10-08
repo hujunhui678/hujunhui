@@ -7,35 +7,32 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 采购订单表
+ * 
  * @author ASUS
  *
  */
 public class PurchaseOrder {
-	private long id;//采购订单表编号(程序控制生成)
-	private long buyer;//采购员(雇员表外键)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm" )
-	private Date purchaseTime;//采购时间
-	private Integer isSignin;//是否签收(0未签收1已签收)
-	private long consignee;//收货人(雇员表外键)
-	private Integer auditStateId;//审核状态(审核状态表外键)
-	private String notPassDesc;//未通过备注
-	private long auditor;//审核人(雇员表外键)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss" )
-	private Date auditTime;//审核完成时间
-	
-	private Admin buyerEmp;
-	private Admin consigneeEmp;
-	private AuditState auditState;
-	private Admin auditorEmp;
-	private List<PurchaseOrderDesc> purchaseOrderDescList;
-	
-	
-	public List<PurchaseOrderDesc> getPurchaseOrderDescList() {
-		return purchaseOrderDescList;
-	}
-	public void setPurchaseOrderDescList(List<PurchaseOrderDesc> purchaseOrderDescList) {
-		this.purchaseOrderDescList = purchaseOrderDescList;
-	}
+	private long id;// 采购订单表编号(程序控制生成)
+	private long buyer;// 采购员(雇员表外键)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	private Date purchaseTime;// 采购时间
+	private Integer isSignin;// 是否签收(0未签收1已签收)
+	private long consignee;// 收货人(雇员表外键)
+	private Integer auditStateId;// 审核状态(审核状态表外键)
+	private String notPassDesc;// 未通过备注
+	private long leadingDept;// 领用部门(部门表外键)
+	private long receivePerson;// 领用人(用户表外键)
+	private long auditor;// 审核人(雇员表外键)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date auditTime;// 审核完成时间
+
+	private Admin buyerEmp;// 采购员
+	private Admin consigneeEmp;// 收货人
+	private AuditState auditState;// 审核状态
+	private Admin auditorEmp;// 审核人
+	private Department leadingDepartment;// 领用部门
+	private Admin receiveAdmin;// 领用人
+	private List<PurchaseOrderDesc> purchaseOrderDescList;// 采购订单详细
 	public long getId() {
 		return id;
 	}
@@ -78,6 +75,18 @@ public class PurchaseOrder {
 	public void setNotPassDesc(String notPassDesc) {
 		this.notPassDesc = notPassDesc;
 	}
+	public long getLeadingDept() {
+		return leadingDept;
+	}
+	public void setLeadingDept(long leadingDept) {
+		this.leadingDept = leadingDept;
+	}
+	public long getReceivePerson() {
+		return receivePerson;
+	}
+	public void setReceivePerson(long receivePerson) {
+		this.receivePerson = receivePerson;
+	}
 	public long getAuditor() {
 		return auditor;
 	}
@@ -89,16 +98,6 @@ public class PurchaseOrder {
 	}
 	public void setAuditTime(Date auditTime) {
 		this.auditTime = auditTime;
-	}
-	public AuditState getAuditState() {
-		return auditState;
-	}
-	public void setAuditState(AuditState auditState) {
-		this.auditState = auditState;
-	}
-	public PurchaseOrder() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Admin getBuyerEmp() {
 		return buyerEmp;
@@ -112,15 +111,40 @@ public class PurchaseOrder {
 	public void setConsigneeEmp(Admin consigneeEmp) {
 		this.consigneeEmp = consigneeEmp;
 	}
+	public AuditState getAuditState() {
+		return auditState;
+	}
+	public void setAuditState(AuditState auditState) {
+		this.auditState = auditState;
+	}
 	public Admin getAuditorEmp() {
 		return auditorEmp;
 	}
 	public void setAuditorEmp(Admin auditorEmp) {
 		this.auditorEmp = auditorEmp;
 	}
+	public Department getLeadingDepartment() {
+		return leadingDepartment;
+	}
+	public void setLeadingDepartment(Department leadingDepartment) {
+		this.leadingDepartment = leadingDepartment;
+	}
+	public Admin getReceiveAdmin() {
+		return receiveAdmin;
+	}
+	public void setReceiveAdmin(Admin receiveAdmin) {
+		this.receiveAdmin = receiveAdmin;
+	}
+	public List<PurchaseOrderDesc> getPurchaseOrderDescList() {
+		return purchaseOrderDescList;
+	}
+	public void setPurchaseOrderDescList(List<PurchaseOrderDesc> purchaseOrderDescList) {
+		this.purchaseOrderDescList = purchaseOrderDescList;
+	}
 	public PurchaseOrder(long id, long buyer, Date purchaseTime, Integer isSignin, long consignee, Integer auditStateId,
-			String notPassDesc, long auditor, Date auditTime, Admin buyerEmp, Admin consigneeEmp, AuditState auditState,
-			Admin auditorEmp, List<PurchaseOrderDesc> purchaseOrderDescList) {
+			String notPassDesc, long leadingDept, long receivePerson, long auditor, Date auditTime, Admin buyerEmp,
+			Admin consigneeEmp, AuditState auditState, Admin auditorEmp, Department leadingDepartment,
+			Admin receiveAdmin, List<PurchaseOrderDesc> purchaseOrderDescList) {
 		super();
 		this.id = id;
 		this.buyer = buyer;
@@ -129,13 +153,19 @@ public class PurchaseOrder {
 		this.consignee = consignee;
 		this.auditStateId = auditStateId;
 		this.notPassDesc = notPassDesc;
+		this.leadingDept = leadingDept;
+		this.receivePerson = receivePerson;
 		this.auditor = auditor;
 		this.auditTime = auditTime;
 		this.buyerEmp = buyerEmp;
 		this.consigneeEmp = consigneeEmp;
 		this.auditState = auditState;
 		this.auditorEmp = auditorEmp;
+		this.leadingDepartment = leadingDepartment;
+		this.receiveAdmin = receiveAdmin;
 		this.purchaseOrderDescList = purchaseOrderDescList;
 	}
-	
+	public PurchaseOrder() {
+		super();
+	}
 }

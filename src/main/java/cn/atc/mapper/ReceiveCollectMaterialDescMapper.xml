@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.ReceiveCollectMaterialDescMapper">
+	<resultMap type="ReceiveCollectMaterial" id="materialDesc">
+		<id column="reid" property="id"/>
+		<result column="isReceive" property="isReceive"/>
+		<result column="isAgree" property="isAgree"/>
+		<result column="releaseTime" property="releaseTime"/>
+		<result column="auditStateId" property="auditStateId"/>
+		<result column="leadingDept" property="leadingDeptId"/>
+		<result column="receivePerson" property="receivePersonId"/>
+		<result column="notPassDesc" property="notPassDesc"/>
+		<result column="auditor" property="auditorId"/>
+		<result column="auditTime" property="auditTime"/>
+		<result column="agreeTime" property="agreeTime"/>
+		<result column="a3id" property="approverId"/>
+		<association property="auditor" javaType="Admin">
+			<id column="auditorId" property="id"/>
+			<result column="auditorName" property="name"/>
+		</association>
+		<association property="leadingDept" javaType="Department">
+			<id column="did" property="id"/>
+			<result column="deptName" property="deptName"/>
+		</association>
+		<association property="auditState" javaType="AuditState">
+			<id column="auditstateId" property="id"/>
+			<result column="auditStateName" property="auditStateName"/>
+		</association>
+		<association property="receivePerson" javaType="Admin">
+			<id column="a2id" property="id"/>
+			<result column="a2name" property="name"/>
+		</association>
+		<association property="approver" javaType="Admin">
+			<id column="a3id" property="id"/>
+			<result column="a3name" property="name"/>
+		</association>
+		<association property="releaseDept" javaType="Department">
+			<id property="id" column="d5id"/>
+			<result column="d5name" property="deptName"/>
+		</association>
+		<association property="releasePerson" javaType="Admin">
+			<id column="a4id" property="id"/>
+			<result column="a4name" property="name"/>
+		</association>
+		<collection property="receiveCollectMaterialDescList" ofType="ReceiveCollectMaterialDesc">
+			<id property="id" column="rid"/>
+			<result column="reid" property="materialId"/>
+			<result column="partTypeId" property="partTypeId"/>
+			<result column="orderNum" property="orderNum"/>
+			<association property="partType" javaType="PartType">
+				<id column="partTypeId" property="id" />
+				<result column="partType" property="partType" />
+				<result column="partClassId" property="partClassId"/>
+				<association property="partClassify" javaType="PartClassify">
+					<id property="id" column="yid"/>
+					<result property="partName" column="partName"/>
+				</association>
+			</association>
+		</collection>
+	</resultMap>
+	
+	<select id="getMaterialDescByMaterialId" parameterType="long" resultMap="materialDesc">
+				SELECT e1.`name` AS 'receivePersonName',d4.`id` AS
+				'did',d4.`deptName`,p2.`partClassId`,r2.`orderNum`,r2.`id` AS 'rid',
+				p2.`partType`,p3.`id` AS 'yid',p3.`partName`,r1.id as 'reid',r1.*,r2.`partTypeId`,r2.`orderNum`,e1.`name` AS 'auditorName',
+				e1.`id` AS 'auditorId',a3.id AS 'a3id',a3.name AS 'a3name',
+				a.`id` AS
+				'auditstateId',d5.`deptName` AS 'd5name',d5.`id` AS 'd5id',a4.`id` AS 'a4id',a4.`name` AS 'a4name',a.`auditStateName`,a2.`id` AS 'a2id',a2.`name` AS 'a2name' FROM
+				ReceiveCollectMaterial r1
+				RIGHT JOIN receivecollectmaterialdesc r2 ON r1.`id`=r2.`materialId`
+				LEFT JOIN parttype p2 ON p2.`id`= r2.`partTypeId`
+				LEFT JOIN partclassify p3 ON p3.`id` = p2.`partClassId`
+				LEFT JOIN admin e1 ON r1.`auditor` = e1.`id`
+				LEFT JOIN admin a2 ON a2.`id` = r1.`receivePerson`
+				LEFT JOIN admin a3 ON a3.`id` = r1.`approver`
+				LEFT JOIN department d4 ON d4.`id`= r1.`leadingDept`
+				LEFT JOIN auditstate a ON r1.`auditStateId`=a.`id`
+				<where>
+					<if test="materialId!=null and materialId!='' and materialId!=0">
+						r2.materialId=#{materialId}
+					</if>
+				</where>
+	</select>
+</mapper>

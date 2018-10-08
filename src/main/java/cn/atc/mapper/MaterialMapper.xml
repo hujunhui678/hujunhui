@@ -15,28 +15,20 @@
 	</resultMap>
 	<select id="getMaterialsByCondition" resultMap="cusMaterial" parameterType="map">
 		SELECT m.*,p.`id` AS 'pid',p.`partClassId`,p.`partType` FROM material m
-		INNER JOIN parttype p ON m.`matType`=p.`id`
-		<where>
-			<if test="partType!=null and partType!= ''">
-				and p.partType LIKE CONCAT('%',#{partType},'%')
-			</if>
-			<if test="partClassId!=null and partClassId!= '' and partClassId!=0">
-				and p.partClassId = #{partClassId}
-			</if>
-		</where>
+		LEFT JOIN parttype p ON m.`matType`=p.`id`
 		limit #{startRow},#{pageSize}
 	</select>
 	
 	<select id="getMaterialsCountByCondition" parameterType="map" resultType="int">
 		SELECT COUNT(m.id) FROM material m
-		INNER JOIN parttype p ON m.`matType`=p.`id`
-		<where>
-			<if test="partType!=null and partType!= ''">
-				and p.partType LIKE CONCAT('%',#{partType},'%')
-			</if>
-			<if test="partClassId!=null and partClassId!= '' and partClassId!=0">
-				and p.partClassId = #{partClassId}
-			</if>
-		</where>
+		LEFT JOIN parttype p ON m.`matType`=p.`id`
 	</select>
+	
+	<select id="getAllMaterials" resultType="Material">
+		select * from Material
+	</select>	
+	
+	<update id="getOutMaterials" parameterType="ReceiveCollectMaterialDesc">
+		update material set inventoryNum=inventoryNum-#{orderNum} where matType=#{partTypeId}
+	</update>
 </mapper>

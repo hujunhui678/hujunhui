@@ -1,4 +1,4 @@
-package cn.atc.service.imp;
+package cn.atc.service.impl;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
