@@ -1,4 +1,4 @@
-package cn.atc.service.imp;
+package cn.atc.service.impl;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import cn.atc.pojo.PartType;
 import cn.atc.service.PartTypeService;
 
 @Service
-public class PartTypeServiceImp implements PartTypeService {
+public class PartTypeServiceImpl implements PartTypeService {
 
 	@Autowired
 	private PartTypeMapper partTypeMapper;
