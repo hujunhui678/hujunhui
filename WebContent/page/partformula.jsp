@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -72,7 +73,7 @@
 							</button></li>
 						<li style="width: 90px;"><span class="l_f"
 							style="display: block; position: relative; top: -2px;"> <a
-								href="partfromula-add.jsp" title="编写配方"
+								href="${pageContext.request.contextPath }/page/toAdd" title="编写配方"
 								class="btn btn-warning Order_form"><i class="icon-plus"></i>编写配方</a>
 						</span></li>
 					</ul>
@@ -100,7 +101,9 @@
 									onclick="partform_show('${item.formulaName}','partform-show.jsp','${item.id}','500','400')">${item.formulaName}</u>
 								</td>
 								<td width="100px">${item.finishedProductsType.productName}</td>
-								<td width="180px">${item.createTime}</td>
+								<td width="180px">
+									<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:ss:mm" />
+								</td>
 								<td class="text-l">${item.admin.name}</td>
 								<td class="td-status"><span
 									class="label label-success radius">已启用</span></td>

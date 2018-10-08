@@ -12,6 +12,7 @@ import cn.atc.pojo.ReceiveCollectMaterialDesc;
 import cn.atc.service.MaterialService;
 import cn.atc.util.PageUtil;
 
+
 /**
  * Ã«Å÷¿â´æService
  * @author ASUS
@@ -21,7 +22,7 @@ import cn.atc.util.PageUtil;
 public class MeterialServiceImpl implements MaterialService {
 
 	@Autowired
-	private MaterialMapper materialMapper;
+	private MaterialMapper meterialMapper;
 
 	@Override
 	public PageUtil<Material> getMaterialsByCondition(Map<String, Object> map) {
@@ -33,26 +34,25 @@ public class MeterialServiceImpl implements MaterialService {
 			currentPageInteger = Integer.parseInt(currentPage);
 		}
 		PageUtil<Material> page = new PageUtil<Material>();
-		page.setTotalCount(materialMapper.getMaterialsCountByCondition(map));
-		page.setPageSize(12);
+		page.setTotalCount(meterialMapper.getMaterialsCountByCondition(map));
+		page.setPageSize(10);
 		page.setCurrentPage(currentPageInteger);
 		map.put("pageSize", page.getPageSize());
 		map.put("startRow",page.getStartRow());
 		map.put("currentPage", page.getCurrentPage());
-		List<Material> materialList = materialMapper.getMaterialsByCondition(map);
+		List<Material> materialList = meterialMapper.getMaterialsByCondition(map);
 		page.setLists(materialList);
 		page.setTotalPage(page.getTotalPage());
 		return page;
 	}
-
-	@Override
-	public List<Material> getAllMaterials() {
-		return materialMapper.getAllMaterials();
-	}
-
+	
 	@Override
 	public Integer getOutMaterials(ReceiveCollectMaterialDesc receiveCollectMaterialDesc) {
-		return materialMapper.getOutMaterials(receiveCollectMaterialDesc);
+		return meterialMapper.getOutMaterials(receiveCollectMaterialDesc);
 	}
 	
+	@Override
+	public List<Material> getAllMaterials() {
+		return meterialMapper.getAllMaterials();
+	}
 }

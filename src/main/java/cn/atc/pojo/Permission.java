@@ -11,6 +11,7 @@ public class Permission {
 	private int permLevel;//权限等级
 	private long parentPermId; //父级权限ID 
 	private String permDesc; //权限描述(2018年9月13日添加)
+	private String icon;
 	public long getId() {
 		return id;
 	}
@@ -53,21 +54,13 @@ public class Permission {
 	public void setPermDesc(String permDesc) {
 		this.permDesc = permDesc;
 	}
-	public Permission() {
-		super();
-		// TODO Auto-generated constructor stub
+	public String getIcon() {
+		return icon;
 	}
-	public Permission(long id, String permNameC, String permNameE, String permURL, int permLevel, long parentPermId,
-			String permDesc) {
-		super();
-		this.id = id;
-		this.permNameC = permNameC;
-		this.permNameE = permNameE;
-		this.permURL = permURL;
-		this.permLevel = permLevel;
-		this.parentPermId = parentPermId;
-		this.permDesc = permDesc;
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
+
 	
 
 }

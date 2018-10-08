@@ -487,7 +487,7 @@
 						<c:forEach var="item" items="${permOne}">
 							<ul class="nav nav-list" id="nav_list">
 								<li><a href="#" class="dropdown-toggle"> <i
-										class="icon-desktop"></i> <span class="menu-text">
+										class="${item.icon}"></i> <span class="menu-text">
 											${item.permNameC } </span> <b class="arrow icon-angle-down"></b></a>
 									<ul class="submenu">
 										<c:forEach var="itemTwo" items="${permTwo }">

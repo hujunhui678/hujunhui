@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -57,25 +58,31 @@
 		</div>
 		<div class="page_right_style">
 			<div class="type_title">编写配方</div>
-			<form action="" method="post" class="form form-horizontal"
+			<form action="#" method="post" class="form form-horizontal"
 				id="form-article-add">
+				<input type="hidden" class="input-text" value="${admin.id}"
+					placeholder="" id="adminId" name="">
 				<div class="clearfix cl">
 					<label class="form-label col-2"><span class="c-red">*</span>配方名称：</label>
 					<div class="formControls col-10">
 						<input type="text" class="input-text" value="" placeholder=""
-							id="" name="">
+							id="formulaName" name="">
 					</div>
 				</div>
 				<div class=" clearfix cl">
 					<div class="Add_p_s">
 						<label class="form-label col-2">成品类型：</label>
 						<div class="formControls col-2">
-							<select class="select">
+							<select class="select" id="finishId">
 								<option>请选择</option>
+								<c:forEach var="finish" items="${finish}">
+									<option value="${finish.id}">${finish.productName}</option>
+								</c:forEach>
 							</select>
 						</div>
 					</div>
-					<div class="Add_p_s" id="inputNum">
+					<div class="
+									Add_p_s" id="inputNum">
 						<label class="form-label col-2">所需零件数量：</label>
 						<div class="formControls col-2">
 							<select class="select" id="select">
@@ -98,10 +105,6 @@
 						<div class='Add_p_s'></div>
 					</div>
 				</div>
-
-
-
-
 				<div class="clearfix cl">
 					<label class="form-label col-2">立即启用 ：</label>
 					<div class="formControls col-2 skin-minimal">
@@ -125,8 +128,7 @@
 				</div>
 				<div class="clearfix cl">
 					<div class="Button_operation">
-						<button onClick="article_save_submit();"
-							class="btn btn-primary radius" type="submit">
+						<button class="btn btn-primary radius" type="button" id="submit">
 							<i class="icon-save "></i>保存并提交审核
 						</button>
 						<button onClick="article_save();"
@@ -180,9 +182,33 @@ $(function() {
 	$("#inputNum").change(function(){
 		var inputNum = $("#select").val();
 		$(".num").remove();
-		for (var i = 0; i < inputNum; i++) {
-		$("#num").append("<div class='num'><div class='Add_p_s'><label class='form-label col-2'>零件类别：</label><div class='formControls col-2'><select class='select'><option>请选择</option></select></div></div><div class='Add_p_s'><label class='form-label col-2'>分类：</label><div class='formControls col-2'><select class='select'><option>请选择</option></select></div></div><div class='Add_p_s'><label class='form-label col-2'>数量：</label><div class='formControls col-2'><input type='text' class='input-text' value='' placeholder=''id='' name=''>个</div></div><div class='Add_p_s'></div></div></div>");
-		}
+		$.post("getPart",null,function(data){
+			var partClassies = data.partClassies;
+			var partTypes = data.partTypes;
+			for (var i = 0; i < inputNum; i++) {
+				var part ="<div class='num'><div class='Add_p_s'><label class='form-label col-2'>零件类别：</label><div class='formControls col-2'><select class='PartType'>"
+				var optionStr = "";	
+				var optionClass = "";
+				for (j in partTypes) {
+						 optionStr += "<option value='"
+									+ partTypes[j].id + "'";
+							optionStr = optionStr + ">"
+									+ partTypes[j].partType
+									+ "</option>";
+						}
+				var last = part+optionStr + "</select></div></div><div class='Add_p_s'><label class='form-label col-2'>分类：</label><div class='formControls col-2'><select class='PartClass'>";
+				for (k in partClassies) {
+					optionClass += "<option value='"
+									+ partClassies[k].id + "'";
+					optionClass = optionClass + ">"
+									+ partClassies[k].partName
+									+ "</option>";
+						}
+				last = last+ optionClass+ "</select></div></div><div class='Add_p_s'><label class='form-label col-2'>数量：</label><div class='formControls col-2'><input type='text' class='input-text' value='' placeholder=''  name='requ'>个</div></div><div class='Add_p_s'></div></div></div>";
+				$("#num").append(last);
+			}
+		},"json");
+		
 	});
 	$("#add_picture").fix({
 		float : 'left',
@@ -191,6 +217,45 @@ $(function() {
 		stylewidth:'220',
 		spacingw:0,
 		spacingh:260,
+	});
+	
+	$("#submit").click(function(){
+		var formulaName = $("#formulaName").val();
+		var nums = new Array();
+		$("input[name='requ']").each(function(i) {
+			nums[i] = $(this).val();
+		});
+		var numsVals = nums.join(",");
+		var finishId = $("#finishId").val();
+		var parttype = new Array();
+		$(".PartType").each(function(i) {
+			parttype[i] = $(this).val();
+		});
+		var PartTypeVals = parttype.join(",");
+		
+		var PartClass = new Array();
+		$(".PartClass").each(function(i) {
+			PartClass[i] = $(this).val();
+		});
+		var PartClassVals = PartClass.join(",");
+		var adminId = $("#adminId").val();
+		
+		$.post("addPartFormula",{
+			'formulaName':formulaName,
+			'compilers':adminId,
+			'finishId':finishId,
+			'PartTypeVals':PartTypeVals,
+			'PartClassVals':PartClassVals,
+			'num':numsVals
+			},function(data){
+				layer.msg('配方新增成功!', {
+					icon : 1,
+					time : 1000
+				}, function() {
+					window.location.href = "${pageContext.request.contextPath }/page/SelPartForm";
+				});
+		});
+		
 	});
 });
 $( document).ready(function(){
