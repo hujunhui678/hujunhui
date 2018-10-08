@@ -138,7 +138,6 @@ button {
 										onclick="person_del(this,${item.id})" class="ml-5"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 								</tr>
-
 							</c:forEach>
 							<input id="totalPage" value=${page.totalPage } type="hidden">
 							<input id="currentPage" value="${page.currentPage}" type="hidden">
