@@ -38,24 +38,6 @@ public class MissPart {
 	public void setMissNum(long missNum) {
 		this.missNum = missNum;
 	}
-	public MissPart() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public MissPart(long partTypeId, long partClassId, long missNum, PartClassify partClassify, PartType partType) {
-		super();
-		this.partTypeId = partTypeId;
-		this.partClassId = partClassId;
-		this.missNum = missNum;
-		this.partClassify = partClassify;
-		this.partType = partType;
-	}
-	
-	public MissPart(List<PartClassify> partClassies, List<PartType> partTypes) {
-		super();
-		this.partClassies = partClassies;
-		this.partTypes = partTypes;
-	}
 	public PartClassify getPartClassify() {
 		return partClassify;
 	}
@@ -68,4 +50,37 @@ public class MissPart {
 	public void setPartType(PartType partType) {
 		this.partType = partType;
 	}
+	public List<PartClassify> getPartClassies() {
+		return partClassies;
+	}
+	public void setPartClassies(List<PartClassify> partClassies) {
+		this.partClassies = partClassies;
+	}
+	public List<PartType> getPartTypes() {
+		return partTypes;
+	}
+	public void setPartTypes(List<PartType> partTypes) {
+		this.partTypes = partTypes;
+	}
+	public MissPart(long partTypeId, long partClassId, long missNum, PartClassify partClassify, PartType partType,
+			List<PartClassify> partClassies, List<PartType> partTypes) {
+		super();
+		this.partTypeId = partTypeId;
+		this.partClassId = partClassId;
+		this.missNum = missNum;
+		this.partClassify = partClassify;
+		this.partType = partType;
+		this.partClassies = partClassies;
+		this.partTypes = partTypes;
+	}
+	
+	public MissPart(List<PartClassify> partClassies, List<PartType> partTypes) {
+		super();
+		this.partClassies = partClassies;
+		this.partTypes = partTypes;
+	}
+	public MissPart() {
+		super();
+	}
+	
 }

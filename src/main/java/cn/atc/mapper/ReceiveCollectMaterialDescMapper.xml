@@ -14,6 +14,7 @@
 		<result column="auditTime" property="auditTime"/>
 		<result column="agreeTime" property="agreeTime"/>
 		<result column="a3id" property="approverId"/>
+		<result column="version" property="version"/>
 		<association property="auditor" javaType="Admin">
 			<id column="auditorId" property="id"/>
 			<result column="auditorName" property="name"/>
@@ -46,6 +47,7 @@
 			<id property="id" column="rid"/>
 			<result column="reid" property="materialId"/>
 			<result column="partTypeId" property="partTypeId"/>
+			<result column="finishedPartTypeId" property="finishedPartTypeId"/>
 			<result column="orderNum" property="orderNum"/>
 			<association property="partType" javaType="PartType">
 				<id column="partTypeId" property="id" />
@@ -56,18 +58,22 @@
 					<result property="partName" column="partName"/>
 				</association>
 			</association>
+			<association property="finishedProductsType" javaType="FinishedProductsType">
+				<id column="fid" property="id"/>
+				<result column="fproducttype" property="productType"/>
+				<result column="fproductname" property="productName"/>
+			</association>
 		</collection>
 	</resultMap>
 	
 	<select id="getMaterialDescByMaterialId" parameterType="long" resultMap="materialDesc">
 				SELECT e1.`name` AS 'receivePersonName',d4.`id` AS
 				'did',d4.`deptName`,p2.`partClassId`,r2.`orderNum`,r2.`id` AS 'rid',
-				p2.`partType`,p3.`id` AS 'yid',p3.`partName`,r1.id as 'reid',r1.*,r2.`partTypeId`,r2.`orderNum`,e1.`name` AS 'auditorName',
-				e1.`id` AS 'auditorId',a3.id AS 'a3id',a3.name AS 'a3name',
-				a.`id` AS
-				'auditstateId',d5.`deptName` AS 'd5name',d5.`id` AS 'd5id',a4.`id` AS 'a4id',a4.`name` AS 'a4name',a.`auditStateName`,a2.`id` AS 'a2id',a2.`name` AS 'a2name' FROM
-				ReceiveCollectMaterial r1
-				RIGHT JOIN receivecollectmaterialdesc r2 ON r1.`id`=r2.`materialId`
+				p2.`partType`,p3.`id` AS 'yid',p3.`partName`,r1.id AS 'reid',r1.*,r2.`partTypeId`,r2.`orderNum`,e1.`name` AS 'auditorName',
+				e1.`id` AS 'auditorId',a3.id AS 'a3id',a3.name AS 'a3name',f.id AS 'fid',f.productType AS 'fproducttype',f.productName AS 'fproductname',
+				a.`id` AS 'auditstateId',d5.`deptName` AS 'd5name',d5.`id` AS 'd5id',a4.`id` AS 'a4id',a4.`name` AS 'a4name',a.`auditStateName`,a2.`id` AS 'a2id',a2.`name` AS 'a2name' 
+				 FROM ReceiveCollectMaterial r1
+				LEFT JOIN receivecollectmaterialdesc r2 ON r1.`id`=r2.`materialId`
 				LEFT JOIN parttype p2 ON p2.`id`= r2.`partTypeId`
 				LEFT JOIN partclassify p3 ON p3.`id` = p2.`partClassId`
 				LEFT JOIN admin e1 ON r1.`auditor` = e1.`id`
@@ -75,9 +81,12 @@
 				LEFT JOIN admin a3 ON a3.`id` = r1.`approver`
 				LEFT JOIN department d4 ON d4.`id`= r1.`leadingDept`
 				LEFT JOIN auditstate a ON r1.`auditStateId`=a.`id`
+				LEFT JOIN department d5 ON d5.id = r1.`releaseDept`
+				LEFT JOIN admin a4 ON a4.`id` = r1.`releasePerson`
+				LEFT JOIN finishedProductsType f ON f.id=r2.finishedPartTypeId
 				<where>
 					<if test="materialId!=null and materialId!='' and materialId!=0">
-						r2.materialId=#{materialId}
+						r1.id=#{materialId}
 					</if>
 				</where>
 	</select>

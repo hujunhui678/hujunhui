@@ -24,13 +24,11 @@ import cn.atc.pojo.PartClassify;
 import cn.atc.pojo.PartType;
 import cn.atc.pojo.ReceiveCollectMaterial;
 import cn.atc.pojo.ReceiveCollectMaterialDesc;
-import cn.atc.pojo.StoreHouseOutInDescRecord;
 import cn.atc.pojo.StoreHouseOutInRecord;
 import cn.atc.service.AdminService;
 import cn.atc.service.AuditStateService;
 import cn.atc.service.FinishedProductsStockService;
 import cn.atc.service.FinishedProductsTypeService;
-import cn.atc.service.InventoryOfPartsService;
 import cn.atc.service.MaterialService;
 import cn.atc.service.PartClassifyService;
 import cn.atc.service.PartTypeService;
@@ -38,8 +36,10 @@ import cn.atc.service.PurchaseOrderDescService;
 import cn.atc.service.PurchaseOrderService;
 import cn.atc.service.ReceiveCollectMaterialDescService;
 import cn.atc.service.ReceiveCollectMaterialService;
+import cn.atc.service.StoreHouseOutInDescRecordService;
 import cn.atc.service.StoreHouseOutInRecordService;
 import cn.atc.util.GsonUtil;
+import cn.atc.util.IDUtil;
 import cn.atc.util.PageUtil;
 
 /**
@@ -81,6 +81,9 @@ public class WareHouseController {
 
 	@Autowired
 	private StoreHouseOutInRecordService storeHouseOutInRecordService;// 出库入库记录
+	
+	@Autowired
+	private StoreHouseOutInDescRecordService storeHouseOutInDescRecordService;// 出库入库详细记录
 
 	@Autowired
 	private ReceiveCollectMaterialService receiveCollectMaterialService;// 收领料单
@@ -98,7 +101,7 @@ public class WareHouseController {
 	@RequestMapping(value = "/materialmanage")
 	public String materialmanage(Model model, Map<String, Object> map, String partType, String auditStateId,
 			String materialId, String releaseTime, String currentPage, String totalPage,@RequestParam(value="isReceive",required=false,defaultValue="2")Integer isReceive) {
-		map.put("isReceive", isReceive);
+		map.put("isReceive", 2);
 		map.put("auditStateId", auditStateId);
 		map.put("materialId", materialId);
 		map.put("releaseTime", releaseTime);
@@ -172,6 +175,46 @@ public class WareHouseController {
 		return "/warehouse/inventoryofparts";
 	}
 
+	// 跳转到采购单添加页面
+	@RequestMapping("/purchasetaskadd")
+	public String purchasetaskadd(Model model,String[] partTypeList,String[] orderNumList,String[] partTypeIdList) {
+		model.addAttribute("orderId",IDUtil.getId());
+		List<MissPart> missPartList = new ArrayList<>();
+		for (int i = 0; i < orderNumList.length; i++) {
+			MissPart missPart = new MissPart();
+			PartType partType = new PartType();
+			partType.setId(Long.parseLong(partTypeIdList[i]));
+			partType.setPartType(partTypeList[i]);
+			missPart.setMissNum(Long.parseLong(orderNumList[i]));
+			missPart.setPartType(partType);
+			missPartList.add(missPart);
+		}
+		model.addAttribute("material",missPartList);
+		return "/warehouse/purchasetask_add";
+	}
+	
+	// ajax添加采购单
+	@RequestMapping("dopurchaseaskadd")
+	@ResponseBody
+	public String dopurchaseaskadd(Map<String, Object>map,Long materialId,String[] partTypeIdList,String[] orderNumList,Map<String, Object> descMap) {
+		Boolean flag = false;
+		map.put("id",materialId.toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		map.put("releaseTime",sdf.format(new Date()));
+		if(purchaseOrderService.insertPurchaseOrder(map)>0) {
+			for(int i = 0;i<partTypeIdList.length;i++) {
+				descMap.put("partTypeId",partTypeIdList[i]);
+				descMap.put("orderNum",orderNumList[i]);
+				descMap.put("purchaseOrderId",materialId.toString());
+				if(purchaseOrderDescService.insertPurchaseOrderDesc(descMap)<=0) {
+					return "false";
+				}
+			}
+			flag = true;
+		}
+		return flag.toString();
+	}
+	
 	// ajax获取毛坯库存数据
 	@RequestMapping("/getmeterials")
 	@ResponseBody
@@ -230,8 +273,8 @@ public class WareHouseController {
 				inCount++;
 			}
 		}
-		model.addAttribute("inCount", inCount);
-		model.addAttribute("outCount", outCount);
+		model.addAttribute("inCount", storeHouseOutInRecordService.getIsInCount());
+		model.addAttribute("outCount", storeHouseOutInRecordService.getIsOutCount());
 		model.addAttribute("page", page);
 		model.addAttribute("recordId", recordId);
 		model.addAttribute("time", time);
@@ -239,6 +282,35 @@ public class WareHouseController {
 		return "/warehouse/outinwarehouse";
 	}
 
+	// 获取出入库详情数据
+	@RequestMapping("/storehouseoutindescrecord")
+	public String storehouseoutindescrecord(Model model,Long recordId) {
+		List<StoreHouseOutInRecord> storeHouseOutInRecord = storeHouseOutInDescRecordService.getStoreHouseOutInRecordById(recordId);
+		storeHouseOutInRecord.get(0).setTime(storeHouseOutInRecord.get(0).getTime().substring(0,19));
+		model.addAttribute("storeHouse",storeHouseOutInRecord.get(0));
+		return "/warehouse/storehouseoutindescrecord";
+	}
+	
+	// 根据条件获取零件或成品出入库详情
+	@RequestMapping("/storehouseoutindescrecordbymap")
+	public String storehouseoutindescrecordbymap(Model model,Map<String, Object>map,Integer isOut,Long partTypeId,Long finishedProductId) {
+		if(isOut==1) {
+			map.put("isOut",isOut);
+			map.put("partTypeId",partTypeId);
+		}else {
+			map.put("finishedProductId",finishedProductId);
+			map.put("isOut", isOut);
+		}
+		List<StoreHouseOutInRecord> storeHouseOutInRecordByMap = storeHouseOutInDescRecordService.getStoreHouseOutInRecordByMap(map);
+		if(storeHouseOutInRecordByMap==null || storeHouseOutInRecordByMap.size()==0) {
+			model.addAttribute("emptyMsg","1");
+		}else {
+			model.addAttribute("record",storeHouseOutInRecordByMap);
+		}
+		model.addAttribute("isOut", isOut);
+		return "/warehouse/storerecord";
+	}
+	
 	// ajax添加零件型号
 	@RequestMapping("/insertparttype")
 	@ResponseBody
@@ -278,16 +350,92 @@ public class WareHouseController {
 		return orderList;
 	}
 
-	// 修改订单签收状态并修改物料表库存数量
-	@RequestMapping("/updateIsAgreeById")
+	// 修改订单签收状态并修改物料表库存数量(收料单)
+	@RequestMapping("/updateIsAgreeReceive")
 	@ResponseBody
-	public String updateIsAgreeById(Long id, Long adminId,long leadingDept,long receivePerson, Map<String, Object> map,Map<String, Object> storeHouseOutInRecord) {
+	public String updateIsAgreeReceive(Long id, Long adminId,long releaseDept,long releasePerson,long version, Map<String, Object> map,Map<String, Object> storeHouseOutInRecord) {
 		// 用来格式化时间
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 存放修改订单签收时的参数
 		map.put("id", id);
 		map.put("isAgree",1);
 		map.put("adminId", adminId);
+		map.put("version", version);
+		// 获取收料单所含材料
+		List<ReceiveCollectMaterial> materialDescByMaterialList = receiveCollectMaterialDescService.getMaterialDescByMaterialId(id);
+		// 修改领料单审批状态
+		Integer result = receiveCollectMaterialService.updateIsAgreeById(map);
+		if (result > 0) {
+			////////////////////////
+			///////仓库入库数据/////
+			////////////////////////
+			// 生成入库/出库单号
+			long storeId = IDUtil.getId();
+			// 出库/入库标志
+			Integer isOut = 2;
+			// 出入库时间(当前时间)
+			String timeNow = sdf.format(new Date());
+			// 出入库人
+			Admin admin = adminService.getAdmin(adminId.intValue());
+			// 出入库人姓名
+			String empName = admin.getName();
+			// 出入库负责人
+			long principal = adminId;
+			// 领用人(receivePerson)
+			// 领用部门（leadingDept)
+			// 存放仓库入库参数
+			storeHouseOutInRecord.put("id",storeId);
+			storeHouseOutInRecord.put("isOut", isOut);
+			storeHouseOutInRecord.put("time", timeNow);
+			storeHouseOutInRecord.put("empName", empName);
+			storeHouseOutInRecord.put("principal", principal);
+			storeHouseOutInRecord.put("releaseDept",releaseDept );
+			storeHouseOutInRecord.put("releasePerson",releasePerson);
+			
+			////////////////////////
+			////仓库入库详情数据////
+			////////////////////////
+			// 创建一个map类型的List用来存储领料单所需材料
+			List<Map<String, Object>> hasGoods = new ArrayList<Map<String, Object>>();
+			// 先进行材料取出操作
+			for (ReceiveCollectMaterialDesc receiveCollectMaterialDesc : materialDescByMaterialList.get(0).getReceiveCollectMaterialDescList()) {
+				receiveCollectMaterialDesc.setFinishedPartTypeId(receiveCollectMaterialDesc.getFinishedProductsType().getId());
+				if(materialService.getInFinishedProductsStock(receiveCollectMaterialDesc)<=0) {
+					return "error";
+				}
+				// 创建map对象存储所需材料以便进行新增出库详细记录操作
+				Map<String, Object> mapTemp = new HashMap<String, Object>();
+				// 出库记录ID
+				mapTemp.put("outInRecordId", storeId);
+				// 所需零件类别
+				mapTemp.put("finishedProductId", receiveCollectMaterialDesc.getFinishedPartTypeId());
+				// 所需零件数量
+				mapTemp.put("num", receiveCollectMaterialDesc.getOrderNum());
+				// 结存
+				mapTemp.put("goodsOnHand", 0);
+				hasGoods.add(mapTemp);
+			}
+			// 新增出库记录及详情表记录
+			if(!storeHouseOutInRecordService.insertStoreHouseOutInRecord(storeHouseOutInRecord, hasGoods)) {
+				return "error";
+			}
+			return "yes";
+		} else {
+			return "no";
+		}
+	}
+	
+	// 修改订单签收状态并修改物料表库存数量(领料单)
+	@RequestMapping("/updateIsAgreeById")
+	@ResponseBody
+	public String updateIsAgreeById(Long id, Long adminId,long leadingDept,long receivePerson,long version, Map<String, Object> map,Map<String, Object> storeHouseOutInRecord) {
+		// 用来格式化时间
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		// 存放修改订单签收时的参数
+		map.put("id", id);
+		map.put("isAgree",1);
+		map.put("adminId", adminId);
+		map.put("version", version);
 		// 获取订单所需材料
 		List<ReceiveCollectMaterial> materialDescByMaterialList = receiveCollectMaterialDescService.getMaterialDescByMaterialId(id);
 		// 修改领料单审批状态
@@ -296,13 +444,8 @@ public class WareHouseController {
 			////////////////////////
 			///////仓库出库数据/////
 			////////////////////////
-			// 四位随机数获取
-			Integer numFour=(int)(Math.random()*8999)+1000;
-			// 固定格式时间获取
-			SimpleDateFormat sdfId = new SimpleDateFormat("yyyyMMddHHmm");
-			String time = sdfId.format(new Date());
 			// 生成入库/出库单号
-			long storeId = Long.parseLong(numFour.toString()+time);
+			long storeId = IDUtil.getId();
 			// 出库/入库标志
 			Integer isOut = 1;
 			// 出入库时间(当前时间)

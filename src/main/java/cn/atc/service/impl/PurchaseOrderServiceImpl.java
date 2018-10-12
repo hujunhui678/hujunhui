@@ -64,4 +64,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	public Integer updateIsSigninById(Map<String, Object>map) {
 		return purchaseOrderMapper.updateIsSigninById(map);
 	}
+
+	@Override
+	public Integer insertPurchaseOrder(Map<String, Object> map) {
+		return purchaseOrderMapper.insertPurchaseOrder(map);
+	}
 }

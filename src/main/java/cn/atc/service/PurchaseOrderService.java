@@ -11,4 +11,7 @@ public interface PurchaseOrderService {
 
 	// 修改订单签收状态
 	Integer updateIsSigninById(Map<String, Object>map);
+	
+	// 发布订单
+	Integer insertPurchaseOrder(Map<String, Object>map);
 }

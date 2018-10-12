@@ -35,7 +35,7 @@ public class MeterialServiceImpl implements MaterialService {
 		}
 		PageUtil<Material> page = new PageUtil<Material>();
 		page.setTotalCount(meterialMapper.getMaterialsCountByCondition(map));
-		page.setPageSize(10);
+		page.setPageSize(12);
 		page.setCurrentPage(currentPageInteger);
 		map.put("pageSize", page.getPageSize());
 		map.put("startRow",page.getStartRow());
@@ -54,5 +54,10 @@ public class MeterialServiceImpl implements MaterialService {
 	@Override
 	public List<Material> getAllMaterials() {
 		return meterialMapper.getAllMaterials();
+	}
+
+	@Override
+	public Integer getInFinishedProductsStock(ReceiveCollectMaterialDesc receiveCollectMaterialDesc) {
+		return meterialMapper.getInFinishedProductsStock(receiveCollectMaterialDesc);
 	}
 }

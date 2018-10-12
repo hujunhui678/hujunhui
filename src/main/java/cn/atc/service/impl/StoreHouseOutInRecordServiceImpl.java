@@ -63,4 +63,14 @@ public class StoreHouseOutInRecordServiceImpl implements StoreHouseOutInRecordSe
 		return sign;
 	}
 
+	@Override
+	public Integer getIsOutCount() {
+		return storeHouseOutInRecordServiceMapper.getIsOutCount();
+	}
+
+	@Override
+	public Integer getIsInCount() {
+		return storeHouseOutInRecordServiceMapper.getIsInCount();
+	}
+
 }

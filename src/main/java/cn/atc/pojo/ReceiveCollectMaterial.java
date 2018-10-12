@@ -23,6 +23,7 @@ public class ReceiveCollectMaterial {
 	private String auditTime;// 审核完成时间
 	private long approverId;// 审批人(用户表外键)
 	private String agreeTime;// 审批通过时间
+	private long version;// 乐观锁标识
 
 	private List<ReceiveCollectMaterialDesc> receiveCollectMaterialDescList;// 收领料单详情
 	private AuditState auditState;// 审核状态
@@ -116,6 +117,12 @@ public class ReceiveCollectMaterial {
 	public void setAgreeTime(String agreeTime) {
 		this.agreeTime = agreeTime;
 	}
+	public long getVersion() {
+		return version;
+	}
+	public void setVersion(long version) {
+		this.version = version;
+	}
 	public List<ReceiveCollectMaterialDesc> getReceiveCollectMaterialDescList() {
 		return receiveCollectMaterialDescList;
 	}
@@ -166,7 +173,7 @@ public class ReceiveCollectMaterial {
 	}
 	public ReceiveCollectMaterial(long id, Integer isReceive, String releaseTime, Integer isAgree, Integer auditStateId,
 			long leadingDeptId, long receivePersonId, long releaseDeptId, long releasePersonId, String notPassDesc,
-			long auditorId, String auditTime, long approverId, String agreeTime,
+			long auditorId, String auditTime, long approverId, String agreeTime, long version,
 			List<ReceiveCollectMaterialDesc> receiveCollectMaterialDescList, AuditState auditState,
 			Department leadingDept, Admin receivePerson, Department releaseDept, Admin releasePerson, Admin auditor,
 			Admin approver) {
@@ -185,6 +192,7 @@ public class ReceiveCollectMaterial {
 		this.auditTime = auditTime;
 		this.approverId = approverId;
 		this.agreeTime = agreeTime;
+		this.version = version;
 		this.receiveCollectMaterialDescList = receiveCollectMaterialDescList;
 		this.auditState = auditState;
 		this.leadingDept = leadingDept;
@@ -196,6 +204,5 @@ public class ReceiveCollectMaterial {
 	}
 	public ReceiveCollectMaterial() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 }

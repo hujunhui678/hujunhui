@@ -54,6 +54,7 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 		map.put("startRow",page.getStartRow());
 		map.put("currentPage", page.getCurrentPage());
 		List<ReceiveCollectMaterial> receiveCollectMaterialList = receiveCollectMaterialMapper.getReceiveCollectMaterialByCondition(map);
+		page.setTotalPage(page.getTotalPage());
 		page.setLists(receiveCollectMaterialList);
 		return page;
 	}

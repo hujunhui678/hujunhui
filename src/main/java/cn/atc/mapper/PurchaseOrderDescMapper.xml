@@ -85,4 +85,9 @@
 			p1.`purchaseOrderId` = #{orderId}
 		</where>
 	</select>
+	
+	<insert id="insertPurchaseOrderDesc" parameterType="map">
+		insert into purchaseorderdesc(purchaseOrderId,partTypeId,orderNum)
+		values(#{purchaseOrderId},#{partTypeId},#{orderNum})
+	</insert>
 </mapper>

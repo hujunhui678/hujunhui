@@ -45,9 +45,6 @@
      
      <div class="search_style">
       <div class="Shops_Audit" style="margin-bottom:10px">
-	        	<span class="l_f">
-		          <a href="javascript:void()" id="sort_add" class="btn btn-warning" style="margin:5px"><i class="fa fa-plus"></i> 添加分类</a>
-		         </span>
 		   	<div class="prompt">当前共有<b id="partCount">5</b>种毛坯零件</div>
 		 </div>
      <form id="orderForm" action="${pageContext.request.contextPath }/page/getmeterials" method="post">
@@ -122,9 +119,6 @@
      
      <div class="search_style">
       <div class="Shops_Audit" style="margin-bottom:10px">
-	        	<span class="l_f">
-		          <a href="javascript:void()" id="sort_add2" class="btn btn-warning" style="margin:5px"><i class="fa fa-plus"></i> 添加分类</a>
-		         </span>
 		   	<div class="prompt">当前共有<b id="partCount2">5</b>种成品零件</div>
 		 </div>
      <form id="orderForm" action="${pageContext.request.contextPath }/page/getmeterials" method="post">
@@ -312,11 +306,11 @@
 										var data = result.lists;
 										for(i in data){
 											if(data[i].purchaseWay==1){
-												$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+												$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"' isout='2'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 											}else if(data[i].purchaseWay==2){
-												$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+												$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'   isout='2'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 											}else{
-												$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+												$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'   isout='2'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 											}
 										}
 									},"json");
@@ -327,11 +321,11 @@
 				$("#partCount2").html(result.totalCount);
 				for(i in data){
 					if(data[i].purchaseWay==1){
-						$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+						$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'   isout='2'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 					}else if(data[i].purchaseWay==2){
-						$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+						$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'   isout='2'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 					}else{
-						$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+						$("#scTables2").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].finishedProductsType.productType+"</td><td>"+data[i].finishedProductsType.productName+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'   isout='2'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 					}
 				}
 			},"json");
@@ -445,11 +439,11 @@
 										var data = result.lists;
 										for(i in data){
 											if(data[i].purchaseWay==1){
-												$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+												$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'  isout='1'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 											}else if(data[i].purchaseWay==2){
-												$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+												$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'   isout='1'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 											}else{
-												$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+												$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    isout='1'  class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 											}
 										}
 									},"json");
@@ -460,41 +454,29 @@
 				$("#partCount").html(result.totalCount);
 				for(i in data){
 					if(data[i].purchaseWay==1){
-						$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'   jiluchakan='"+data[i].id+"'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+						$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂家直销</td><td class='td-manage'><a title='记录查看'   jiluchakan='"+data[i].id+"'  isout='1'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 					}else if(data[i].purchaseWay==2){
-						$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看' jiluchakan='"+data[i].id+"'  class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+						$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>厂内自产</td><td class='td-manage'><a title='记录查看' jiluchakan='"+data[i].id+"'  isout='1'  class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 					}else{
-						$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'    class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
+						$("#scTables").append("<tr><td><label><input type='checkbox' class='ace'><span class='lbl'></span></label></td><td>"+data[i].id+"</td><td>"+data[i].partType.partType+"</td><td>"+data[i].inventoryNum+"</td><td>专人定制</td><td class='td-manage'><a title='记录查看'  jiluchakan='"+data[i].id+"'   isout='1'   class='btn btn-xs btn-info' ><i class='fa fa-info bigger-120'></i></a></td></tr>");
 					}	
 				}
 			},"json");
 			
 			 $(document).on("click","[jiluchakan]",function(){
-				 
+				 var partTypeId = $(this).attr("jiluchakan");
+				 var finishedProductId = $(this).attr("jiluchakan");
+				 var isOut = $(this).attr("isout");
 				 layer.open({
-				        type: 1,
-				        title: '详细',
-				        shade:false,
+				        type: 2,
+				        title: '当前零件出入库记录',
 						maxmin: true, 
+						shade: [0.8, '#393D49'],
+						area:['650px','55%'],
+				        content:"${pageContext.request.contextPath}/page/storehouseoutindescrecordbymap?isOut="+isOut+"&partTypeId="+partTypeId+"&finishedProductId="+finishedProductId,
 						shadeClose:true,
-				        area : ['500px' , '750px'],
-				        content:$('#Delivery_stop'),
-						btn:['导出至Excel表格','关闭'],
-						yes: function(index, layero){		
-						if($('#form-field-1').val()==""){
-							layer.alert('快递号不能为空！',{
-				               title: '提示框',				
-							  icon:0,		
-							  }) 
-							
-							}
-							layer.close();    		  
-						
-						}
-					});
-				 
+				 });
 			  });
-			
 		});
 		
 </script>

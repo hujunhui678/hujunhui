@@ -14,6 +14,7 @@
 		<result column="auditTime" property="auditTime"/>
 		<result column="agreeTime" property="agreeTime"/>
 		<result column="a3id" property="approverId"/>
+		<result column="version" property="version"/>
 		<association property="auditor" javaType="Admin">
 			<id column="auditorId" property="id"/>
 			<result column="auditorName" property="name"/>
@@ -119,6 +120,6 @@
 	</select>
 	
 	<update id="updateIsAgreeById" parameterType="map">
-		update receivecollectmaterial set isAgree=#{isAgree},agreeTime=#{agreeTime},approver=#{adminId} where id=#{id}
+		update receivecollectmaterial set version=version+1,isAgree=#{isAgree},agreeTime=#{agreeTime},approver=#{adminId} where id=#{id} and version=#{version}
 	</update>
 </mapper>

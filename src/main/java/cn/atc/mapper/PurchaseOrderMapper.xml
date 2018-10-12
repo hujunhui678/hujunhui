@@ -129,4 +129,9 @@
 		purchaseorder set isSignin=1,consignee=#{adminId} where id=#{id}
 	</update>
 
+	<insert id="insertPurchaseOrder" parameterType="map">
+		insert into purchaseorder(id,releaseTime,isSignin,auditStateId,leadingDept,receivePerson)
+		values(#{id},#{releaseTime},0,1,4,14)
+	</insert>
+
 </mapper>
