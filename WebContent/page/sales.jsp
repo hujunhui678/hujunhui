@@ -86,32 +86,34 @@ button {
 		<div>
 			<div class="cl pd-20">
 				<div class="cl pd-5 bg-1 bk-gray">
+					<form action="${pageContext.request.contextPath }/page/sales"
+		method="post">
 					<span class="l"> <a href="javascript:;" onclick="datadel()"
 						class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
 							批量删除</a> <a class="btn btn-primary radius" href="javascript:;"
-						onclick="admin_add('添加人员','${pageContext.request.contextPath}/page/sales_add.jsp','900','400')"><i
-							class="Hui-iconfont">&#xe600;</i> 添加订单</a> <span class="select-box"
-						style="width: 100px; margin-left: 20px;">
+						onclick="admin_add('添加订单','${pageContext.request.contextPath}/page/sales_add.jsp','900','400')"><i
+							class="Hui-iconfont">&#xe600;</i> 添加订单</a>
+					</span> <!--   订单状态: <input type="text" name="state"
+						value="${state}"/><span >(输入:1 未出货,2 已发货, 3 已到达)</span><input type="submit" value="查询" />-->
+						
+					&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp;
+					&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 
+					&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 
+					 订单状态: <input type="text" name="state"
+						value="${state}"/><span >(输入:1 未出货 ,2 已发货 ,3 已到达)</span>
 
-							<div class="layui-input-block">
-								<select name="city" lay-verify="required" class="select"
-									name="brandclass" size="1">
-									<option value="管理员" style="align: center;"
-										<c:if test="${sel eq '管理员' }">selected</c:if>>管理员</option>
-									<option value="雇员" <c:if test="${sel eq '雇员' }">selected</c:if>>雇员</option>
-								</select>
-							</div>
-
+						<input type="submit" value="查询" class="btn_search" />
+						  <span
+						class="r">共有数据：<strong>${pageUtil.totalCount }</strong> 条
 					</span>
-					</span> <span class="r">共有数据：<strong>${pageUtil.totalCount }</strong> 条
-					</span>
+					</form>
 				</div>
 				<div class="mt-10">
 					<table
 						class="table table-border table-bordered table-hover table-bg">
 						<thead>
 							<tr>
-								<th scope="col" colspan="8">销售订单管理</th>
+								<th scope="col" colspan="9">销售订单管理</th>
 							</tr>
 							<tr class="text-c">
 								<th width="25"><input type="checkbox" value="" name=""></th>
@@ -121,11 +123,13 @@ button {
 								<th width="200">客户公司</th>
 								<th width="200">联系方式</th>
 								<th width="200">订单日期</th>
+								<th width="200">订单状态</th>
 								<th width="70">操作</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="item" items="${pageUtil.lists }" varStatus="index">
+							<c:forEach var="item" items="${pageUtil.lists }"
+								varStatus="index">
 								<tr class="text-c">
 									<td><input type="checkbox" value="${item.id}" name=""
 										id="check"></td>
@@ -135,8 +139,17 @@ button {
 									<td>${item.clientCompany}</td>
 									<td>${item.clientContact}</td>
 									<td>${item.orderDate}</td>
+									<td><c:if test="${item.state==1 }">
+											<span class="label label-success radius">未出货</span>
+										</c:if> <c:if test="${item.state==2 }">
+											<span class="label label-warning radius">已发货</span>
+										</c:if>
+										<c:if test="${item.state==3 }">
+											<span class="label label-info radius">已到达</span>
+										</c:if></td>
+
 									<td class="f-14"><a title="编辑" href="javascript:;"
-										onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/person_modify.jsp',${item.id },'800','400')"
+										onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/doupdateSales',${item.id },'800','400')"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6df;</i></a>
 										<a title="删除" href="javascript:;"
 										onclick="person_del(this,${item.id})" class="ml-5"
@@ -145,14 +158,15 @@ button {
 
 							</c:forEach>
 							<input id="totalPage" value=${pageUtil.totalPage } type="hidden">
-							<input id="currentPage" value="${pageUtil.currentPage}" type="hidden">
+							<input id="currentPage" value="${pageUtil.currentPage}"
+								type="hidden">
 						</tbody>
 					</table>
 
 
 					<div class="box">
-						<div id="pagination1" class="page fl" ></div>
-						<div class="info fl" style="display:none">
+						<div id="pagination1" class="page fl"></div>
+						<div class="info fl" style="display: none">
 							<p>
 								<span id="current1"></span>
 							</p>
@@ -215,15 +229,13 @@ button {
 		}
 		 /*管理员-编辑*/
 			function person_edit(title, url, id, w, h) {
-				var isPerson = $(".select").val();
-				layer_show(title, url+"?isPerson="+isPerson+"&id="+id, w, h);
+				layer_show(title, url+"?id="+id, w, h);
 			}
 		/*管理员-删除*/
 		function person_del(obj, id) {
-			var isPerson = $(".select").val();
-				layer.confirm('将会删除所有信息,确认要删除此'+isPerson+'吗？',{icon:3}, function(index) {
+				layer.confirm('将会删除所有信息,确认要删除此吗？',{icon:3}, function(index) {
 					if(id != ""){
-		     			$.post("delPerson?ids="+id+"&isPerson="+isPerson,null,function(data){
+		     			$.post("delete",{'ids':id},function(data){
 		     				if(data == "ok"){
 		     					layer.msg('已删除!', {
 		     						icon : 1,
@@ -249,7 +261,7 @@ button {
 			var isPerson = $(".select").val();
 			layer.confirm('确认进行批量删除吗？', {icon:3}, function() {
             if(vals != ""){
-     			$.post("delPerson?ids="+vals+"&isPerson="+isPerson,null,function(data){
+     			$.post("delete",{'ids':vals,'isPerson':isPerson},function(data){
      				if(data == "ok"){
      					layer.msg('已删除!', {
      						icon : 1,

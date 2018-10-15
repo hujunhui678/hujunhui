@@ -6,7 +6,6 @@ import java.util.Map;
 import cn.atc.common.AllPerm;
 
 import org.apache.ibatis.annotations.Param;
-import org.junit.runners.Parameterized.Parameters;
 
 import cn.atc.pojo.Admin;
 import cn.atc.pojo.Admin_Role;

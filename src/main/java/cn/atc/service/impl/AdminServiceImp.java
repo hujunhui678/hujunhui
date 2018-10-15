@@ -1,4 +1,4 @@
-package cn.atc.service.imp;
+package cn.atc.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;

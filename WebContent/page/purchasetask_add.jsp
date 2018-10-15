@@ -49,8 +49,9 @@
 	<article class="cl pd-20" style="margin-right:50px;">
 	<form action="#" method="post" class="form form-horizontal"
 		id="form-admin-add" style="line-height: 30px;">
+		<!-- purchaseorder表 -->
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">添加订单：</label>
+			<label class="form-label col-xs-4 col-sm-3">添加采购单：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 			<!--  	<input type="text" class="input-text" value="${param.isPerson}"
 					placeholder="" id="isPerson" name="" disabled="disabled"
@@ -59,22 +60,36 @@
 		</div>
 					<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>订单号：</label>
+				class="c-red"></span>采购单号</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder=""
-					id="id" name="id" disabled="disabled"> 
+					id="id" name="id" > 
 			</div>
 		</div>
+	
+		
+			<span class="" id="warningPhone"
+			style="display: none; margin-left: 220px;"> </span>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">成品类型：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span
+				class="c-red"></span>采购员：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-		<select name="finishedType" id="finishedType">
-   				 <option value="0">全部</option>
-   					 </select>
+				<input type="text" class="input-text" value="" placeholder=""
+					id="orderNum" name="orderNum"><label id="orderNums" name="orderNums"></label>
 			</div>
 		</div>
-			<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">客户公司：</label>
+				
+					<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span
+				class="c-red"></span>收货人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder=""
+					id="id" name="id" > 
+			</div>
+		</div>
+			
+					<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">货物类型：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 		<select name="clientId" id="clientId">
    				 <option value="0">全部</option>
@@ -82,34 +97,52 @@
 			</div>
 		</div>
 		
-			<span class="" id="warningPhone"
-			style="display: none; margin-left: 220px;"> </span>
-		<div class="row cl">
+		
+					<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>订单数量：</label>
+				class="c-red"></span>外键 purchaseOrderId：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder=""
-					id="orderNum" name="orderNum"><label id="orderNums" name="orderNums"></label>
+					id="id" name="id" > 
 			</div>
 		</div>
 		
 		
+			<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span
+				class="c-red"></span>采购数量：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder=""
+					id="id" name="id"> 
+			</div>
+		</div>
+		
 					<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>订单日期：</label>
+				class="c-red"></span>采购日期：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="date" class="input-text" value="" placeholder=""
 					id="orderDate" name="orderDate">
 			</div>
 		</div>
-			<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>预计到达日期：</label>
+				
+				<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">审核状态：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="date" class="input-text" value="" placeholder=""
-					id="estimatedTimeOfArrival" name="estimatedTimeOfArrival">
+		<select name="clientId" id="clientId">
+   				 <option value="0">全部</option>
+   					 </select>
 			</div>
 		</div>
+				<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">签收状态：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+		<select name="clientId" id="clientId">
+   				 <option value="0">全部</option>
+   					 </select>
+			</div>
+		</div>
+				
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 				<input class="btn btn-primary radius" type="button" id="sub"

@@ -5,6 +5,4 @@
 				<select id="getFinishedproductstype" resultType="Finishedproductstype">
 				select * from Finishedproductstype
 				</select>
-		
-
 </mapper>

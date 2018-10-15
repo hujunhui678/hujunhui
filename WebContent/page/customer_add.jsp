@@ -47,67 +47,26 @@
 </head>
 <body>
 	<article class="cl pd-20" style="margin-right:50px;">
-	<form action="#" method="post" class="form form-horizontal"
-		id="form-admin-add" style="line-height: 30px;">
+	<form action="${pageContext.request.contextPath }/addCustomer"
+		method="post" class="form form-horizontal" id="form-admin-add"
+		style="line-height: 30px;">
+
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">添加订单：</label>
+			<label class="form-label col-xs-4 col-sm-3">客户姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-			<!--  	<input type="text" class="input-text" value="${param.isPerson}"
-					placeholder="" id="isPerson" name="" disabled="disabled"
-					style="width: 100px; height: 30px">-->
-			</div>
-		</div>
-					<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>订单号：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder=""
-					id="id" name="id" disabled="disabled"> 
+				<input type="text" class="input-text" id="clientName">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">成品类型：</label>
+			<label class="form-label col-xs-4 col-sm-3">客户联系电话：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-		<select name="finishedType" id="finishedType">
-   				 <option value="0">全部</option>
-   					 </select>
+				<input type="text" class="input-text" id="clientContact" >
 			</div>
 		</div>
-			<div class="row cl">
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">客户公司：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-		<select name="clientId" id="clientId">
-   				 <option value="0">全部</option>
-   					 </select>
-			</div>
-		</div>
-		
-			<span class="" id="warningPhone"
-			style="display: none; margin-left: 220px;"> </span>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>订单数量：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder=""
-					id="orderNum" name="orderNum"><label id="orderNums" name="orderNums"></label>
-			</div>
-		</div>
-		
-		
-					<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>订单日期：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="date" class="input-text" value="" placeholder=""
-					id="orderDate" name="orderDate">
-			</div>
-		</div>
-			<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>预计到达日期：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="date" class="input-text" value="" placeholder=""
-					id="estimatedTimeOfArrival" name="estimatedTimeOfArrival">
+				<input type="text" class="input-text" id="clientCompany" >
 			</div>
 		</div>
 		<div class="row cl">
@@ -138,69 +97,18 @@
 		src="${pageContext.request.contextPath }/statics/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath }/statics/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+			
 	<script type="text/javascript">
 		$(function() {
-			//获取成品类型和客户公司列表
-			$.post("doaddSales",null,function(data){
-				var productList = data.productList;
-				var clientList = data.clientList;
-				var id = data.id;
-				$("#id").val(id);
-				 for(i in productList){
-					 $("#finishedType").append("<option value='"+productList[i].id+"'>"+productList[i].productType+"</option>")
-				 }
-				 for(i in clientList){
-					 $("#clientId").append("<option value='"+clientList[i].id+"'>"+clientList[i].clientCompany+"</option>")
-				 }
-			 },"json");
 			
-			
-			var isPerson = $("#isPerson").val();
-			$
-					.post(
-							"toAddPerson",
-							null,
-							function(data) {
-								var roleList = data.roleList;
-								var childDeptList = data.childDeptList;
-								if (isPerson == "管理员") {
-									for (i in roleList) {
-										$("#checkBoxRole")
-												.append(
-														"<label class='middle'><input name='roleId' class='ace' type='checkbox' id='id-disable-check' value='"+roleList[i].id+"'><span class='lbl'>"
-																+ roleList[i].roleName
-																+ "</span></label>&nbsp;&nbsp;");
-										if (i != 0 && i % 4 == 0) {
-											$("#checkBoxRole").append("<br/>");
-										}
-									}
-								} else {
-									$("#role").hide();
-								}
-								for (i in childDeptList) {
-									$("#childDeptNo")
-											.append(
-													"<option value='"+childDeptList[i].id+"'>"
-															+ childDeptList[i].childName
-															+ "</option>");
-								}
-
-							}, "json");
-			//添加用户
+			// 添加表单提交
 			$("#sub").click(
-					function() {var id = $("#id").val();
-					var finishedType = $("#finishedType").val();
-					var clientId = $("#clientId").val();				
-					var orderNum = $("#orderNum").val();
-					var orderDate = $("#orderDate").val();
-					var estimatedTimeOfArrival = $("#estimatedTimeOfArrival").val();
-					
-						$.post("addSales", {'id' : id,
-								'finishedType' : finishedType,
-								'orderNum' : orderNum,
-								'orderDate' : orderDate,
-								'estimatedTimeOfArrival' : estimatedTimeOfArrival,
-								'clientId' : clientId}, function(data) {
+					function() {var clientName = $("#clientName").val();
+					var clientContact = $("#clientContact").val();
+					var clientCompany = $("#clientCompany").val();
+						$.post("addCustomer", {'clientName' : clientName,
+								'clientContact' : clientContact,
+								'clientCompany' : clientCompany}, function(data) {
 							layer.msg('添加成功!', {
 	     						icon : 1,
 	     						time : 1000
@@ -211,31 +119,10 @@
 						});
 						
 					});
-		
-			//手机号查重
-			$("#phone").blur(
-					function() {
-						var phone = $(this).val();
-						if (phone == "" || phone.length < 11) {
-							$("#warningPhone").hide();
-							$("#sub").attr("disabled", "disabled");
-							return;
-						}
-						$.post("selPhone?phone=" + phone, null, function(data) {
-							if (data == "true") {
-								$("#warningPhone").hide();
-								$("#sub").removeAttr("disabled");
-							} else if (data == "false") {
-								$("#warningPhone").attr("class",
-										"label label-sm label-warning").show()
-										.html("手机号重复");
-								$("#sub").attr("disabled", "disabled");
-							} else {
-								$("#warningPhone").attr("display", "none");
-							}
-						})
-					});
-
+			
+			
+			
+			
 			$('.skin-minimal input').iCheck({
 				checkboxClass : 'icheckbox-blue',
 				radioClass : 'iradio-blue',

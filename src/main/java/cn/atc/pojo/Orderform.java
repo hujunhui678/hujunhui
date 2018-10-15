@@ -14,6 +14,10 @@ public class Orderform {
 			private String productType;	//成品类型
 			private String clientCompany;//客户公司
 			private String clientContact;//客户人联系方式
+			private int state;//订单状态
+			
+			private Client client;
+			
 			public String getProductType() {
 				return productType;
 			}
@@ -69,19 +73,17 @@ public class Orderform {
 			public void setEstimatedTimeOfArrival(Date estimatedTimeOfArrival) {
 				this.estimatedTimeOfArrival = estimatedTimeOfArrival;
 			}
-			public Orderform(String id, long finishedType, long orderNum,
-					long clientId, Date orderDate, Date estimatedTimeOfArrival) {
-				super();
-				this.id = id;
-				this.finishedType = finishedType;
-				this.orderNum = orderNum;
-				this.clientId = clientId;
-				this.orderDate = orderDate;
-				this.estimatedTimeOfArrival = estimatedTimeOfArrival;
+			public int getState() {
+				return state;
 			}
-			public Orderform() {
-				super();
-				// TODO Auto-generated constructor stub
+			public void setState(int state) {
+				this.state = state;
+			}
+			public Client getClient() {
+				return client;
+			}
+			public void setClient(Client client) {
+				this.client = client;
 			}
 			
 }

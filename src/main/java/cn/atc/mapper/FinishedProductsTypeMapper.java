@@ -1,9 +1,9 @@
-package cn.atc.service;
+package cn.atc.mapper;
 
 import java.util.List;
 
 import cn.atc.pojo.FinishedProductsType;
 
-public interface FinishedProductsTypeService {
+public interface FinishedProductsTypeMapper {
 	List<FinishedProductsType> getFinishedproductstype();
 }

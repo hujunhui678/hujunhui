@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.PurchaseOrderDescMapper">
+	<resultMap type="PurchaseOrderDesc"
+		id="purchaseOrderDescByOrderId">
+		<id column="cid" property="id" />
+		<result column="orderNum" property="orderNum" />
+		<result column="purchaseOrderId" property="purchaseOrderId" />
+		<association property="partType" javaType="PartType">
+			<id column="eid" property="id" />
+			<result column="partType" property="partType" />
+			<association property="partClassify"
+				javaType="PartClassify">
+				<id column="yid" property="id" />
+				<result column="partName" property="partName" />
+			</association>
+		</association>
+		<association property="purchaseOrder"
+			javaType="PurchaseOrder">
+			<id column="id" property="id" />
+			<result column="purchaseTime" property="purchaseTime" />
+			<result column="isSignin" property="isSignin" />
+			<result column="notPassDesc" property="notPassDesc" />
+			<result column="auditTime" property="auditTime" />
+			<association property="buyerEmp" javaType="Admin">
+				<id property="id" column="buyerId" />
+				<result column="buyerName" property="name" />
+			</association>
+			<association property="consigneeEmp" javaType="Admin">
+				<id property="id" column="consigneeId" />
+				<result column="consigneeName" property="name" />
+			</association>
+			<association property="auditorEmp" javaType="Admin">
+				<id property="id" column="auditorId" />
+				<result column="auditorName" property="name" />
+			</association>
+			<association property="auditState" javaType="AuditState">
+				<id property="id" column="auditstateId" />
+				<result column="auditStateName" property="auditStateName" />
+			</association>
+			<association property="leadingDepartment"
+				javaType="Department">
+				<id property="id" column="did" />
+				<result property="deptName" column="deptName" />
+			</association>
+			<association property="receiveAdmin" javaType="Admin">
+				<id property="id" column="rid" />
+				<result property="name" column="receivePersonName" />
+			</association>
+		</association>
+	</resultMap>
+	<select id="getPurchaseOrderDescByOrderId" parameterType="Long"
+		resultMap="purchaseOrderDescByOrderId">
+		SELECT e4.`name` AS 'receivePersonName',e4.`id` AS 'rid',d.`id` AS
+		'did',d.`deptName`,p1.`id` AS
+		'cid',p1.`orderNum`,p1.`purchaseOrderId`,p2.`id` AS
+		'eid',p2.`partType`,p3.`id` AS 'yid',p3.`partName`,p4.*,
+		e1.`id` AS
+		'buyerId',e1.`name` AS 'buyerName',
+		e2.`id` AS 'auditorId',e2.`name` AS
+		'auditorName',
+		e3.`id` AS
+		'consigneeId',e3.`name` AS 'consigneeName',
+		a.`id` AS
+		'auditstateId',a.`auditStateName` FROM
+		purchaseorderdesc p1
+		LEFT JOIN parttype p2 ON p2.`id`= p1.`partTypeId`
+		LEFT JOIN
+		partclassify p3 ON p3.`id` = p2.`partClassId`
+		LEFT JOIN purchaseOrder
+		p4 ON p4.id=p1.purchaseOrderId
+		LEFT JOIN
+		Admin e1 ON p4.`buyer`=e1.`id`
+		LEFT JOIN Admin e2 ON
+		p4.`auditor`=e2.`id`
+		LEFT JOIN Admin e3 ON
+		p4.`consignee`=e3.`id`
+		LEFT JOIN auditstate a ON
+		p4.`auditStateId`=a.`id`
+		LEFT JOIN admin e4 ON
+		p4.`receivePerson`=e4.`id`
+		LEFT JOIN department d ON
+		d.`id`=p4.`leadingDept`
+		<where>
+			p1.`purchaseOrderId` = #{orderId}
+		</where>
+	</select>
+		<insert id="add">
+			INSERT INTO purchaseorderdesc(purchaseOrderId,partTypeId,orderNum) VALUE(#{purchaseOrderId},#{partTypeId},#{orderNum})
+				
+			
+		</insert>
+</mapper>

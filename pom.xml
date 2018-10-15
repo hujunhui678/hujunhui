@@ -6,7 +6,7 @@
 	<artifactId>ATC</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<properties> 
+	<properties>    
 		<junit.version>4.11</junit.version>
 		<commons-logging.version>1.2</commons-logging.version>
 		<commons-codec.version>1.10</commons-codec.version>
