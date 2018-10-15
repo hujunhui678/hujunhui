@@ -132,4 +132,10 @@
 	INSERT INTO purchaseorder(id,buyer,purchaseTime,isSignin,consignee,auditStateId,leadingDept,receivePerson,notPassDesc,auditor,auditTime)
 VALUE(#{id},#{buyer},#{purchaseTime},#{isSignin},#{consignee},#{auditStateId},#{leadingDept},#{receivePerson},#{notPassDesc},#{auditor},#{auditTime})	
 		</insert>
+
+	<insert id="insertPurchaseOrder" parameterType="map">
+		insert into purchaseorder(id,releaseTime,isSignin,auditStateId,leadingDept,receivePerson)
+		values(#{id},#{releaseTime},0,1,4,14)
+	</insert>
+
 </mapper>

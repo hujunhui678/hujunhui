@@ -9,4 +9,6 @@ public interface PurchaseOrderDescService {
 	// 根据订单号获取订单详细
 	List<PurchaseOrderDesc> getPurchaseOrderDescByOrderId(Long orderId);
 	Integer add(PurchaseOrderDesc purchaseOrderDesc);
+	// 添加采购单详细数据
+	Integer insertPurchaseOrderDesc(Map<String, Object>map);
 }

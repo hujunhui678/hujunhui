@@ -8,9 +8,6 @@ import cn.atc.util.MD5Util;
 public class Test {
 
 	public static void main(String[] args) {
-//		String pwd = "123";
-//		String str = MD5Util.generate(pwd);
-//		System.out.println(str);
 
 	}
 

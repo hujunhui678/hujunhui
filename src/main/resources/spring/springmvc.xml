@@ -25,7 +25,6 @@
 	<context:component-scan
 		base-package="cn.atc.controller" />
 	<mvc:annotation-driven />
-
 	<mvc:resources location="/statics/" mapping="/statics/**" />
 	
 	<bean

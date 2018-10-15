@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.atc.pojo.Admin;
+import cn.atc.pojo.LoginLog;
 import cn.atc.service.AdminService;
 
 @Controller
@@ -35,11 +36,16 @@ public class LoginController {
 		token.setRememberMe(isRemember);
 		try {
 			subject.login(token);
-			System.out.println(code);
 			if (code != null && !"".equals(code) && sessionCode != null && !"".equals(sessionCode)) {
 				if (code.equalsIgnoreCase(sessionCode)) {// 忽略大小写
 					// 登录成功
-					System.out.println("登录成功");
+					// 插入登录日志表..
+					Admin admin = adminService.getAdminByLoginName(loginName);
+					session.setAttribute("admin", admin);
+					LoginLog log = new LoginLog();
+					log.setLoginName(loginName);
+					log.setName(admin.getName());
+					adminService.addLoginLog(log);
 					message = null;
 				} else {
 					message = "验证输入不正确！";

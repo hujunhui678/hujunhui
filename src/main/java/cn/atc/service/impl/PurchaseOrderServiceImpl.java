@@ -69,5 +69,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	public Integer add(PurchaseOrder purchaseOrder) {
 		
 		return purchaseOrderMapper.add(purchaseOrder);
+	
+	}
+		public Integer insertPurchaseOrder(Map<String, Object> map) {
+		return purchaseOrderMapper.insertPurchaseOrder(map);
 	}
 }

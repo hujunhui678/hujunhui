@@ -9,4 +9,8 @@
 		insert into
 		parttype(partType,partClassId) values(#{partType},#{partClassId})
 	</insert>
+	
+	<select id="getAllType" resultType="PartType">
+		SELECT * FROM parttype
+	</select>
 </mapper>

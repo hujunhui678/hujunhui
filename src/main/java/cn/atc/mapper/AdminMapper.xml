@@ -26,7 +26,7 @@
 		)
 		) AND p.`permLevel`= 1
 	</select>
-	
+
 	<select id="getPermTwo" parameterType="string"
 		resultType="Permission">
 		SELECT * FROM permission p WHERE p.`id` IN(
@@ -39,7 +39,7 @@
 		)
 		) AND p.`permLevel`= 2
 	</select>
-	
+
 	<select id="getPermThree" parameterType="string"
 		resultType="Permission">
 		SELECT * FROM permission p WHERE p.`id` IN(
@@ -52,4 +52,70 @@
 		)
 		) AND p.`permLevel`= 3
 	</select>
+
+
+	<select id="getAdmin" parameterType="integer" resultType="Admin">
+		select
+		* from Admin where id = #{id}
+	</select>
+	<select id="getAdminByLoginName" parameterType="string"
+		resultType="Admin">
+		select
+		* from Admin where loginName = #{loginName}
+	</select>
+
+	<update id="updateAdmin" parameterType="integer">
+		update Admin
+		<set>
+			<trim suffixOverrides=",">
+				<if test="name != null and name != ''">
+					name = #{name},
+				</if>
+				<if test="loginName != null and loginName != ''">
+					loginName = #{loginName},
+				</if>
+				<if test="phone != null and phone != ''">
+					phone = #{phone},
+				</if>
+				<if test="address != null and address != ''">
+					address = #{address},
+				</if>
+				<if
+					test="loginNameModifyCount != null and loginNameModifyCount != ''">
+					loginNameModifyCount = #{loginNameModifyCount},
+				</if>
+			</trim>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<select id="getAdminByLoginNameModifyCount"
+		parameterType="integer" resultType="integer">
+		SELECT loginNameModifyCount FROM
+		admin WHERE id = #{id}
+	</select>
+
+	<update id="updatePwd" parameterType="Admin">
+		update admin
+		<set>
+			<trim>
+				<if test="password">
+					password = #{password}
+				</if>
+			</trim>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<insert id="addLoginLog" parameterType="LoginLog">
+		insert into
+		loginlog(loginAddress,loginIP,loginTime,loginName,name)
+		values(#{loginAddress},#{loginIP},#{loginTime},#{loginName},#{name})
+	</insert>
+
+
 </mapper>

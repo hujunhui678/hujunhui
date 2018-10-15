@@ -41,7 +41,6 @@ public class FinishedProductsType {
 
 	public FinishedProductsType() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 }

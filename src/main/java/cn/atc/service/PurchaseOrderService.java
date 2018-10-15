@@ -13,4 +13,6 @@ public interface PurchaseOrderService {
 	Integer updateIsSigninById(Map<String, Object>map);
 	
 	Integer add(PurchaseOrder purchaseOrder);
+	// ·¢²¼¶©µ¥
+	Integer insertPurchaseOrder(Map<String, Object>map);
 }

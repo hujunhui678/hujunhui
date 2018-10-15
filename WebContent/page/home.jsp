@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -46,9 +47,7 @@
 			<button type="button" class="close" data-dismiss="alert">
 				<i class="icon-remove"></i>
 			</button>
-			<i class="icon-ok green"></i>欢迎登录,你本次登录时间为2016年7月12日13时34分，登录IP:192.168.1.110.
-
-
+			<i class="icon-ok green"></i>欢迎登录，你本次登录时间为${date}，登录IP: ${ip }
 		</div>
 		<div style="font-family:  微软雅黑">
 			<b style="color: #0000ff; font-size: 16px;"> 立足中国，放眼全球</b>，以创新产品和经营，创造性价比和质量优势，成为中国领先，世界有竞争力的汽车空调压缩机优秀供应商。
@@ -57,10 +56,6 @@
 		<div>
 			<img src="http://www.aotecar.com/images/hefei/banner/banner2.jpg">
 		</div>
-
-
-
-
 		<!--记录-->
 		<div class="clearfix">
 			<div class="home_btn">

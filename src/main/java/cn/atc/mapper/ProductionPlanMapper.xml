@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.ProductionPlanMapper">
+
+	<resultMap type="ProductionPlan" id="ProductionPlan">
+		<id column="id" property="id" />
+		<result column="produceNum" property="produceNum" />
+		<result column="arrivalTime" property="arrivalTime" />
+		<result column="estimatedTimeOfCompletion"
+			property="estimatedTimeOfCompletion" />
+		<result column="produceNum" property="produceNum" />
+
+		<association property="finishedProductsType"
+			javaType="FinishedProductsType">
+			<result column="productName" property="productName" />
+			<result column="productType" property="productType" />
+		</association>
+		<association property="admin" javaType="Admin">
+			<result column="name" property="name" />
+		</association>
+		<association property="auditState" javaType="AuditState">
+			<result column="auditStateName" property="auditStateName" />
+		</association>
+	</resultMap>
+
+	<select id="getAllProPlan" parameterType="map"
+		resultMap="ProductionPlan">
+		SELECT
+		pp.`id`,pp.`produceNum`,pp.`arrivalTime`,pp.`estimatedTimeOfCompletion`,
+		ft.`productName`,ft.`productType`,admin.`name` ,au.`auditStateName`
+		FROM productionplan pp
+		LEFT JOIN finishedproductstype ft
+		ON
+		pp.`finishedProductTypeId` = ft.`id`
+		LEFT JOIN admin
+		ON pp.`compilers` =
+		admin.`id`
+		LEFT JOIN auditstate au
+		ON pp.`auditStateId` = au.`id`
+		<trim prefix="where" prefixOverrides="and">
+			<if test="id != null and id != ''">
+				and pp.id = #{id}
+			</if>
+			<if test="productName != null and productName != ''">
+				and ft.`productName` like concat('%',#{productName},'%')
+			</if>
+			<if test="arrivalTime != null and arrivalTime != ''">
+				and pp.`arrivalTime` like concat(#{arrivalTime},'%')
+			</if>
+		</trim>
+		limit
+		#{startRow},#{pageSize}
+	</select>
+
+	<select id="count" parameterType="map" resultType="integer">
+		SELECT COUNT(1)
+		FROM productionplan pp
+		LEFT JOIN finishedproductstype ft
+		ON pp.`finishedProductTypeId` = ft.`id`
+		LEFT JOIN admin
+		ON
+		pp.`compilers` = admin.`id`
+		LEFT JOIN auditstate au
+		ON pp.`auditStateId`
+		= au.`id`
+		<trim prefix="where" prefixOverrides="and">
+			<if test="id != null and id != ''">
+				and pp.id = #{id}
+			</if>
+			<if test="productName != null and productName != ''">
+				and ft.`productName` like concat('%',#{productName},'%')
+			</if>
+			<if test="arrivalTime != null and arrivalTime != ''">
+				and pp.`arrivalTime` like concat(#{arrivalTime},'%')
+			</if>
+		</trim>
+	</select>
+
+
+	<resultMap type="ProductionPlan" id="getPartFormula">
+		<id column="id" property="id" />
+		<association property="partFormula" javaType="PartFormula">
+			<result column="formulaName" property="formulaName" />
+		</association>
+		<collection property="partType" ofType="PartType">
+			<result column="partType" property="partType" />
+		</collection>
+		<collection property="partClassify" ofType="PartClassify">
+			<result column="partName" property="partName" />
+		</collection>
+		<collection property="partFormulaDesc"
+			ofType="PartFormulaDesc">
+			<result column="requirement" property="requirement" />
+			<result column="partTypeId" property="partTypeId" />
+		</collection>
+	</resultMap>
+
+	<select id="getPartFromulaById" parameterType="string"
+		resultMap="getPartFormula">
+		SELECT
+		pp.`id`,pf.`formulaName`,pt.`partType`,pc.`partName`,pd.`requirement`,pd.`partTypeId`
+		FROM productionplan pp
+		JOIN partformuladesc pd
+		ON
+		pp.`finishedProductTypeId` = pd.`finishedProductsTypeId`
+		JOIN
+		partformula pf
+		ON pd.`partformulaId` = pf.id
+		JOIN parttype pt
+		ON
+		pd.`partTypeId` = pt.`id`
+		JOIN partclassify pc
+		ON pt.`partClassId` =
+		pc.`id`
+		WHERE pp.`id` = #{id}
+	</select>
+
+	<update id="ProductionPlanGoAudit" parameterType="map">
+		update productionplan
+		<set>
+			<trim suffixOverrides=",">
+				auditStateId = #{auditStateId},
+				<if test="reason != null and reason != ''">
+					reason = #{reason},
+				</if>
+			</trim>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<select id="getReason" parameterType="string"
+		resultType="ProductionPlan">
+		SELECT reason FROM productionplan
+		WHERE id = #{id}
+	</select>
+</mapper>

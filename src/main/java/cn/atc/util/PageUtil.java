@@ -67,4 +67,8 @@ public class PageUtil<T> {
 		this.lists = lists;
 	}
 
+	public void setTotalPage(int totalPage) {
+		this.totalPage = totalPage;
+	}
+
 }

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.StoreHouseOutInRecordMapper">
+	<resultMap type="StoreHouseOutInRecord"
+		id="houseOutInRecordByCondition">
+		<id column="id" property="id" />
+		<result column="isOut" property="isOut" />
+		<result column="time" property="time" />
+		<result column="empName" property="empName" />
+		<result column="principal" property="principal" />
+		<result column="leadingDept" property="leadingDept" />
+		<result column="receivePerson" property="receivePerson" />
+		<result column="remark" property="remark" />
+		<result column="d2id" property="releaseDeptId"/>
+		<result column="a3id" property="releasePersonId"/>
+		<association property="principalAdmin" javaType="Admin">
+			<id column="a1id" property="id" />
+			<result column="a1Name" property="name" />
+		</association>
+		<association property="receiveAdmin" javaType="Admin">
+			<id column="a2id" property="id" />
+			<result column="a2Name" property="name" />
+		</association>
+		<association property="leadingDepartment"
+			javaType="Department">
+			<id column="did" property="id" />
+			<result column="deptName" property="deptName" />
+		</association>
+		<association property="releaseDept" javaType="Department">
+			<id column="d2id" property="id"/>
+			<result column="d2name" property="deptName"/>
+		</association>
+		<association property="releasePerson" javaType="Admin">
+			<id column="a3id" property="id"/>
+			<result column="a3name" property="name"/>
+		</association>
+		<collection property="storeHouseOutInDescRecordList"
+			ofType="StoreHouseOutInDescRecord">
+			<id column="sid" property="id" />
+			<result column="outInRecordId" property="outInRecordId" />
+			<result column="partTypeId" property="partTypeId" />
+			<result column="finishedProductId"
+				property="finishedProductId" />
+			<result column="num" property="num" />
+			<result column="goodsOnHand" property="goodsOnHand" />
+			<association property="finishedProductsType"
+				javaType="FinishedProductsType">
+				<id column="fid" property="id" />
+				<result column="productType" property="productType" />
+				<result column="productName" property="productName" />
+			</association>
+			<association property="partType" javaType="PartType">
+				<id column="pid" property="id" />
+				<result column="partTypeName" property="partType" />
+				<result column="partClassId" property="partClassId" />
+			</association>
+		</collection>
+	</resultMap>
+	<select id="getStoreHouseOutInRecordByCondition"
+		parameterType="map" resultMap="houseOutInRecordByCondition">
+		SELECT p.`id` AS 'pid',p.`partType` AS
+		'partTypeName',p.`partClassId`,f.`id` AS
+		'fid',f.`productName`,f.`productType`,s.*,a1.`id` AS 'a1id',a1.`name`
+		AS 'a1Name',a2.`id` AS 'a2id',a2.`name` AS 'a2Name',d.`id` AS
+		'did',d.`deptName`,s2.`id` AS
+		'sid',s2.`finishedProductId`,s2.`goodsOnHand`,s2.`num`,s2.`outInRecordId`,s2.`partTypeId`,d2.`id` AS 'd2id',d2.`deptName` AS 'd2name',a3.`id` AS 'a3id',a3.`name` AS 'a3name'
+		FROM storeHouseOutInRecord s
+		LEFT JOIN admin a1 ON a1.`id` =
+		s.`principal`
+		LEFT JOIN admin a2 ON a2.`id` = s.`receivePerson`
+		LEFT
+		JOIN department d ON d.`id` = s.`leadingDept`
+		LEFT JOIN
+		StoreHouseOutInDescRecord s2 ON s2.`outInRecordId`=s.`id`
+		LEFT JOIN
+		parttype p ON s2.`partTypeId` = p.`id`
+		LEFT JOIN finishedproductstype f
+		ON s2.`finishedProductId` = f.id
+		LEFT JOIN department d2 ON d2.`id` = s.`releaseDept`
+		LEFT JOIN admin a3 ON a3.`id` = s.`releasePerson`
+		<where>
+			<if test="recordId!=null and recordId!=''">
+				and s.id=#{recordId}
+			</if>
+			<if test="time!=null and time!=''">
+				and s.time LIKE CONCAT(#{time},'%')
+			</if>
+			<if test="isOut!=null and isOut!='' and isOut!=-1">
+				and s.isOut=#{isOut}
+			</if>
+		</where>
+		GROUP BY s.`id`
+		ORDER BY `time` desc
+		LIMIT #{startRow},#{pageSize}
+	</select>
+
+	<select id="getStoreHouseOutInRecordCountByCondition"
+		resultType="integer" parameterType="map">
+		SELECT COUNT(1) FROM (
+		SELECT COUNT(s.`id`)
+		FROM storeHouseOutInRecord s
+		LEFT JOIN admin a1 ON
+		a1.`id` =
+		s.`principal`
+		LEFT JOIN admin a2 ON a2.`id` =
+		s.`receivePerson`
+		LEFT
+		JOIN department d ON d.`id` = s.`leadingDept`
+		LEFT JOIN
+		StoreHouseOutInDescRecord s2 ON s2.`outInRecordId`=s.`id`
+		LEFT JOIN
+		parttype p ON s2.`partTypeId` = p.`id`
+		LEFT JOIN
+		finishedproductstype f
+		ON p.`id` = f.id
+		<where>
+			<if test="recordId!=null and recordId!=''">
+				and s.id=#{recordId}
+			</if>
+			<if test="time!=null and time!=''">
+				and s.time LIKE CONCAT(#{time},'%')
+			</if>
+			<if test="isOut!=null and isOut!='' and isOut!=-1">
+				and s.isOut=#{isOut}
+			</if>
+		</where>
+		GROUP BY s.`id`
+		)a
+	</select>
+	
+	<insert id="insertStoreHouseOutInRecord" parameterType="map">
+		insert into storehouseoutinrecord (id,isOut,time,empName,principal,leadingDept,receivePerson,releaseDept,releasePerson,remark)
+		values(#{id},#{isOut},#{time},#{empName},#{principal},#{leadingDept},#{receivePerson},#{releaseDept},#{releasePerson},#{remark})
+	</insert>
+	
+	<insert id="insertStoreHouseOutInDescRecord" parameterType="map">
+		insert into storehouseoutindescrecord (outInRecordId,partTypeId,finishedProductId,num,goodsOnHand)
+		values(#{outInRecordId},#{partTypeId},#{finishedProductId},#{num},#{goodsOnHand})
+	</insert>
+	
+	<select id="getIsOutCount" resultType="integer">
+		SELECT COUNT(id) FROM storehouseoutinrecord WHERE isOut = 1
+	</select>
+	
+	<select id="getIsInCount" resultType="integer">
+		SELECT COUNT(id) FROM storehouseoutinrecord WHERE isOut = 2
+	</select>
+</mapper>

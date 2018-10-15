@@ -24,5 +24,10 @@ public class PartTypeServiceImpl implements PartTypeService {
 	public Integer insertPartType(PartType partType) {
 		return partTypeMapper.insertPartType(partType);
 	}
+	
+	@Override
+	public List<PartType> getAllType() {
+		return partTypeMapper.getAllType();
+	}
 
 }

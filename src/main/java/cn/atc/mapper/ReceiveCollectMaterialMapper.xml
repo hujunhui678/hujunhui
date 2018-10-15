@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.ReceiveCollectMaterialMapper">
+	<resultMap type="ReceiveCollectMaterial" id="receiveCollectMaterials">
+		<id column="id" property="id"/>
+		<result column="isReceive" property="isReceive"/>
+		<result column="isAgree" property="isAgree"/>
+		<result column="releaseTime" property="releaseTime"/>
+		<result column="auditStateId" property="auditStateId"/>
+		<result column="leadingDept" property="leadingDeptId"/>
+		<result column="receivePerson" property="receivePersonId"/>
+		<result column="notPassDesc" property="notPassDesc"/>
+		<result column="auditor" property="auditorId"/>
+		<result column="auditTime" property="auditTime"/>
+		<result column="agreeTime" property="agreeTime"/>
+		<result column="a3id" property="approverId"/>
+		<result column="version" property="version"/>
+		<association property="auditor" javaType="Admin">
+			<id column="auditorId" property="id"/>
+			<result column="auditorName" property="name"/>
+		</association>
+		<association property="leadingDept" javaType="Department">
+			<id column="did" property="id"/>
+			<result column="deptName" property="deptName"/>
+		</association>
+		<association property="auditState" javaType="AuditState">
+			<id column="auditstateId" property="id"/>
+			<result column="auditStateName" property="auditStateName"/>
+		</association>
+		<association property="receivePerson" javaType="Admin">
+			<id column="a2id" property="id"/>
+			<result column="a2name" property="name"/>
+		</association>
+		<association property="approver" javaType="Admin">
+			<id column="a3id" property="id"/>
+			<result column="a3name" property="name"/>
+		</association>
+		<association property="releaseDept" javaType="Department">
+			<id property="id" column="d5id"/>
+			<result column="d5name" property="deptName"/>
+		</association>
+		<association property="releasePerson" javaType="Admin">
+			<id column="a4id" property="id"/>
+			<result column="a4name" property="name"/>
+		</association>
+		<collection property="receiveCollectMaterialDescList" ofType="ReceiveCollectMaterialDesc">
+			<id property="id" column="id"/>
+			<result column="partTypeId" property="partTypeId"/>
+			<result column="orderNum" property="orderNum"/>
+			<association property="partType" javaType="PartType">
+				<id column="partTypeId" property="id" />
+				<result column="partType" property="partType" />
+				<result column="partClassId" property="partClassId"/>
+			</association>
+		</collection>
+	</resultMap>
+	<select id="getReceiveCollectMaterialByCondition" parameterType="map" resultMap="receiveCollectMaterials">
+				SELECT e1.`name` AS 'receivePersonName',d4.`id` AS
+				'did',d4.`deptName`,p2.`partClassId`,r2.`orderNum`,
+				p2.`partType`,p3.`id` AS 'yid',p3.`partName`,r1.*,r2.`partTypeId`,r2.`orderNum`,
+				e1.`id` AS 'auditorId',a3.id AS 'a3id',a3.name AS 'a3name',
+				a.`id` AS
+				'auditstateId',d5.`deptName` AS 'd5name',d5.`id` AS 'd5id',a4.`id` AS 'a4id',a4.`name` AS 'a4name',a.`auditStateName`,a2.`id` AS 'a2id',a2.`name` AS 'a2name' FROM
+				ReceiveCollectMaterial r1
+				LEFT JOIN receivecollectmaterialdesc r2 ON r1.`id`=r2.`materialId`
+				LEFT JOIN parttype p2 ON p2.`id`= r2.`partTypeId`
+				LEFT JOIN partclassify p3 ON p3.`id` = p2.`partClassId`
+				LEFT JOIN admin e1 ON r1.`auditor` = e1.`id`
+				LEFT JOIN admin a2 ON a2.`id` = r1.`receivePerson`
+				LEFT JOIN admin a3 ON a3.`id` = r1.`approver`
+				LEFT JOIN department d4 ON d4.`id`= r1.`leadingDept`
+				LEFT JOIN auditstate a ON r1.`auditStateId`=a.`id`
+				LEFT JOIN department d5 ON d5.id = r1.`releaseDept`
+				LEFT JOIN admin a4 ON a4.`id` = r1.`releasePerson`
+				<where>
+					<if test="auditStateId!='' and auditStateId!=0">
+						and a.id=#{auditStateId}
+					</if>
+					<if test="materialId!='' and materialId!=0">
+						and r1.id=#{materialId}
+					</if>
+					<if test="releaseTime!=''">
+						and r1.releaseTime LIKE CONCAT('%',#{releaseTime},'%')
+					</if>
+					<if test="isReceive!=null and isReceive!='' and isReceive!=0">
+						and r1.isReceive=#{isReceive}
+					</if>
+				</where>
+				GROUP BY r1.`id`
+				ORDER BY isAgree DESC
+				LIMIT #{startRow},#{pageSize}
+	</select>
+	
+	<select id="getReceiveCollectMaterialCountByCondition" parameterType="map" resultType="integer">
+			SELECT COUNT(1) FROM(
+				SELECT  r1.`id` FROM
+				ReceiveCollectMaterial r1
+				LEFT JOIN receivecollectmaterialdesc r2 ON r1.`id`=r2.`materialId`
+				LEFT JOIN parttype p2 ON p2.`id`= r2.`partTypeId`
+				LEFT JOIN partclassify p3 ON p3.`id` = p2.`partClassId`
+				LEFT JOIN admin e1 ON r1.`auditor` = e1.`id`
+				LEFT JOIN department d4 ON d4.`id`= r1.`leadingDept`
+				LEFT JOIN auditstate a ON r1.`auditStateId`=a.`id`
+				<where>
+					<if test="auditStateId!='' and auditStateId!=0">
+						and a.id=#{auditStateId}
+					</if>
+					<if test="materialId!='' and materialId!=0">
+						and r1.id=#{materialId}
+					</if>
+					<if test="releaseTime!=''">
+						and r1.releaseTime LIKE CONCAT('%',#{releaseTime},'%')
+					</if>
+					<if test="isReceive!=null and isReceive!='' and isReceive!=0">
+						and r1.isReceive=#{isReceive}
+					</if>
+				</where>
+				GROUP BY r1.`id`
+				)a
+	</select>
+	
+	<update id="updateIsAgreeById" parameterType="map">
+		update receivecollectmaterial set version=version+1,isAgree=#{isAgree},agreeTime=#{agreeTime},approver=#{adminId} where id=#{id} and version=#{version}
+	</update>
+</mapper>
