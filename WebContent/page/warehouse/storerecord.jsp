@@ -55,7 +55,7 @@
 								<div class="row cl" style="margin-top:20px">
 									<div style="display:block;margin:0 auto;"><label style="display:inline-block;width:560px;text-align:center"><span class="c-red"></span>状态变更详情</label></div>
 								<div  style="display:inline-block;margin-top:3px;height:170px" class="formControls col-xs-8 col-sm-8">
-										<table border="1" style="margin-top:20px;margin-left:100px">
+										<table style="margin-top:20px;margin-left:100px">
 											<tr>
 												<th style="width:70px"><span style="display:inline-block;text-align: center;width:130px">入库/出库</span></th>
 												<th style="width:50px"><span style="display:inline-block;text-align: center;width:50px">数量</span></th>
