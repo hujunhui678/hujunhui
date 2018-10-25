@@ -16,4 +16,6 @@ public interface StoreHouseOutInRecordMapper {
 	Integer getStoreHouseOutInRecordCountByCondition(Map<String, Object>map);
 	Integer insertStoreHouseOutInRecord(Map<String, Object>map);// 生成出库记录
 	Integer insertStoreHouseOutInDescRecord(Map<String, Object>map);// 生成出库详细记录
+	Integer getIsOutCount();// 获取出库记录数
+	Integer getIsInCount();// 获取入库记录数
 }

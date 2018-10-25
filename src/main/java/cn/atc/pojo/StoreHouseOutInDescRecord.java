@@ -8,7 +8,7 @@ package cn.atc.pojo;
  */
 public class StoreHouseOutInDescRecord {
 	private long id;// 编号
-	private long outInRecordId;//出库入库记录表外键
+	private String outInRecordId;//出库入库记录表外键
 	private long partTypeId;// 零件型号(零件型号外键)
 	private long finishedProductId;// 成品类别(成品类别表外键)
 	private long num;// 出入库数量
@@ -18,17 +18,17 @@ public class StoreHouseOutInDescRecord {
 	private PartType partType;// 零件类别
 	private FinishedProductsType finishedProductsType;// 成品类别
 	
+	public String getOutInRecordId() {
+		return outInRecordId;
+	}
+	public void setOutInRecordId(String outInRecordId) {
+		this.outInRecordId = outInRecordId;
+	}
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
-	}
-	public long getOutInRecordId() {
-		return outInRecordId;
-	}
-	public void setOutInRecordId(long outInRecordId) {
-		this.outInRecordId = outInRecordId;
 	}
 	public long getPartTypeId() {
 		return partTypeId;
@@ -70,6 +70,21 @@ public class StoreHouseOutInDescRecord {
 		return finishedProductsType;
 	}
 	public void setFinishedProductsType(FinishedProductsType finishedProductsType) {
+		this.finishedProductsType = finishedProductsType;
+	}
+	
+	public StoreHouseOutInDescRecord(long id, String outInRecordId, long partTypeId, long finishedProductId, long num,
+			long goodsOnHand, StoreHouseOutInRecord storeHouseOutInRecord, PartType partType,
+			FinishedProductsType finishedProductsType) {
+		super();
+		this.id = id;
+		this.outInRecordId = outInRecordId;
+		this.partTypeId = partTypeId;
+		this.finishedProductId = finishedProductId;
+		this.num = num;
+		this.goodsOnHand = goodsOnHand;
+		this.storeHouseOutInRecord = storeHouseOutInRecord;
+		this.partType = partType;
 		this.finishedProductsType = finishedProductsType;
 	}
 	public StoreHouseOutInDescRecord() {

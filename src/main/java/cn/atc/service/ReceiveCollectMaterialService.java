@@ -12,6 +12,7 @@ public interface ReceiveCollectMaterialService {
 
 	Integer updateIsAgreeById(Map<String, Object> map);// 审批通过 修改状态
 
+	Integer updateIsAgreeByIdH(Map<String, Object> map);// 审批通过 修改状态
 	Integer insertReceive(ReceiveCollectMaterial rcm);// 新增领料单
 
 	Integer auditReceive(ReceiveCollectMaterial rcm);// 审核领料单

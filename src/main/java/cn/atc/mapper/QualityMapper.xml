@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.QualityMapper">
+
+
+
+	<select id="queryAll" parameterType="map"
+		resultType="Quality">
+		SELECT qualitycertificate.`id`,qualitycertificate.`deptNo`,admin.`name` adminName,partType.`partType` parttypes,
+		finishedproductstype.`productType` finishedtype,qualitycertificate.`submissionTime`,
+		qualitycertificate.`detectionNum`,qualitycertificate.desc
+		FROM qualitycertificate 
+		INNER JOIN admin ON qualitycertificate.`adminPeper`=admin.`id`
+		INNER JOIN partType ON qualitycertificate.`detectionPartTypeId`=partType.`id`
+		INNER JOIN finishedproductstype ON qualitycertificate.`detectionFinishedTypeId`=finishedproductstype.`id`
+		
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="partType!=null and partType!=''">
+				partType like concat('%',#{partType},'%')
+			</if>
+		
+		
+		
+			<if test="deptNo!=0">
+				and deptNo=#{deptNo}
+			</if>
+		</trim>
+		limit #{startRow},#{pageSize}
+		
+	</select>
+
+	
+	<select id="getQualityTocount" resultType="Integer" parameterType="map">
+		SELECT count(1) FROM qualitycertificate
+		
+		
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="partType!=null and partType!=''">
+				partType like concat('%',#{partType},'%')
+			</if>
+		
+		
+		
+			<if test="deptNo!=0">
+				and deptNo=#{deptNo}
+			</if>
+		</trim>
+	</select>
+
+	<insert id="addQuality" parameterType="Quality">
+		INSERT INTO qualitycertificate(deptNo,adminPeper,detectionPartTypeId,detectionFinishedTypeId,submissionTime,
+		detectionNum,`desc`) VALUES(#{deptNo},#{adminPeper},#{detectionPartTypeId},#{detectionFinishedTypeId},
+		#{submissionTime},#{detectionNum},#{desc})
+	</insert>
+
+	<delete id="deleteQuality" parameterType="Quality">
+		delete from qualitycertificate where id=#{id}
+	</delete>
+	
+	
+	<update id="updateQuality" parameterType="Quality">
+		update qualitycertificate set 
+		detectionNum=#{detectionNum},`desc`=#{desc} 
+		where id=#{id}
+	</update>
+	
+	
+	<select id="getQualityId" resultType="Quality">
+		SELECT * FROM qualitycertificate where id=#{id}
+	</select>
+</mapper>

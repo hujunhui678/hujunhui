@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "http://mybatis.org/dtd/mybatis-3-mapper.dtd" "mybatis-3-mapper.dtd" >
+<mapper namespace="cn.atc.mapper.OrderformMapper">
+
+	<select id="queryAll" resultType="Orderform">
+		SELECT
+		o.id,f.productType,o.finishedType,o.orderNum,o.state,c.clientCompany,c.clientContact,o.orderDate,o.state
+		FROM orderform AS o
+		INNER JOIN finishedproductstype AS f
+		ON
+		o.finishedType=f.id
+		INNER JOIN CLIENT AS c
+		ON o.clientId=c.id
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="state != null">
+				and state LIKE concat('%',#{state},'%')
+			</if>
+		</trim>
+		limit
+		#{startRow},#{pageSize}
+	</select>
+	<select id="Count" resultType="integer">
+		select count(id) from orderform
+	</select>
+
+	<resultMap type="Orderform" id="getOrder">
+		<id column="id" property="id" />
+		<result column="state" property="state"/>
+		<result column="finishedType" property="finishedType"/>
+		<result column="orderNum" property="orderNum"/>
+		<association property="client" javaType="Client">
+			<result column="clientName" property="clientName"/>
+			<result column="clientCompany" property="clientCompany"/>
+		</association>
+	</resultMap>
+
+
+	<select id="queryId" resultMap="getOrder">
+		SELECT
+		of.id,of.state,of.finishedType,of.orderNum,c.clientName,c.clientCompany FROM orderform of
+		JOIN CLIENT c
+		ON
+		of.clientId = c.id
+		WHERE of.id = #{id}
+	</select>
+	<select id="getquery" resultType="Orderform">
+		select * from orderform
+	</select>
+
+	<delete id="delete">
+		delete from orderform where id in
+		<foreach collection="adminIds" item="ids" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<insert id="add">
+
+		INSERT INTO
+		orderform(id,finishedType,orderNum,clientId,orderDate,estimatedTimeOfArrival)
+		VALUE(#{id},#{finishedType},#{orderNum},#{clientId},#{orderDate},#{estimatedTimeOfArrival})
+	</insert>
+
+	<update id="update">
+		UPDATE orderform SET state=#{state} WHERE id=#{id}
+	</update>
+
+
+</mapper>

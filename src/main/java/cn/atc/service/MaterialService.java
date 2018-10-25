@@ -13,7 +13,6 @@ public interface MaterialService {
 	PageUtil<Material> getMaterialsByCondition(Map<String, Object>map);
 	List<Material> getAllMaterials();
 	Integer getOutMaterials(ReceiveCollectMaterialDesc receiveCollectMaterialDesc);
-	
-
 	Integer insertMater(@Param("id")Integer id);//新增库存零件分类
+	Integer getInFinishedProductsStock(ReceiveCollectMaterialDesc receiveCollectMaterialDesc);// 向成品库存中加入零件(增加零件数量)
 }	

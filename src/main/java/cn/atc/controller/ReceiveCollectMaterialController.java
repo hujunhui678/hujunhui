@@ -40,7 +40,7 @@ public class ReceiveCollectMaterialController {
 		ReceiveCollectMaterial rcm = new ReceiveCollectMaterial();
 		// 新增领料单操作...
 		long id = IDUtil.getId();// 领料单的id;
-		rcm.setId(id);
+		rcm.setId(((Long)id).toString());
 		rcm.setIsReceive(2);// 2代表领料单
 		rcm.setProposerId(Long.parseLong(adminId));// 申请人的id
 		rcm.setReleaseTime(DateConverter.getDate());// 获取当前时间
@@ -49,7 +49,7 @@ public class ReceiveCollectMaterialController {
 			List<ReceiveCollectMaterialDesc> rcmdList = new ArrayList<>();
 			for (int i = 0; i < partIds.length; i++) {
 				ReceiveCollectMaterialDesc rcmd = new ReceiveCollectMaterialDesc();
-				rcmd.setMaterialId(rcm.getId());
+				rcmd.setMaterialId(Long.parseLong(rcm.getId()));
 				rcmd.setPartTypeId(Long.parseLong(partIds[i]));
 				rcmd.setOrderNum(Long.parseLong(Requirements[i]));
 				rcmdList.add(rcmd);

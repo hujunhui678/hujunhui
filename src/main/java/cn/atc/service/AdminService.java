@@ -1,5 +1,6 @@
 package cn.atc.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +25,6 @@ public interface AdminService {
 	Integer updatePwd(Admin admin);// 修改密码
 
 	Integer addLoginLog(LoginLog log);// 登录成功之后插入登录日志表
+
+	List<Admin> queryAll();// 查询所有用户
 }

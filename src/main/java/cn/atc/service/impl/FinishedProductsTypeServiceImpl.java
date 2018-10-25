@@ -1,5 +1,7 @@
 package cn.atc.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,10 @@ public class FinishedProductsTypeServiceImpl implements FinishedProductsTypeServ
 	@Override
 	public Integer insertFinishedProductsType(FinishedProductsType finishedProductsType) {
 		return finishedProductsTypeMapper.insertFinishedProductsType(finishedProductsType);
+	}
+	
+	public List<FinishedProductsType> getFinishedproductstype() {
+		return finishedProductsTypeMapper.getFinishedproductstype();
 	}
 
 }

@@ -16,7 +16,8 @@ import cn.atc.pojo.ReceiveCollectMaterial;
 public interface ReceiveCollectMaterialMapper {
 	List<ReceiveCollectMaterial> getReceiveCollectMaterialByCondition(Map<String, Object> map);// 根据条件获取收领料单
 	Integer getReceiveCollectMaterialCountByCondition(Map<String, Object>map);// 根据条件获取收领料单条数
-	Integer updateIsAgreeById(Map<String, Object>map);// 审批通过 修改状态
+	Integer updateIsAgreeById(Map<String, Object> map);// 审批通过 修改状态
+	Integer updateIsAgreeByIdH(Map<String, Object> map);// 审批通过 修改状态
 	
 	Integer insertReceive(ReceiveCollectMaterial rcm);//新增领料单
 	

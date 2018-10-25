@@ -132,7 +132,7 @@ button {
 
 					<div class="box">
 						<div id="pagination1" class="page fl"></div>
-						<div class="info fl">
+						<div class="info fl" style="display:none">
 							<p>
 								<span id="current1"></span>
 							</p>

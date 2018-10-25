@@ -59,4 +59,8 @@ public class ProductionPlanServiceImp implements ProductionPlanService {
 		return productionPlanMapper.getProPlan(ids);
 	}
 
+	public Integer addProductionPlan(Map<String, Object> map) {
+		return productionPlanMapper.addProductionPlan(map);
+	}
+
 }

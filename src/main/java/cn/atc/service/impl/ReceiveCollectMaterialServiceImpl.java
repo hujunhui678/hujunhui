@@ -57,6 +57,7 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 		map.put("startRow",page.getStartRow());
 		map.put("currentPage", page.getCurrentPage());
 		List<ReceiveCollectMaterial> receiveCollectMaterialList = receiveCollectMaterialMapper.getReceiveCollectMaterialByCondition(map);
+		page.setTotalPage(page.getTotalPage());
 		page.setLists(receiveCollectMaterialList);
 		return page;
 	}
@@ -87,6 +88,11 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 	public Integer delReveive(String id) {
 		Integer re = receiveCollectMaterialDescMapper.delReveiveDesc(id);
 		return receiveCollectMaterialMapper.delReveive(id);
+	}
+
+	@Override
+	public Integer updateIsAgreeByIdH(Map<String, Object> map) {
+		return receiveCollectMaterialMapper.updateIsAgreeByIdH(map);
 	}
 
 }

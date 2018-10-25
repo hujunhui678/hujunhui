@@ -26,4 +26,7 @@ public interface ProductionPlanService {
 	Integer insertProplan(ProductionPlan pp);// 新增生产规划..
 
 	Integer editProplan(ProductionPlan pp);// 修改生产规划.
+	// 成品零件不足时自动生成生产计划
+
+	Integer addProductionPlan(Map<String, Object> map);
 }

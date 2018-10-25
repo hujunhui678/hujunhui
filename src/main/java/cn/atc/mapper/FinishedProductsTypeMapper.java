@@ -1,5 +1,6 @@
 package cn.atc.mapper;
 
+import java.util.List;
 
 import cn.atc.pojo.FinishedProductsType;
 
@@ -11,5 +12,5 @@ import cn.atc.pojo.FinishedProductsType;
 public interface FinishedProductsTypeMapper {
 
 	Integer insertFinishedProductsType(FinishedProductsType finishedProductsType);// 添加成品类别
-	
+	List<FinishedProductsType> getFinishedproductstype();
 }

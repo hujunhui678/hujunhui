@@ -9,6 +9,7 @@
 		<result column="isSignin" property="isSignin" />
 		<result column="notPassDesc" property="notPassDesc" />
 		<result column="auditTime" property="auditTime" />
+		<result column="releaseTime" property="releaseTime"/>
 		<association property="buyerEmp" javaType="Admin">
 			<id property="id" column="buyerId" />
 			<result column="buyerName" property="name" />
@@ -84,7 +85,7 @@
 			</if>
 		</where>
 		GROUP BY p4.`id`
-		ORDER BY isSignin
+		ORDER BY isSignin asc,p4.releaseTime desc
 		limit #{startRow},#{pageSize}
 	</select>
 
@@ -128,5 +129,21 @@
 		update
 		purchaseorder set isSignin=1,consignee=#{adminId} where id=#{id}
 	</update>
+		<insert id="add">
+	INSERT INTO purchaseorder(id,buyer,purchaseTime,isSignin,consignee,auditStateId,leadingDept,receivePerson,notPassDesc,auditor,auditTime)
+VALUE(#{id},#{buyer},#{purchaseTime},#{isSignin},#{consignee},#{auditStateId},#{leadingDept},#{receivePerson},#{notPassDesc},#{auditor},#{auditTime})	
+		</insert>
 
+	<insert id="insertPurchaseOrder" parameterType="map">
+		insert into purchaseorder(id,buyer,purchaseTime,releaseTime,isSignin,auditStateId,leadingDept,receivePerson)
+		values(#{id},13,date_sub(curdate(),interval -1 day),#{releaseTime},0,1,4,14)
+	</insert>
+
+	<update id="updateAuditStateId" parameterType="map">
+		update purchaseorder set auditStateId=3,auditor=#{auditor},notPassDesc=#{notPassDesc} where id=#{id}
+	</update>
+	
+	<update id="updateNotPassDesc" parameterType="map">
+		update purchaseorder set auditStateId=2,notpassdesc=#{notPassDesc} where id=#{id}
+	</update>
 </mapper>

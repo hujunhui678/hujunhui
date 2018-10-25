@@ -6,7 +6,6 @@ import java.util.Map;
 import cn.atc.common.AllPerm;
 
 import org.apache.ibatis.annotations.Param;
-import org.junit.runners.Parameterized.Parameters;
 
 import cn.atc.pojo.Admin;
 import cn.atc.pojo.Admin_Role;
@@ -16,7 +15,7 @@ import cn.atc.pojo.Role;
 public interface PersonMapper {
 	// 展示所有管理员的基本信息(包括部门信息)
 	List<Admin> getAllAdmin(Map<String, Object> maps);
-
+	
 	// 获取管理员数量
 	Integer getAdminToCount();
 

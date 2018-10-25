@@ -27,4 +27,12 @@ public class PurchaseOrderDescServiceImpl implements PurchaseOrderDescService{
 		return purchaseOrderDescMapper.getPurchaseOrderDescByOrderId(orderId);
 	}
 
+	@Override
+	public Integer add(PurchaseOrderDesc purchaseOrderDesc) {
+		return purchaseOrderDescMapper.add(purchaseOrderDesc);
+	}
+	public Integer insertPurchaseOrderDesc(Map<String, Object> map) {
+		return purchaseOrderDescMapper.insertPurchaseOrderDesc(map);
+	}
+
 }
