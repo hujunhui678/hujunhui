@@ -15,4 +15,10 @@ public interface PurchaseOrderService {
 	Integer add(PurchaseOrder purchaseOrder);
 	// 发布订单
 	Integer insertPurchaseOrder(Map<String, Object>map);
+
+	// 审核订单
+	Integer updateAuditStateId(Map<String, Object>map);
+	
+	// 未通过备注
+	Integer updateNotPassDesc(Map<String, Object>map);
 }

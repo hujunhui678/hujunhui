@@ -3,6 +3,7 @@ package cn.atc.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -70,6 +71,11 @@ public class AdminServiceImp implements AdminService {
 	@Override
 	public Admin getAdminByLoginName(String loginName) {
 		return adminMapper.getAdminByLoginName(loginName);
+	}
+
+	@Override
+	public List<Admin> queryAll() {
+		return adminMapper.queryAll();
 	}
 
 }

@@ -38,4 +38,14 @@ public class FinishedProductsStockServiceImpl implements FinishedProductsStockSe
 		page.setTotalPage(page.getTotalPage());
 		return page;
 	}
+
+	@Override
+	public FinishedProductsStock getFinishedPartById(long id) {
+		return finishedProductsStockMapper.getFinishedPartById(id);
+	}
+
+	@Override
+	public Integer updateFinishedPartNum(Map<String, Object> map) {
+		return finishedProductsStockMapper.updateFinishedPartNum(map);
+	}
 }

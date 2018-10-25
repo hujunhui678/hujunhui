@@ -144,7 +144,6 @@
 	     <shiro:hasPermission name="purchasetask:remove">
 		 	<a title="删除" href="javascript:;"   class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
 		 </shiro:hasPermission>
-		 <!-- onclick="Delivery_stop(this,'${item.id}')" -->
 	     </td>
 	     
 	     </tr>
@@ -777,15 +776,7 @@ $(function() {
 	        content:$('#Delivery_stop'),
 			btn:['导出至Excel表格','关闭'],
 			yes: function(index, layero){		
-			if($('#form-field-1').val()==""){
-				layer.alert('快递号不能为空！',{
-	               title: '提示框',				
-				  icon:0,		
-				  }) 
-				
-				}
-				layer.close();    		  
-			
+				window.location.href="${pageContext.request.contextPath}/page/export?shouId="+materialId;
 			}
 		});
 	});
@@ -872,15 +863,7 @@ $(function() {
 	        content:$('#Delivery_stop'),
 			btn:['导出至Excel表格','关闭'],
 			yes: function(index, layero){		
-			if($('#form-field-1').val()==""){
-				layer.alert('快递号不能为空！',{
-	               title: '提示框',				
-				  icon:0,		
-				  }) 
-				
-				}
-				layer.close();    		  
-			
+				window.location.href="${pageContext.request.contextPath}/page/export?lingId="+materialId;
 			}
 		});
 	});
@@ -927,14 +910,6 @@ function Delivery_stop(obj,id){
         content:$('#Delivery_stop'),
 		btn:['确定','关闭'],
 		yes: function(index, layero){		
-		if($('#form-field-1').val()==""){
-			layer.alert('快递号不能为空！',{
-               title: '提示框',				
-			  icon:0,		
-			  }) 
-			
-			}
-			layer.close();    		  
 		
 		}
 	})

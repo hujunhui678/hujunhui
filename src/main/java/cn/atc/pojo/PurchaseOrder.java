@@ -12,10 +12,12 @@ import org.springframework.format.annotation.DateTimeFormat;
  *
  */
 public class PurchaseOrder {
-	private long id;// 采购订单表编号(程序控制生成)
+	private String id;// 采购订单表编号(程序控制生成)
 	private long buyer;// 采购员(雇员表外键)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date purchaseTime;// 采购时间
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	private Date releaseTime;// 发布时间
 	private Integer isSignin;// 是否签收(0未签收1已签收)
 	private long consignee;// 收货人(雇员表外键)
 	private Integer auditStateId;// 审核状态(审核状态表外键)
@@ -33,10 +35,11 @@ public class PurchaseOrder {
 	private Department leadingDepartment;// 领用部门
 	private Admin receiveAdmin;// 领用人
 	private List<PurchaseOrderDesc> purchaseOrderDescList;// 采购订单详细
-	public long getId() {
+	
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public long getBuyer() {
@@ -80,6 +83,12 @@ public class PurchaseOrder {
 	}
 	public void setLeadingDept(long leadingDept) {
 		this.leadingDept = leadingDept;
+	}
+	public Date getReleaseTime() {
+		return releaseTime;
+	}
+	public void setReleaseTime(Date releaseTime) {
+		this.releaseTime = releaseTime;
 	}
 	public long getReceivePerson() {
 		return receivePerson;
@@ -141,29 +150,15 @@ public class PurchaseOrder {
 	public void setPurchaseOrderDescList(List<PurchaseOrderDesc> purchaseOrderDescList) {
 		this.purchaseOrderDescList = purchaseOrderDescList;
 	}
-	public PurchaseOrder(long id, long buyer, Date purchaseTime, Integer isSignin, long consignee, Integer auditStateId,
-			String notPassDesc, long leadingDept, long receivePerson, long auditor, Date auditTime, Admin buyerEmp,
-			Admin consigneeEmp, AuditState auditState, Admin auditorEmp, Department leadingDepartment,
-			Admin receiveAdmin, List<PurchaseOrderDesc> purchaseOrderDescList) {
-		super();
-		this.id = id;
-		this.buyer = buyer;
-		this.purchaseTime = purchaseTime;
-		this.isSignin = isSignin;
-		this.consignee = consignee;
-		this.auditStateId = auditStateId;
-		this.notPassDesc = notPassDesc;
-		this.leadingDept = leadingDept;
-		this.receivePerson = receivePerson;
-		this.auditor = auditor;
-		this.auditTime = auditTime;
-		this.buyerEmp = buyerEmp;
-		this.consigneeEmp = consigneeEmp;
-		this.auditState = auditState;
-		this.auditorEmp = auditorEmp;
-		this.leadingDepartment = leadingDepartment;
-		this.receiveAdmin = receiveAdmin;
-		this.purchaseOrderDescList = purchaseOrderDescList;
+	@Override
+	public String toString() {
+		return "PurchaseOrder [id=" + id + ", buyer=" + buyer + ", purchaseTime=" + purchaseTime + ", releaseTime="
+				+ releaseTime + ", isSignin=" + isSignin + ", consignee=" + consignee + ", auditStateId=" + auditStateId
+				+ ", notPassDesc=" + notPassDesc + ", leadingDept=" + leadingDept + ", receivePerson=" + receivePerson
+				+ ", auditor=" + auditor + ", auditTime=" + auditTime + ", buyerEmp=" + buyerEmp + ", consigneeEmp="
+				+ consigneeEmp + ", auditState=" + auditState + ", auditorEmp=" + auditorEmp + ", leadingDepartment="
+				+ leadingDepartment + ", receiveAdmin=" + receiveAdmin + ", purchaseOrderDescList="
+				+ purchaseOrderDescList + "]";
 	}
 	public PurchaseOrder() {
 		super();

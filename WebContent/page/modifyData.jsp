@@ -185,6 +185,8 @@
 	</div>
 </body>
 </html>
+<script
+	src="${pageContext.request.contextPath }/statics/js/pwd.js"></script>
 <script>
 	$(function() {
 		$("#loginName").focus(function() {

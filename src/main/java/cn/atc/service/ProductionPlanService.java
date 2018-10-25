@@ -16,4 +16,6 @@ public interface ProductionPlanService {
 	Integer ProductionPlanGoAudit(Map<String, Object> map);
 	//查询审核不通过原因
 	ProductionPlan getReason(@Param("id")String id);
+	//成品零件不足时自动生成生产计划
+	Integer addProductionPlan(Map<String, Object> map);
 }

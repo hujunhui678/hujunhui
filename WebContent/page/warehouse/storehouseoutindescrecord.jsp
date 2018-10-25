@@ -88,22 +88,21 @@
 								<label class="form-label col-xs-4 col-sm-3">
 									<span class="c-red"></span>物料详情</label>
 								<div  style="display:inline-block;margin-top:3px;height:170px" class="formControls col-xs-8 col-sm-3">
-									<c:if test="${storeHouse.isOut==1 }">
 										<span style="display:inline-block;width:120px">零件名</span><span style="width:200px">数量</span>
-										<c:forEach var="item" items="${storeHouse.storeHouseOutInDescRecordList }">
-											<div>
-												<span style="display:inline-block;width:120px">${item.partType.partType}</span><span style="width:200px">${item.num }</span>
-											</div>
-										</c:forEach>
-									</c:if>
-									<c:if test="${storeHouse.isOut==2 }">
-										<span style="display:inline-block;width:120px">成品类型名</span><span style="width:200px">数量</span>
-										<c:forEach var="item" items="${storeHouse.storeHouseOutInDescRecordList }">
-											<div>
-												<span style="display:inline-block;width:120px">${item.finishedProductsType.productType }</span><span style="width:200px">${item.num }</span>
-											</div>
-										</c:forEach>
-									</c:if>
+										<c:if test="${storeHouse.storeHouseOutInDescRecordList[0].finishedProductId=='' }">
+											<c:forEach var="item" items="${storeHouse.storeHouseOutInDescRecordList }">
+												<div>
+													<span style="display:inline-block;width:120px">${item.partType.partType}</span><span style="width:200px">${item.num }</span>
+												</div>
+											</c:forEach>
+										</c:if>
+										<c:if test="${storeHouse.storeHouseOutInDescRecordList[0].partTypeId=='' }">
+											<c:forEach var="item" items="${storeHouse.storeHouseOutInDescRecordList }">
+												<div>
+													<span style="display:inline-block;width:120px">${item.finishedProductsType.productType }</span><span style="width:200px">${item.num }</span>
+												</div>
+											</c:forEach>
+										</c:if>
 								</div>
 							</div>
 							

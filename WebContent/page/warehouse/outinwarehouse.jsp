@@ -85,8 +85,8 @@
 				<th width="80px">出库/入库</th>
 				<th width="120px">负责人</th>
 				<th width="120px">操作人</th>
-				<th width="130px">领用/发布部门</th>
-				<th width="130px">领用/发布人</th>
+				<th width="130px">发布部门</th>
+				<th width="130px">发布人</th>
 				<th width="130px">出库/入库时间</th>
 				<th width="120px">备注</th>                
 				<th width="100px">操作</th>
@@ -106,8 +106,8 @@
         	</td>
         	<td>${item.principalAdmin.name }</td>
         	<td>${item.empName }</td>
-        	<td>${item.leadingDepartment.deptName }${item.releaseDept.deptName}</td>
-        	<td class='text-l'>${item.receiveAdmin.name }${item.releasePerson.name }</td>
+        	<td>${item.releaseDept.deptName}</td>
+        	<td class='text-l'>${item.releasePerson.name }</td>
         	<td>${item.time }</td>
         	<td>${item.remark }</td>
         	<td class='td-manage'>
@@ -174,11 +174,7 @@ $(function(){
 								$("#currentPage").val(result.currentPage);
 								var data = result.lists;
 								for(i in data){
-									if(data[i].isOut==1){
-										$("#scTables").append("<tr><td width='180px'>"+data[i].sid+"</td><td width='80px'>出库</td><td>"+data[i].principalAdmin.name+"</td><td>"+data[i].empName+"</td><td>"+data[i].leadingDepartment.deptName+"</td><td class='text-l'>"+data[i].receiveAdmin.name+"</td><td>"+data[i].time+"</td><td>"+data[i].remark+"</td><td class='td-manage'><a title='详情' recordId='"+data[i].sid+"' onclick='' href='javascript:;'  class='btn btn-xs btn-info' ><i class='icon-info bigger-120'></i></a> </td></tr>");
-									}else{
-										$("#scTables").append("<tr><td width='180px'>"+data[i].sid+"</td><td width='80px'>入库</td><td>"+data[i].principalAdmin.name+"</td><td>"+data[i].empName+"</td><td>"+data[i].releaseDept.deptName+"</td><td class='text-l'>"+data[i].releasePerson.name+"</td><td>"+data[i].time+"</td><td>"+data[i].remark+"</td><td class='td-manage'><a title='详情' recordId='"+data[i].sid+"' onclick='' href='javascript:;'  class='btn btn-xs btn-info' ><i class='icon-info bigger-120'></i></a></td></tr>");
-									}
+									$("#scTables").append("<tr><td width='180px'>"+data[i].sid+"</td><td width='80px'>入库</td><td>"+data[i].principalAdmin.name+"</td><td>"+data[i].empName+"</td><td>"+data[i].releaseDept.deptName+"</td><td class='text-l'>"+data[i].releasePerson.name+"</td><td>"+data[i].time+"</td><td>"+data[i].remark+"</td><td class='td-manage'><a title='详情' recordId='"+data[i].sid+"' onclick='' href='javascript:;'  class='btn btn-xs btn-info' ><i class='icon-info bigger-120'></i></a></td></tr>");
 								}
 							},"json");
 						}

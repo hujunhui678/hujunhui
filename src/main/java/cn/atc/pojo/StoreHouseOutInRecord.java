@@ -8,7 +8,7 @@ import java.util.List;
  *
  */
 public class StoreHouseOutInRecord {
-	private long id;// 编号
+	private String id;// 编号
 	private String sid;//编号(字符串)
 	private int isOut;// 是否出库（1表示出库）
 	private String time;// 出入库时间
@@ -26,10 +26,11 @@ public class StoreHouseOutInRecord {
 	private Department releaseDept;// 发布部门
 	private Admin releasePerson;// 发布人
 	private List<StoreHouseOutInDescRecord> storeHouseOutInDescRecordList;// 详细记录
-	public long getId() {
+	
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getSid() {
@@ -128,7 +129,10 @@ public class StoreHouseOutInRecord {
 	public void setStoreHouseOutInDescRecordList(List<StoreHouseOutInDescRecord> storeHouseOutInDescRecordList) {
 		this.storeHouseOutInDescRecordList = storeHouseOutInDescRecordList;
 	}
-	public StoreHouseOutInRecord(long id, String sid, int isOut, String time, String empName, long principal,
+	public StoreHouseOutInRecord() {
+		super();
+	}
+	public StoreHouseOutInRecord(String id, String sid, int isOut, String time, String empName, long principal,
 			long leadingDept, long receivePerson, long releaseDeptId, long releasePersonId, String remark,
 			Admin principalAdmin, Department leadingDepartment, Admin receiveAdmin, Department releaseDept,
 			Admin releasePerson, List<StoreHouseOutInDescRecord> storeHouseOutInDescRecordList) {
@@ -150,9 +154,6 @@ public class StoreHouseOutInRecord {
 		this.releaseDept = releaseDept;
 		this.releasePerson = releasePerson;
 		this.storeHouseOutInDescRecordList = storeHouseOutInDescRecordList;
-	}
-	public StoreHouseOutInRecord() {
-		super();
 	}
 	
 }

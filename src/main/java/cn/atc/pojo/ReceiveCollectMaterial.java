@@ -2,6 +2,8 @@ package cn.atc.pojo;
 
 import java.util.List;
 
+
+
 /**
  * 收领料单表
  * 
@@ -9,7 +11,7 @@ import java.util.List;
  *
  */
 public class ReceiveCollectMaterial {
-	private long id;// 收领料单编号
+	private String id;// 收领料单编号
 	private Integer isReceive;// 1表示收料单
 	private String releaseTime;// 发布时间
 	private Integer isAgree;// 1表示已批准
@@ -33,10 +35,11 @@ public class ReceiveCollectMaterial {
 	private Admin releasePerson;// 发布人
 	private Admin auditor;// 审核人
 	private Admin approver;// 审批人
-	public long getId() {
+	
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public Integer getIsReceive() {
@@ -171,9 +174,12 @@ public class ReceiveCollectMaterial {
 	public void setApprover(Admin approver) {
 		this.approver = approver;
 	}
-	public ReceiveCollectMaterial(long id, Integer isReceive, String releaseTime, Integer isAgree, Integer auditStateId,
-			long leadingDeptId, long receivePersonId, long releaseDeptId, long releasePersonId, String notPassDesc,
-			long auditorId, String auditTime, long approverId, String agreeTime, long version,
+	public ReceiveCollectMaterial() {
+		super();
+	}
+	public ReceiveCollectMaterial(String id, Integer isReceive, String releaseTime, Integer isAgree,
+			Integer auditStateId, long leadingDeptId, long receivePersonId, long releaseDeptId, long releasePersonId,
+			String notPassDesc, long auditorId, String auditTime, long approverId, String agreeTime, long version,
 			List<ReceiveCollectMaterialDesc> receiveCollectMaterialDescList, AuditState auditState,
 			Department leadingDept, Admin receivePerson, Department releaseDept, Admin releasePerson, Admin auditor,
 			Admin approver) {
@@ -202,7 +208,5 @@ public class ReceiveCollectMaterial {
 		this.auditor = auditor;
 		this.approver = approver;
 	}
-	public ReceiveCollectMaterial() {
-		super();
-	}
+	
 }

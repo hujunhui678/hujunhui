@@ -135,4 +135,9 @@
 		SELECT reason FROM productionplan
 		WHERE id = #{id}
 	</select>
+	
+	<insert id="addProductionPlan" parameterType="map">
+		insert into productionPlan (id,finishedProductTypeId,produceNum,compilers,arrivalTime,estimatedTimeOfCompletion,auditStateId)
+		values (#{id},#{finishedProductTypeId},#{produceNum},#{compilers},#{arrivalTime},#{estimatedTimeOfCompletion},#{auditStateId})
+	</insert>
 </mapper>

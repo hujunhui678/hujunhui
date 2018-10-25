@@ -87,7 +87,7 @@
 					</if>
 				</where>
 				GROUP BY r1.`id`
-				ORDER BY isAgree DESC
+				ORDER BY isAgree DESC,r1.releaseTime DESC
 				LIMIT #{startRow},#{pageSize}
 	</select>
 	

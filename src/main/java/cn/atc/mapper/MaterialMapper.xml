@@ -11,11 +11,16 @@
 			<id column="pid" property="id"/>
 			<result column="partClassId" property="partClassId"/>
 			<result column="partType" property="partType"/>
+			<association property="partClassify" javaType="PartClassify">
+				<id column="p2id" property="id"/>
+				<result column="p2name" property="partName"/>
+			</association>
 		</association>
 	</resultMap>
 	<select id="getMaterialsByCondition" resultMap="cusMaterial" parameterType="map">
-		SELECT m.*,p.`id` AS 'pid',p.`partClassId`,p.`partType` FROM material m
+		SELECT m.*,p.`id` AS 'pid',p.`partClassId`,p.`partType`,p2.`id` AS 'p2id',p2.`partName` AS 'p2name' FROM material m
 		LEFT JOIN parttype p ON m.`matType`=p.`id`
+		LEFT JOIN partclassify p2 ON p2.`id` = p.`partClassId`
 		limit #{startRow},#{pageSize}
 	</select>
 	

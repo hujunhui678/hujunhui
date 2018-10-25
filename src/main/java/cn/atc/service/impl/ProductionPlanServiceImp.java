@@ -44,4 +44,9 @@ public class ProductionPlanServiceImp implements ProductionPlanService {
 		return productionPlanMapper.getReason(id);
 	}
 
+	@Override
+	public Integer addProductionPlan(Map<String, Object> map) {
+		return productionPlanMapper.addProductionPlan(map);
+	}
+
 }

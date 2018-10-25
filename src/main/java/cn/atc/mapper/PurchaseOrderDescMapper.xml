@@ -22,6 +22,7 @@
 			<result column="isSignin" property="isSignin" />
 			<result column="notPassDesc" property="notPassDesc" />
 			<result column="auditTime" property="auditTime" />
+			<result column="releaseTime" property="releaseTime"/>
 			<association property="buyerEmp" javaType="Admin">
 				<id property="id" column="buyerId" />
 				<result column="buyerName" property="name" />
