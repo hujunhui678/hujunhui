@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -54,31 +56,25 @@
 	src="${pageContext.request.contextPath }/statics/js/jquery.pagination.min.js"></script>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/statics/css/jquery.pagination.css" />
-<title>产品列表</title>
+<title>领料详情</title>
 </head>
 <body>
 	<div class=" page-content clearfix">
 		<div id="products_style">
 			<div class="search_style">
-				<form action="${pageContext.request.contextPath }/page/SelPartForm"
+				<form action="${pageContext.request.contextPath }/page/goReceive"
 					method="post" id="form">
 					<ul class="search_content clearfix">
-						<li><label class="l_f">成品名称</label><input name="productName"
-							value="${productName}" type="text" class="text_add"
-							placeholder="输入成品名称" style="width: 250px" /></li>
-						<li><label class="l_f">编写时间</label><input name="createTime"
-							value="${createTime}" class="inline laydate-icon" id="start"
-							style="margin-left: 10px;" /></li>
+						<li><label class="l_f">申请人:</label><input name="propose"
+							value="${propose}" id="propose" type="text" class="text_add"
+							placeholder="输入申请人姓名" style="width: 250px" /></li>
+						<li><label class="l_f">申请时间</label><input name="arrivalTime"
+							value="${arrivalTime}" id="arrivalTime"
+							class="inline laydate-icon" style="margin-left: 10px;" /></li>
 						<li style="width: 90px;"><button type="submit"
 								class="btn_search">
 								<i class="icon-search"></i>查询
 							</button></li>
-						<li style="width: 90px;"><span class="l_f"
-							style="display: block; position: relative; top: -2px;"> <a
-								href="${pageContext.request.contextPath }/page/toAdd"
-								title="编写配方" class="btn btn-warning Order_form"><i
-									class="icon-plus"></i>编写配方</a>
-						</span></li>
 					</ul>
 			</div>
 			<div class="table_menu_list" id="testIframe">
@@ -86,46 +82,43 @@
 					id="sample-table">
 					<thead>
 						<tr>
-							<th width="30px">配方编号</th>
-							<th width="170px">配方名称</th>
-							<th width="180px">成品名</th>
-							<th width="180px">编写时间</th>
-							<th width="80px">编写人</th>
-							<th width="70px">状态</th>
-							<th width="200px">操作</th>
+							<th width="130px">编号</th>
+							<th width="50px">申请人</th>
+							<th width="50px">领用人</th>
+							<th width="180px">申请时间</th>
+							<th width="120px">状态</th>
+							<th width="100px">操作</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="item" items="${page.lists}">
 							<tr>
 								<td width="80px">${item.id}</td>
-								<td width="250px"><u style="cursor: pointer"
-									class="text-primary"
-									onclick="partform_show('${item.formulaName}','partform-show.jsp','${item.id}','500','400')">${item.formulaName}</u>
-								</td>
-								<td width="100px">${item.finishedProductsType.productName}</td>
-								<td width="180px"><fmt:formatDate
-										value="${item.createTime}" pattern="yyyy-MM-dd HH:ss:mm" /></td>
-								<td class="text-l">${item.admin.name}</td>
-								<td class="td-status"><c:if test="${item.state eq '0'}">
-										<span class="label label-success radius">已启用</span>
-									</c:if> <c:if test="${item.state eq '1'}">
-										<span class="label label-defaunt radius">已停用</span>
-									</c:if></td>
-								<td class="td-manage"><c:if test="${item.state eq '0'}">
-										<a onClick="member_stop(this,'${item.id}')"
-											href="javascript:;" title="停用" class="btn btn-xs btn-success"><i
-											class="icon-ok bigger-120"></i></a>
-									</c:if> <c:if test="${item.state eq '1'}">
-										<a onClick="member_start(this,'${item.id}')"
-											href="javascript:;" title="启用" class="btn btn-xs "><i
-											class="icon-ok bigger-120"></i></a>
-									</c:if> <a title="删除" href="javascript:;"
-									onclick="member_del(this,'1')" class="btn btn-xs btn-warning"><i
-										class="icon-trash  bigger-120"></i></a></td>
+								<td width="80px">${item.proposer.name}</td>
+								<td width="100px">${item.receivePerson.name}</td>
+								<td width="120px">${fun:substring(item.releaseTime,0,19)}</td>
+								<td class="text-l"><c:if
+										test="${item.auditState.auditStateName eq '审核未通过'}">
+										<u style="cursor: pointer" class="text-primary"
+											onClick="show_Audit(this,'${item.id}')">${item.auditState.auditStateName}</u>
+									</c:if> <c:if test="${item.auditState.auditStateName ne '审核未通过'}">
+									${item.auditState.auditStateName}
+								</c:if></td>
+								<td class="td-manage"><shiro:hasPermission
+										name="audit:technical">
+										<c:if test="${item.auditState.auditStateName ne '审核通过'}">
+											<a
+												href="${pageContext.request.contextPath }/page/goAuditReceive?id=${item.id}"
+												title="审核" class="btn btn-xs btn-success"><i class=""></i>审核</a>
+											<a title="删除" href="javascript:;"
+												onclick="member_del(this,'${item.id}')"
+												class="btn btn-xs btn-warning"><i
+												class="icon-trash  bigger-120"></i></a>
+										</c:if>
+									</shiro:hasPermission></td>
 							</tr>
 						</c:forEach>
-						<input id="totalPage" value=${page.totalPage } type="hidden" />
+						<input id="totalPage" value="${page.totalPage }" type="hidden" />
 						<input id="currentPage" value="${page.currentPage}" type="hidden" />
 					</tbody>
 				</table>
@@ -141,6 +134,8 @@
 					$(function() {
 						var a = $("#totalPage").val();
 						var b = $("#currentPage").val();
+						var propose = $("#propose").val();//申请人
+						var arrivalTime = $("#arrivalTime").val();//申请时间
 						$("#pagination1")
 								.pagination(
 										{
@@ -148,12 +143,38 @@
 											totalPage : a,
 											callback : function(current) {
 												$("#current1").text(current);
-												window.location.href = "SelPartForm?pageIndex="
-														+ current;
+												window.location.href = "goReceive?currentPage="
+														+ current
+														+ "&propose="
+														+ propose
+														+ "&arrivalTime="
+														+ arrivalTime;
 											}
 										});
 					});
 				</script>
+			</div>
+		</div>
+	</div>
+	<div id="Delivery_stop" style="display: none">
+		<div class="">
+			<div class="content_style">
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right"
+						for="form-field-1">审核状态 :</label> <span
+						style="display: inline-block; color: red; font-size: 15px; margin: 2px 0 0 15px;">审核未通过!</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right"
+						for="form-field-1">拒绝原因 :</label> <span
+						style="display: inline-block; color: red; font-size: 15px; margin: 2px 0 0 15px;"
+						id="notPassDesc">审核未通过!</span>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right"
+						for="form-field-1">拒绝人 :</label> <span
+						style="display: inline-block; color: red; font-size: 15px; margin: 2px 0 0 15px;">Jack</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -179,7 +200,7 @@
 		}
 	});
 	laydate({
-		elem : '#start',
+		elem : '#arrivalTime',
 		event : 'focus'
 	});
 </script>
@@ -212,99 +233,48 @@
 		var zTree = $.fn.zTree.getZTreeObj("tree");
 		zTree.selectNode(zTree.getNodeByParam("id", '11'));
 	});
-	/*产品-停用*/
-	function member_stop(obj, id) {
-		layer
-				.confirm(
-						'确认要停用吗？',
-						function(index) {
-							$
-									.post(
-											"editState",
-											{
-												'id' : id,
-												'state' : 1
-											},
-											function(data) {
-												if (data == "true") {
-													$(obj)
-															.parents("tr")
-															.find(".td-manage")
-															.prepend(
-																	'<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,'
-																			+ id
-																			+ ')" href="javascript:;" title="启用"><i class="icon-ok bigger-120"></i></a>');
-													$(obj)
-															.parents("tr")
-															.find(".td-status")
-															.html(
-																	'<span class="label label-defaunt radius">已停用</span>');
-													$(obj).remove();
-													layer.msg('已停用!', {
-														icon : 5,
-														time : 1000
-													});
-												}
-											});
-						});
-	}
-
-	/*产品-启用*/
-	function member_start(obj, id) {
-
-		layer
-				.confirm(
-						'确认要启用吗？',
-						function(index) {
-							$
-									.post(
-											"editState",
-											{
-												'id' : id,
-												'state' : 0
-											},
-											function(data) {
-												if (data == "true") {
-													$(obj)
-															.parents("tr")
-															.find(".td-manage")
-															.prepend(
-																	'<a style="text-decoration:none" class="btn btn-xs btn-success" onClick="member_stop(this,'
-																			+ id
-																			+ ')" href="javascript:;" title="停用"><i class="icon-ok bigger-120"></i></a>');
-													$(obj)
-															.parents("tr")
-															.find(".td-status")
-															.html(
-																	'<span class="label label-success radius">已启用</span>');
-													$(obj).remove();
-													layer.msg('已启用!', {
-														icon : 6,
-														time : 1000
-													});
-												}
-											});
-						});
-	}
-	/*产品-编辑*/
-	function member_edit(title, url, id, w, h) {
+	/*技术规划书审核*/
+	function AuditState(title, url, id, w, h) {
 		layer_show(title, url, w, h);
-	}
-	/*配方-查看*/
-	function partform_show(title, url, id, w, h) {
-		layer_show(title, url + '?id=' + id, w, h);
 	}
 
 	/*产品-删除*/
 	function member_del(obj, id) {
-		layer.confirm('确认要删除吗？', function(index) {
-			$(obj).parents("tr").remove();
-			layer.msg('已删除!', {
-				icon : 1,
-				time : 1000
+		layer.confirm('删除无法恢复,确认要此领料单吗？', function(index) {
+			$.post("delReveice", {
+				'id' : id
+			}, function(data) {
+				if (data == "true") {
+					$(obj).parents("tr").remove();
+					layer.msg('已删除!', {
+						icon : 1,
+						time : 1000
+					});
+				}
 			});
 		});
 	}
+	/**查看拒绝审核的原因**/
+	function show_Audit(obj, id) {
+		$.post("getAuditToReceive", {
+			'id' : id
+		}, function(data) {
+			$("#notPassDesc").text(data.notPassDesc);
+			layer.open({
+				type : 1,
+				title : '审核状态',
+				maxmin : true,
+				shadeClose : false,
+				area : [ '500px', '' ],
+				content : $('#Delivery_stop'),
+				btn : [ '确定' ],
+				yes : function(index, layero) {
+					layer.close(index);
+				}
+			})
+		}, "json");
+	};
+
 	//面包屑返回值
 	var index = parent.layer.getFrameIndex(window.name);
 	parent.layer.iframeAuto(index);
@@ -326,6 +296,5 @@
 		});
 		//parent.$('.Current_page').html("<a href='javascript:void(0)' name="+herf+" class='iframeurl'>" + cnames + "</a>");
 		parent.layer.close(index);
-
 	});
 </script>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cn.atc.mapper.ReceiveCollectMaterialDescMapper;
 import cn.atc.pojo.ReceiveCollectMaterial;
+import cn.atc.pojo.ReceiveCollectMaterialDesc;
 import cn.atc.service.ReceiveCollectMaterialDescService;
 
 /**
@@ -23,6 +24,11 @@ public class ReceiveCollectMaterialDescServiceImpl implements ReceiveCollectMate
 	@Override
 	public List<ReceiveCollectMaterial> getMaterialDescByMaterialId(Long materialId) {
 		return receiveCollectMaterialDescMapper.getMaterialDescByMaterialId(materialId);
+	}
+
+	@Override
+	public Integer insertReceiveDesc(List<ReceiveCollectMaterialDesc> rcmd) {
+		return receiveCollectMaterialDescMapper.insertReceiveDesc(rcmd);
 	}
 
 }

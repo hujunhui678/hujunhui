@@ -71,7 +71,7 @@ public class LoginRealm extends AuthorizingRealm {
 				Map<Object, Object> map = adminService.maps(id);
 				Set<Role> roles = (Set<Role>) map.get("AllRoles");// 获取此用户的所有角色信息
 				Set<Permission> perm = (Set<Permission>) map.get("OneAllPermiss");// 获取一级权限
-				Set<Permission> perm2 = (Set<Permission>) map.get("TwoAllPermiss");// 获取一级权限
+				Set<Permission> perm2 = (Set<Permission>) map.get("TwoAllPermiss");// 获取二级权限
 				SecurityUtils.getSubject().getSession().setAttribute("roleList", roles);
 				SecurityUtils.getSubject().getSession().setAttribute("permOne", perm);
 				SecurityUtils.getSubject().getSession().setAttribute("permTwo", perm2);

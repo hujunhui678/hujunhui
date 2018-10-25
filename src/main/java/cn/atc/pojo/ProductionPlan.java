@@ -11,6 +11,7 @@ public class ProductionPlan {
 	private long finishedProductTypeId;// 成品型号表外键
 	private long produceNum;// 生产数量
 	private long compilers;// 编写人员(管理员表外键)
+	private String imageUrl;// 图片地址
 	private Date arrivalTime;// 下达日期
 	private Date estimatedTimeOfCompletion;// 规定完成日期
 	private int auditStateId;// 审核状态
@@ -142,5 +143,13 @@ public class ProductionPlan {
 
 	public void setPartFormula(PartFormula partFormula) {
 		this.partFormula = partFormula;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

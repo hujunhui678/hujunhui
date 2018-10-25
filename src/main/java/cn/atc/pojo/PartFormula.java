@@ -17,6 +17,7 @@ public class PartFormula {
 	private List<PartType> partType;//零件类别
 	private List<PartClassify> partClassify;//零件分类
 	private Admin admin;//管理员
+	private int state;//状态，0启用，1为停用。
 	
 	public long getId() {
 		return id;
@@ -96,5 +97,13 @@ public class PartFormula {
 
 	public void setAdmin(Admin admin) {
 		this.admin = admin;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
 	}
 }

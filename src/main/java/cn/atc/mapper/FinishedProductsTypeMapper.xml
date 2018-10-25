@@ -4,4 +4,5 @@
 	<insert id="insertFinishedProductsType" parameterType="FinishedProductsType">
 		insert into finishedProductsType(productType,productName) values(#{productType},#{productName})
 	</insert>
+	
 </mapper>

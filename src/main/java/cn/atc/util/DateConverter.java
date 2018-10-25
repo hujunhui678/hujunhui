@@ -3,6 +3,7 @@ package cn.atc.util;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateConverter {
@@ -76,5 +77,17 @@ public class DateConverter {
 		String dateString = formatter.format(currentTime);
 		return dateString;
 	}
-
+	
+	 /**
+	   * 得到几天后的时间
+	   * @param d
+	   * @param day
+	   * @return
+	   */
+	  public static Date getDateAfter(Date d,int day){
+	   Calendar now =Calendar.getInstance();
+	   now.setTime(d);
+	   now.set(Calendar.DATE,now.get(Calendar.DATE)+day);
+	   return now.getTime();
+	  }
 }

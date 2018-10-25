@@ -31,4 +31,9 @@
 	<update id="getOutMaterials" parameterType="ReceiveCollectMaterialDesc">
 		update material set inventoryNum=inventoryNum-#{orderNum} where matType=#{partTypeId}
 	</update>
+	
+	<insert id="insertMater" parameterType="integer">
+		insert into	material(matType)
+		values(#{id})
+	</insert>
 </mapper>

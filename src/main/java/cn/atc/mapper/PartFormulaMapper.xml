@@ -6,6 +6,7 @@
 		<id column="id" property="id" />
 		<result column="formulaName" property="formulaName" />
 		<result column="createTime" property="createTime" />
+		<result column="state" property="state" />
 		<association property="finishedProductsType"
 			javaType="FinishedProductsType">
 			<result column="productName" property="productName" />
@@ -19,6 +20,7 @@
 			<result column="partTypeId" property="partTypeId" />
 		</collection>
 		<collection property="partType" ofType="PartType">
+			<id column="pid" property="id" />
 			<result column="partType" property="partType" />
 			<result column="partClassId" property="partClassId" />
 		</collection>
@@ -30,7 +32,8 @@
 	<select id="getAllPartFrom" parameterType="map"
 		resultMap="partform">
 		SELECT
-		pf.`id`,pf.`formulaName`,pf.`createTime`,pty.`partType`,
+		pf.`id`,pf.`formulaName`,pf.`createTime`,pf.state,pty.`id`
+		pid,pty.`partType`,
 		pty.`partClassId`,pc.`partName`,pfd.`requirement`,pfd.`partTypeId`,
 		fin.`productName`,admin.`name` FROM partformuladesc pfd
 		left JOIN
@@ -61,6 +64,9 @@
 			<if test="createTime != null and createTime != ''">
 				and pf.`createTime` like concat(#{createTime},'%')
 			</if>
+			<if test="state != null and state != ''">
+				and state = 0
+			</if>
 		</trim>
 		<if test="id == null or id == ''">
 			GROUP BY pf.id
@@ -72,11 +78,12 @@
 	<select id="count" parameterType="map" resultType="integer">
 		SELECT
 		COUNT(1) FROM (
-			SELECT
+		SELECT
 		COUNT(1) FROM partformuladesc pfd
 		LEFT JOIN
 		partformula pf
-		ON pf.`id` = pfd.`partformulaId`
+		ON pf.`id` =
+		pfd.`partformulaId`
 		LEFT JOIN
 		finishedproductstype fin
 		ON
@@ -87,7 +94,8 @@
 		pfd.`partTypeId` = pty.`id`
 		LEFT JOIN partclassify
 		pc
-		ON pty.`partClassId` =
+		ON
+		pty.`partClassId` =
 		pc.`id`
 		LEFT JOIN admin
 		ON pf.`compilers` =
@@ -106,8 +114,15 @@
 
 
 	<select id="getAllFinish" resultType="FinishedProductsType">
-		SELECT * FROM
-		finishedproductstype
+		SELECT
+		fp.`id`,fp.`productName`,fp.`productType` FROM `partformuladesc` pd
+		LEFT JOIN `partformula` pf
+		ON pd.`partformulaId` = pf.`id`
+		LEFT JOIN
+		`finishedproductstype` fp
+		ON pd.`finishedProductsTypeId` = fp.`id`
+		WHERE pf.`state` = 0
+		GROUP BY fp.`id`
 	</select>
 
 	<select id="getPartType" parameterType="integer"
@@ -133,4 +148,30 @@
 		partformuladesc(finishedProductsTypeId,partTypeId,requirement,partformulaId)
 		values(#{finishedProductsTypeId},#{partTypeId},#{requirement},#{partformulaId})
 	</insert>
+
+	<update id="editState" parameterType="map">
+		update partformula
+		<set>
+			<trim suffixOverrides=",">
+				<if test="state != null">
+					state = #{state},
+				</if>
+			</trim>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	<select id="getPFByid" parameterType="string" resultType="PartFormula">
+		SELECT
+		pf.`id`,pf.`formulaName` FROM `partformuladesc` pd
+		LEFT JOIN
+		`partformula` pf
+		ON pd.`partformulaId` = pf.`id`
+		LEFT JOIN
+		`finishedproductstype` fp
+		ON pd.`finishedProductsTypeId` = fp.`id`
+		WHERE fp.`id` = #{id}
+		GROUP BY pf.`id`
+	</select>
 </mapper>

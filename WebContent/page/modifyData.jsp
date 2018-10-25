@@ -24,8 +24,10 @@
 <!--[if lte IE 8]>
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
+
 <script
 	src="${pageContext.request.contextPath }/statics/js/jquery-1.9.1.min.js"></script>
+
 <script
 	src="${pageContext.request.contextPath }/statics/assets/layer/layer.js"
 	type="text/javascript"></script>
@@ -185,6 +187,8 @@
 	</div>
 </body>
 </html>
+<script
+	src="${pageContext.request.contextPath }/statics/js/pwd.js"></script>
 <script>
 	$(function() {
 		$("#loginName").focus(function() {
@@ -270,7 +274,7 @@
 						title : '提示框',
 						icon : 1,
 					});
-					$("#count").val("1");
+					$("#count").val(loginNameModifyCount);
 					$("#msg").html("");
 					$('#Personal').find('.xinxi').removeClass("hover");
 					$('#Personal').find('.text_info').removeClass("add").attr(
@@ -321,11 +325,10 @@
 					layer.alert('确认新密码不能为空!', {
 						title : '提示框',
 						icon : 0,
-
 					});
 					return false;
 				}
-				if (!$("#tbPassword").val
+				if (!$("#tbPassword").val()
 						|| $("#c_password").val() != $("#tbPassword").val()) {
 					layer.alert('密码不一致!', {
 						title : '提示框',

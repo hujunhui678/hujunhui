@@ -15,8 +15,10 @@ import cn.atc.mapper.AdminMapper;
 import cn.atc.mapper.LogMapper;
 import cn.atc.pojo.Admin;
 import cn.atc.pojo.LoginLog;
+import cn.atc.pojo.ProductionPlan;
 import cn.atc.service.AdminService;
 import cn.atc.service.LogService;
+import cn.atc.service.ProductionPlanService;
 import cn.atc.util.MD5Util;
 import cn.atc.util.PageUtil;
 
@@ -27,6 +29,8 @@ public class CommonController {
 	private AdminService adminService;
 	@Autowired
 	private LogService loginService;
+	@Autowired
+	private ProductionPlanService pps;
 
 	// 获得要修改管理员资料
 	@RequestMapping("/modifyData.html")
@@ -80,11 +84,11 @@ public class CommonController {
 
 	// 获取所有的登录日志
 	@RequestMapping("/logList")
-	public String logList(Model model, @RequestParam(defaultValue = "1") String pageIndex, 
-			String name,String loginTime) {
+	public String logList(Model model, @RequestParam(defaultValue = "1") String pageIndex, String name,
+			String loginTime) {
 		HashMap<String, Object> maps = new HashMap<>();
 		maps.put("pageIndex", pageIndex);
-		maps.put("name",name);
+		maps.put("name", name);
 		maps.put("loginTime", loginTime);
 		PageUtil<LoginLog> allLog = loginService.getAllLog(maps);
 		model.addAttribute("page", allLog);
@@ -92,8 +96,8 @@ public class CommonController {
 		model.addAttribute("loginTime", loginTime);
 		return "LoginLog";
 	}
-	
-	//删除几天前的日志数据
+
+	// 删除几天前的日志数据
 	@RequestMapping("/delLog")
 	@ResponseBody
 	public String delLog(Integer day) {
@@ -105,4 +109,13 @@ public class CommonController {
 		}
 		return "ok";
 	}
+
+	// 获取要导出的数据
+	@RequestMapping("/toPort")
+	public String toPort(String[] ids,Model model) {
+		List<ProductionPlan> plan = pps.getProPlan(ids);
+		model.addAttribute("plan", plan);
+		return "ExportExcel";
+	}
+
 }

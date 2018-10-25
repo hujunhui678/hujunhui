@@ -18,6 +18,7 @@ import cn.atc.pojo.PartClassify;
 import cn.atc.pojo.PartFormula;
 import cn.atc.pojo.PartFormulaDesc;
 import cn.atc.pojo.PartType;
+import cn.atc.service.MaterialService;
 import cn.atc.service.PartClassifyService;
 import cn.atc.service.PartFormulaService;
 import cn.atc.service.PartTypeService;
@@ -33,6 +34,9 @@ public class PartFormulaController {
 
 	@Autowired
 	private PartClassifyService partClassifyService; // 零件类别
+	
+	@Autowired
+	private MaterialService materialService; // 库存零件
 
 	@Autowired
 	private PartTypeService partTypeService; // 零件类别
@@ -42,6 +46,7 @@ public class PartFormulaController {
 			String createTime) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("pageIndex", pageIndex);
+		map.put("pageSize", 6);
 		map.put("productName", productName);
 		map.put("createTime", createTime);
 		PageUtil<PartFormula> partFrom = partFormulaService.getAllPartFrom(map);
@@ -58,6 +63,7 @@ public class PartFormulaController {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		map.put("pageIndex", 1);
+		map.put("pageSize", 6);
 		PageUtil<PartFormula> partFrom = partFormulaService.getAllPartFrom(map);
 		String json = GsonUtil.GsonString(partFrom.getLists());
 		return json;
@@ -90,6 +96,8 @@ public class PartFormulaController {
 				pt.setPartClassId(Long.parseLong(PartClassVals[i]));
 				Integer addPartTypeResult = partFormulaService.addPartType(pt);
 				if (addPartTypeResult > 0) {// 新的零件分类添加成功 --
+					//新增库存零件表
+					materialService.insertMater(((Long)pt.getId()).intValue());
 					PartFormulaDesc pfd = new PartFormulaDesc();
 					pfd.setFinishedProductsTypeId(Long.parseLong(finishId));// 成品id
 					pfd.setPartTypeId(pt.getId());
@@ -132,4 +140,16 @@ public class PartFormulaController {
 		return partList;
 	}
 
+	@RequestMapping("/editState")
+	@ResponseBody
+	private String editState(String id,Integer state) {
+		HashMap<String, Object> maps = new HashMap<>();
+		maps.put("id", id);
+		maps.put("state", state);
+		Integer result = partFormulaService.editState(maps);
+		if(result > 0) {
+			return "true";
+		}
+		return "false";
+	}
 }

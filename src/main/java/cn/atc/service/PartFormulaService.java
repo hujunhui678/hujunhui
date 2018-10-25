@@ -1,5 +1,6 @@
 package cn.atc.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,4 +29,10 @@ public interface PartFormulaService {
 
 	// 新增零件配方详情表信息
 	Integer addPartFormulaDesc(PartFormulaDesc partFormulaDesc);
+	//修改配方的状态
+	Integer editState(HashMap<String, Object> maps);;
+	
+	//根据成品获得配方
+	PartFormula getPFByid(@Param("id")String id);
+	
 }

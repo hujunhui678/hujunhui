@@ -4,6 +4,9 @@
 
 	<resultMap type="ProductionPlan" id="ProductionPlan">
 		<id column="id" property="id" />
+		<result column="imageUrl" property="imageUrl" />
+		<result column="finishedProductTypeId"
+			property="finishedProductTypeId" />
 		<result column="produceNum" property="produceNum" />
 		<result column="arrivalTime" property="arrivalTime" />
 		<result column="estimatedTimeOfCompletion"
@@ -26,7 +29,7 @@
 	<select id="getAllProPlan" parameterType="map"
 		resultMap="ProductionPlan">
 		SELECT
-		pp.`id`,pp.`produceNum`,pp.`arrivalTime`,pp.`estimatedTimeOfCompletion`,
+		pp.`id`,pp.`imageUrl`,pp.finishedProductTypeId,pp.`produceNum`,pp.`arrivalTime`,pp.`estimatedTimeOfCompletion`,
 		ft.`productName`,ft.`productType`,admin.`name` ,au.`auditStateName`
 		FROM productionplan pp
 		LEFT JOIN finishedproductstype ft
@@ -50,6 +53,29 @@
 		</trim>
 		limit
 		#{startRow},#{pageSize}
+	</select>
+
+	<select id="getProPlan" resultMap="ProductionPlan">
+		SELECT
+		pp.`id`,pp.`arrivalTime`,pp.`estimatedTimeOfCompletion`,
+		ft.`productName`,admin.`name` ,au.`auditStateName`
+		FROM productionplan
+		pp
+		LEFT JOIN finishedproductstype ft
+		ON
+		pp.`finishedProductTypeId` =
+		ft.`id`
+		LEFT JOIN admin
+		ON pp.`compilers` =
+		admin.`id`
+		LEFT JOIN
+		auditstate au
+		ON pp.`auditStateId` = au.`id`
+		WHERE pp.id in
+		<foreach collection="ProplanIds" item="ids" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
 	</select>
 
 	<select id="count" parameterType="map" resultType="integer">
@@ -80,6 +106,7 @@
 	<resultMap type="ProductionPlan" id="getPartFormula">
 		<id column="id" property="id" />
 		<association property="partFormula" javaType="PartFormula">
+			<id column="pfid" property="id" />
 			<result column="formulaName" property="formulaName" />
 		</association>
 		<collection property="partType" ofType="PartType">
@@ -98,7 +125,8 @@
 	<select id="getPartFromulaById" parameterType="string"
 		resultMap="getPartFormula">
 		SELECT
-		pp.`id`,pf.`formulaName`,pt.`partType`,pc.`partName`,pd.`requirement`,pd.`partTypeId`
+		pp.`id`,pf.`id`
+		pfid,pf.`formulaName`,pt.`partType`,pc.`partName`,pd.`requirement`,pd.`partTypeId`
 		FROM productionplan pp
 		JOIN partformuladesc pd
 		ON
@@ -135,4 +163,50 @@
 		SELECT reason FROM productionplan
 		WHERE id = #{id}
 	</select>
+
+	<insert id="insertProplan">
+		insert into
+		productionplan(id,finishedProductTypeId,produceNum,imageUrl,compilers,arrivalTime,estimatedTimeOfCompletion)
+		values(#{id},#{finishedProductTypeId},#{produceNum},#{imageUrl},#{compilers},#{arrivalTime},#{estimatedTimeOfCompletion})
+	</insert>
+
+	<update id="editProplan" parameterType="productionplan">
+		update productionplan
+		<set>
+			<trim suffixOverrides=",">
+				<if
+					test="finishedProductTypeId != null and finishedProductTypeId > 0">
+					finishedProductTypeId = #{finishedProductTypeId},
+				</if>
+				<if test="produceNum != null and produceNum > 0">
+					produceNum = #{produceNum},
+				</if>
+			</trim>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </mapper>

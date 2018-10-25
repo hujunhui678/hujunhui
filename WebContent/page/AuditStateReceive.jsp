@@ -37,36 +37,13 @@
 </head>
 
 <body>
-	<div class="margin clearfix">
-		<div class="detailed_style clearfix">
-			<div class="shop_logo">
-				<img src=${pageContext.request.contextPath }${ProPlan.imageUrl}  width="180px" height="150px"/>
-			</div>
-			<ul class="shop_content clearfix">
-				<li><label class="label_name">生产产品：</label><span class="info">${ProPlan.finishedProductsType.productName}</span></li>
-				<li><label class="label_name">产品类型：</label><span class="info">${ProPlan.finishedProductsType.productType}</span></li>
-				<li><label class="label_name"></label><span class="info"></span></li>
-				<li><label class="label_name">申请时间：</label><span class="info">
-						<fmt:formatDate value="${ProPlan.arrivalTime}"
-							pattern="yyyy-MM-dd" />
-				</span></li>
-				<li><label class="label_name">规定完成：</label><span class="info">
-						<fmt:formatDate value="${ProPlan.estimatedTimeOfCompletion}"
-							pattern="yyyy-MM-dd" />
-				</span></li>
-				<li><label class="label_name"></label></li>
-				<li><label class="label_name">制定人：</label><span class="info">${ProPlan.admin.name}</span></li>
-				<li><label class="label_name">生产数量：</label><span class="info">${ProPlan.produceNum}</span></li>
-			</ul>
-		</div>
 		<div class="Store_Introduction">
-			<div class="title_name">规划详情</div>
+			<div class="title_name">零件领料单</div>
 			<input type="hidden" value="${id}" id="id"/>
+			<input type="hidden" value="${admin.id}" id="adminId"/>
 			<div class="info">
-				根据客户订单生产产品：现编写生产计划书交由审核，生产的产品为: <span
+				<span
 					style="font-size: 16px; font-weight: bolder; color: red;">${ProPlan.finishedProductsType.productName}</span>
-				<br /> <br />
-
 				<table
 					class="table table-border table-bordered table-hover table-bg">
 					<thead>
@@ -77,15 +54,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="item" items="${PartForm}">
-							<c:forEach var="PartType" items="${item.partType}"
-								varStatus="index">
+						<c:forEach var="item" items="${Receive}">
 								<tr class="text-c" align="center">
-									<td>${item.partType[index.count - 1].partType}</td>
-									<td>${item.partClassify[index.count - 1].partName}</td>
-									<td>${item.partFormulaDesc[index.count - 1].requirement * ProPlan.produceNum}</td>
+									<td>${item.partType.partType}</td>
+									<td>${item.partType.partClassify.partName}</td>
+									<td>${item.orderNum}</td>
 								</tr>
-							</c:forEach>
 							<%-- 	<c:forEach var="partClassify" items="${item.partClassify}">
 								<td>${partClassify.partName}</td>
 							</c:forEach>
@@ -95,10 +69,6 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<br /> 参考产品配方: <span
-					style="font-size: 16px; font-weight: bolder; color: red;">
-					${formulaName} </span>
-
 			</div>
 		</div>
 		<div class="At_button">
@@ -120,12 +90,13 @@
 		$(".text-c:not(:first):even").css("background","#F2F2F2");
 	});
 	function through_save(obj, id) {
-		layer.confirm('此计划将会执行，确定审核通过？', {
+		layer.confirm('将提交至仓库进行审批，确定审核通过？', {
 			icon : 3
 		}, function(index) {
-			var ison = 3;
+			var ison = 3;//审核通过
 			var id = $("#id").val();
-			$.post("audit",{'ison':ison,'id':id},function(data){
+			var adminId = $("#adminId").val();//审批人
+			$.post("AuditReceive",{'auditStateId':ison,'id':id,'auditorId':adminId},function(data){
 				if (data == "true") {
 					layer
 							.msg(
@@ -135,7 +106,7 @@
 										time : 2000
 									},
 									function() {
-										window.location.href = "${pageContext.request.contextPath }/page/technical";
+										window.location.href = "${pageContext.request.contextPath }/page/goReceive";
 									});
 				}
 			},"text");
@@ -172,7 +143,8 @@
 							var ison = 2;
 							var id = $("#id").val();
 							var reason = $('.form-control').val();
-							$.post("audit",{'id':id,'ison':ison,'reason':reason},function(data){
+							var adminId = $("#adminId").val();//审批人
+							$.post("AuditReceive",{'id':id,'auditStateId':ison,'notPassDesc':reason,'auditorId':adminId},function(data){
 								if (data == "true") {
 									layer
 											.msg(
@@ -182,7 +154,7 @@
 														time : 2000
 													},
 													function() {
-														window.location.href = "${pageContext.request.contextPath }/page/technical";
+														window.location.href = "${pageContext.request.contextPath }/page/goReceive";
 													});
 								}
 							},"text");

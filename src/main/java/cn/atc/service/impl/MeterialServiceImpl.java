@@ -55,4 +55,9 @@ public class MeterialServiceImpl implements MaterialService {
 	public List<Material> getAllMaterials() {
 		return meterialMapper.getAllMaterials();
 	}
+
+	@Override
+	public Integer insertMater(Integer id) {
+		return meterialMapper.insertMater(id);
+	}
 }
