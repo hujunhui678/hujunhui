@@ -73,4 +73,10 @@ public class StoreHouseOutInRecordServiceImpl implements StoreHouseOutInRecordSe
 		return storeHouseOutInRecordServiceMapper.getIsInCount();
 	}
 
+	@Override
+	public int add(StoreHouseOutInRecord storeHouseOutInRecord) {
+		// TODO Auto-generated method stub
+		return storeHouseOutInRecordServiceMapper.add(storeHouseOutInRecord);
+	}
+
 }

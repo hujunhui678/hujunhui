@@ -60,4 +60,10 @@ public class MeterialServiceImpl implements MaterialService {
 	public Integer getInFinishedProductsStock(ReceiveCollectMaterialDesc receiveCollectMaterialDesc) {
 		return meterialMapper.getInFinishedProductsStock(receiveCollectMaterialDesc);
 	}
+
+	@Override
+	public int update(Material material) {
+		// TODO Auto-generated method stub
+		return meterialMapper.update(material);
+	}
 }

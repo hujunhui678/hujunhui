@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import cn.atc.pojo.StoreHouseOutInDescRecord;
 import cn.atc.pojo.StoreHouseOutInRecord;
 import cn.atc.service.StoreHouseOutInDescRecordService;
 
@@ -25,6 +26,12 @@ public class StoreHouseOutInDescRecordServiceImpl implements StoreHouseOutInDesc
 	@Override
 	public List<StoreHouseOutInRecord> getStoreHouseOutInRecordByMap(Map<String, Object> map) {
 		return storeHouseOutInDescRecordMapper.getStoreHouseOutInRecordByMap(map);
+	}
+
+	@Override
+	public int add(StoreHouseOutInDescRecord storeHouseOutInDescRecord) {
+		// TODO Auto-generated method stub
+		return storeHouseOutInDescRecordMapper.add(storeHouseOutInDescRecord);
 	}
 
 }

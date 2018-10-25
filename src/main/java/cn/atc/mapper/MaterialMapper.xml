@@ -35,4 +35,7 @@
 	<update id="getInFinishedProductsStock" parameterType="ReceiveCollectMaterialDesc">
 		update finishedproductsstock set inventoryNum=inventoryNum+#{orderNum} where productId=#{finishedPartTypeId}
 	</update>
+	<update id="update">
+		UPDATE material SET inventoryNum=inventoryNum+#{inventoryNum} where matType=#{matType}
+	</update>
 </mapper>

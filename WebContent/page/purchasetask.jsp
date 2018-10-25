@@ -165,9 +165,7 @@
 	     <c:if test="${item.isSignin==0 }">
 	     	<a qianshou="qianshou" shenhe="${item.auditState.id }" qianshouren="${admin.id }" href="javascript:;" title="确认签收" orderId="${item.id }" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
 	     </c:if>
-	     <shiro:hasPermission name="purchasetask:remove">
-		 	<a title="删除" href="javascript:;"   class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
-		 </shiro:hasPermission>
+	  
 		 <!-- onclick="Delivery_stop(this,'${item.id}')" -->
 	     </td>
 	     

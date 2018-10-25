@@ -118,4 +118,8 @@
 		</where>
 		ORDER BY s.`time` DESC
 	</select>
+					<insert id="add">
+					INSERT INTO storehouseoutindescrecord(outInRecordId,partTypeId,num,goodsOnHand)
+					VALUE(#{outInRecordId},#{partTypeId},#{num},0)
+					</insert>
 </mapper>

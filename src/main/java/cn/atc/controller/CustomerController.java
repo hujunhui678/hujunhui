@@ -36,7 +36,6 @@ public class CustomerController {
 		return "customer";
 	}
 		
-	 
 	
 	@RequestMapping("/addCustomer")
 	@ResponseBody

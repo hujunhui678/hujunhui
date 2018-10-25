@@ -145,4 +145,10 @@
 	<select id="getIsInCount" resultType="integer">
 		SELECT COUNT(id) FROM storehouseoutinrecord WHERE isOut = 2
 	</select>
+			
+				<insert id="add">
+					INSERT INTO storehouseoutinrecord(id,isOut,TIME,empName,principal,leadingDept,receivePerson,releaseDept,releasePerson)
+VALUE(#{id},2,#{time},'刘锦',2,4,14,6,13)
+					</insert>
+			
 </mapper>
