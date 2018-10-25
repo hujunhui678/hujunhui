@@ -44,4 +44,23 @@ public class ProductionPlanServiceImp implements ProductionPlanService {
 		return productionPlanMapper.getReason(id);
 	}
 
+	@Override
+	public Integer insertProplan(ProductionPlan pp) {
+		return productionPlanMapper.insertProplan(pp);
+	}
+
+	@Override
+	public Integer editProplan(ProductionPlan pp) {
+		return productionPlanMapper.editProplan(pp);
+	}
+
+	@Override
+	public List<ProductionPlan> getProPlan(String[] ids) {
+		return productionPlanMapper.getProPlan(ids);
+	}
+
+	public Integer addProductionPlan(Map<String, Object> map) {
+		return productionPlanMapper.addProductionPlan(map);
+	}
+
 }

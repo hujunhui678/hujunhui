@@ -71,7 +71,7 @@ public class purchasetaskController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		ss.setTime(sdf.format(new Date()));
 		IDUtil s=new IDUtil();		
-		ss.setId(s.getId());
+		ss.setId(((Long)s.getId()).toString());
 		int addOutInresult = storeHouseOutInRecord.add(ss);
 		if(addOutInresult==0) {
 			return "no";

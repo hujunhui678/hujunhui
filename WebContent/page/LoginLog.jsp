@@ -79,9 +79,8 @@
 				</form>
 				<!---->
 				<div class="border clearfix">
-					<span class="l_f"> <a href="javascript:ovid()"
-						class="btn btn-danger"><i class="icon-trash"></i>批量删除</a>
-					</span> <span style="display: block; margin: 2px 0 0 10px;"> <select
+					<span class="l_f"> 
+					</span> <span style="display: block; margin: 2px 0 0 10px;text-align: right;"> <select
 						id="delLog">
 							<option value="0">请选择删除的记录</option>
 							<option value="5">清空5天前的记录</option>
@@ -118,10 +117,7 @@
 									<td>${log.loginIP}</td>
 									<td><fmt:formatDate value="${log.loginTime}"
 											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td class="td-manage"><a
-										onClick="member_stop(this,'10001')" href="javascript:;"
-										title="停用" class="btn btn-xs btn-success"><i
-											class="icon-ok bigger-120"></i></a> <a title="删除"
+									<td class="td-manage"> <a title="删除"
 										href="javascript:;" onclick="member_del(this,'1')"
 										class="btn btn-xs btn-warning"><i
 											class="icon-trash  bigger-120"></i></a></td>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
@@ -123,7 +124,7 @@
 				<th width="150px">采购单编号</th>
 				<th width="150px">采购员</th>			
 				<th width="150px">收货人</th>
-                <th width="200px">采购时间</th>	
+                <th width="200px">发布时间</th>	
 				<th width="100px">审核状态</th>
 				<th width="70px">签收状态</th>                
 				<th width="200px">操作</th>
@@ -139,7 +140,7 @@
 	      	${item.buyerEmp.name }
 	     </td>
 	     <td>${item.consigneeEmp.name }</td>
-	     <td><fmt:formatDate value="${item.purchaseTime }" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+	     <td><fmt:formatDate value="${item.releaseTime }" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 	     <td class="td-status">
 	     	<c:if test="${item.auditState.id==1 }">
 				<span class="label label-warning radius">${item.auditState.auditStateName }</span>
@@ -162,10 +163,23 @@
 		 </td>
 		 <td>
 	     <a title="订单详细" style="cursor:pointer" xiangxi="openDesc" orderId="${item.id }" class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a>
+<<<<<<< HEAD
 	     <c:if test="${item.isSignin==0 }">
 	     	<a qianshou="qianshou" shenhe="${item.auditState.id }" qianshouren="${admin.id }" href="javascript:;" title="确认签收" orderId="${item.id }" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
 	     </c:if>
 	  
+=======
+	     <shiro:hasPermission name="purchasetask:signin">
+	     	<c:if test="${item.isSignin==0 }">
+		     	<a qianshou="qianshou" shenhe="${item.auditState.id }" qianshouren="${admin.id }" href="javascript:;" title="确认签收" orderId="${item.id }" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
+		     </c:if>
+	     </shiro:hasPermission>
+	     <shiro:hasPermission name="purchasetask:audit">
+	     	<c:if test="${item.auditState.id==1|| item.auditState.id==2 }">
+	     		<a shenhe="${item.auditState.id }" href="${pageContext.request.contextPath }/page/topurchasetaskaudit?orderId=${item.id}" title="审核" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
+	     	</c:if>
+	     </shiro:hasPermission>
+>>>>>>> branch 'master' of https://github.com/hujunhui678/hujunhui.git
 		 <!-- onclick="Delivery_stop(this,'${item.id}')" -->
 	     </td>
 	     
@@ -296,7 +310,6 @@ $(function() {
 	 $(".partTypeClass").mouseout(function(){
 		  $(".	partTypeClass").css("background-color","white");
 	});
-	 
 	$("#cover_style").fix({
 		float : 'top',
 		minStatue : false,

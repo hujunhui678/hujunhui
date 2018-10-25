@@ -39,9 +39,8 @@
 <body>
 	<div class="margin clearfix">
 		<div class="detailed_style clearfix">
-			<em class="type"></em>
 			<div class="shop_logo">
-				<img src="images/detailnoimg.png" />
+				<img src=${pageContext.request.contextPath }${ProPlan.imageUrl}  width="180px" height="150px"/>
 			</div>
 			<ul class="shop_content clearfix">
 				<li><label class="label_name">生产产品：</label><span class="info">${ProPlan.finishedProductsType.productName}</span></li>

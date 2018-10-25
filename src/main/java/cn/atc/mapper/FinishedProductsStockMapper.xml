@@ -23,9 +23,16 @@
 		LIMIT #{startRow},#{pageSize}
 	</select>
 
-
 	<select id="getFinishedProductsStocksCount" resultType="int">
 		SELECT COUNT(k.`id`) FROM finishedProductsStock k
 		LEFT JOIN finishedproductstype e ON k.`productId`=e.`id`
 	</select>
+	
+	<select id="getFinishedPartById" parameterType="long" resultType="FinishedProductsStock">
+		select * from FinishedProductsStock where productId=#{id}
+	</select>
+	
+	<update id="updateFinishedPartNum" parameterType="map">
+		update FinishedProductsStock set inventoryNum=inventoryNum+#{num} where productId=#{productId}
+	</update>
 </mapper>

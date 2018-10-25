@@ -18,6 +18,8 @@
 					<link rel="stylesheet" href="${pageContext.request.contextPath }/statics/assets/css/ace.min.css" />
 					<link href="${pageContext.request.contextPath }/statics/assets/css/codemirror.css" rel="stylesheet">
 					<link rel="stylesheet" href="${pageContext.request.contextPath }/statics/font/css/font-awesome.min.css" />
+      				<script src="${pageContext.request.contextPath }/statics/assets/js/bootstrap.min.js"></script>
+ 					<link href="${pageContext.request.contextPath }/statics/assets/css/bootstrap.min.css" rel="stylesheet" />
 					<title></title>
 				</head>
 				<body>
@@ -31,10 +33,9 @@
 					</c:if>
 					<c:if test="${emptyMsg!=1}">
 					<article class="cl pd-20" style="margin-right:50px;">
-						
 							<form action="#" method="post" class="form form-horizontal" id="form-admin-add" style="line-height: 30px;margin-left:30px">
 								
-								<c:if test="${record[0].storeHouseOutInDescRecordList[0].partType!=null }">
+								<c:if test="${record[0].storeHouseOutInDescRecordList[0].partType!=null and isLj==1 }">
 									<div class="row cl">
 										<label class="form-label col-xs-4 col-sm-3">
 											<span class="c-red"></span>零件名</label>
@@ -43,7 +44,7 @@
 										</div>
 									</div>
 								</c:if>
-								<c:if test="${record[0].storeHouseOutInDescRecordList[0].finishedProductsType!=null }">
+								<c:if test="${record[0].storeHouseOutInDescRecordList[0].finishedProductsType!=null and isLj==2 }">
 									<div class="row cl">
 										<label class="form-label col-xs-4 col-sm-3">
 											<span class="c-red"></span>成品名</label>
@@ -55,7 +56,7 @@
 								<div class="row cl" style="margin-top:20px">
 									<div style="display:block;margin:0 auto;"><label style="display:inline-block;width:560px;text-align:center"><span class="c-red"></span>状态变更详情</label></div>
 								<div  style="display:inline-block;margin-top:3px;height:170px" class="formControls col-xs-8 col-sm-8">
-										<table border="1" style="margin-top:20px;margin-left:100px">
+										<table style="margin-top:20px;margin-left:80px" class="table">
 											<tr>
 												<th style="width:70px"><span style="display:inline-block;text-align: center;width:130px">入库/出库</span></th>
 												<th style="width:50px"><span style="display:inline-block;text-align: center;width:50px">数量</span></th>
@@ -74,9 +75,6 @@
 										</table>
 								</div>
 							</div>
-								
-								
-								
 							</form>
 						</c:if>
 					</article>
@@ -90,7 +88,5 @@
 					<script type="text/javascript" src="${pageContext.request.contextPath }/statics/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 					<script type="text/javascript" src="${pageContext.request.contextPath }/statics/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 					<script type="text/javascript" src="${pageContext.request.contextPath }/statics/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-					<script type="text/javascript">
-					</script>
 				</body>
 			</html>

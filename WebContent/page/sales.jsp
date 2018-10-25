@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
 <html>
@@ -24,13 +25,16 @@
 	href="${pageContext.request.contextPath }/statics/static/h-ui.admin/css/style.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/statics/css/jquery.pagination.css" />
+ <link href="${pageContext.request.contextPath }/statics/assets/css/bootstrap.min.css" rel="stylesheet" />
+ <link rel="stylesheet" href="${pageContext.request.contextPath }/statics/assets/css/ace.min.css" />
+ <link rel="stylesheet" href="${pageContext.request.contextPath }/statics/font/css/font-awesome.min.css" />
 
 
 
-<script
-	src="${pageContext.request.contextPath }/statics/js/jquery-1.10.2.js"></script>
+		<script src="${pageContext.request.contextPath }/statics/js/jquery-1.9.1.min.js"></script>
 <script
 	src="${pageContext.request.contextPath }/statics/js/jquery.pagination.min.js"></script>
+        <script src="${pageContext.request.contextPath }/statics/assets/js/bootstrap.min.js"></script>
 
 <title></title>
 <style>
@@ -88,11 +92,17 @@ button {
 				<div class="cl pd-5 bg-1 bk-gray">
 					<form action="${pageContext.request.contextPath }/page/sales"
 		method="post">
-					<span class="l"> <a href="javascript:;" onclick="datadel()"
+					<span class="l"> 
+					<shiro:hasPermission name="sales:remove">
+					<a href="javascript:;" onclick="datadel()"
 						class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
-							批量删除</a> <a class="btn btn-primary radius" href="javascript:;"
-						onclick="admin_add('添加订单','${pageContext.request.contextPath}/page/sales_add.jsp','900','400')"><i
-							class="Hui-iconfont">&#xe600;</i> 添加订单</a>
+							批量删除</a> 
+					</shiro:hasPermission>
+							<shiro:hasPermission name="sales:add">
+							<a class="btn btn-primary radius" href="javascript:;"
+							onclick="admin_add('添加订单','${pageContext.request.contextPath}/page/sales_add.jsp','900','400')"><i
+								class="Hui-iconfont">&#xe600;</i> 添加订单</a>
+							</shiro:hasPermission>
 					</span> <!--   订单状态: <input type="text" name="state"
 						value="${state}"/><span >(输入:1 未出货,2 已发货, 3 已到达)</span><input type="submit" value="查询" />-->
 						
@@ -140,20 +150,33 @@ button {
 									<td>${item.clientContact}</td>
 									<td>${item.orderDate}</td>
 									<td><c:if test="${item.state==1 }">
-											<span class="label label-success radius">未出货</span>
+											<span class="label label-warning radius">未出货</span>
 										</c:if> <c:if test="${item.state==2 }">
-											<span class="label label-warning radius">已发货</span>
+											<span class="label label-success radius">已发货</span>
 										</c:if>
 										<c:if test="${item.state==3 }">
 											<span class="label label-info radius">已到达</span>
 										</c:if></td>
 
-									<td class="f-14"><a title="编辑" href="javascript:;"
+									<td class="f-14">
+									<shiro:hasPermission name="sales:edit">
+									<a title="编辑" href="javascript:;"
 										onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/doupdateSales',${item.id },'800','400')"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6df;</i></a>
+									</shiro:hasPermission>
+									<shiro:hasPermission name="sales:remove">
 										<a title="删除" href="javascript:;"
 										onclick="person_del(this,${item.id})" class="ml-5"
-										style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+										style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+									</shiro:hasPermission>
+									<c:if test="${item.state==1 }">
+										<shiro:hasPermission name="sales:sendout">
+											<a title="发货" href="javascript:;"
+											onclick="fahuo(${item.id},${item.finishedType},${item.orderNum},'${item.productType }',${admin.id } )" class="ml-5"
+											style="text-decoration: none"><i class="Hui-iconfont">&#xe615;</i></a>
+										</shiro:hasPermission>
+									</c:if>
+									</td>
 								</tr>
 
 							</c:forEach>
@@ -220,6 +243,65 @@ button {
 				 window.location.href = "person?sel="+sel;
 			 });
 		}) 
+		//发货
+		function fahuo(orderId,finishedType,orderNum,productType,adminId){
+			 var orderId=orderId;
+			 var finishedType = finishedType;
+			 var orderNum = orderNum;
+			 var productType = productType;
+			 $(function(){
+				 layer.confirm("确定发货吗？",function(){
+						$.post("comparisonFinishedPart",{'finishedType':finishedType,'orderNum':orderNum},function(data){
+							var result = JSON.parse(data);
+							var missPart = parseInt(orderNum)-parseInt(result.inventoryNum);
+							if(parseInt(result.inventoryNum)>=parseInt(orderNum)){
+								$.post("finishedPartOut",{'orderId':orderId,'finishedType':finishedType,'orderNum':orderNum,'adminId':adminId},function(json){
+									if(json=="yes"){
+										layer.msg('发货成功!', {
+											icon : 1,
+											time : 1000
+										},function(){
+											window.location.reload();
+										});
+									}else{
+										layer.msg('发货失败,参数异常', {
+											icon : 2,
+											time : 1000
+										},function(){
+											window.location.reload();
+										});
+									}
+								},"text");
+							}else{
+								layer.confirm("成品零件数量不足!<br/>缺少零件："+productType+"<br/>缺少数量："+missPart+"<br/>是否发送采购计划？", {
+					                title:false,
+					                btnAlign: 'c',
+					                area: ['25rem', '15rem'],
+					                btn: ['是', '否'] //按钮
+					            }, function(index){
+					            	$.post("sendoutproductionplan",{'finishedProductTypeId':finishedType,'produceNum':missPart},function(data){
+					            		if(data=="yes"){
+					            			layer.msg('发送成功,预计三天后完成', {
+												icon : 1,
+												time : 1000
+											},function(){
+												window.location.reload();
+											});
+					            		}else{
+					            			layer.msg('发送失败,参数错误!', {
+												icon : 2,
+												time : 1000
+											},function(){
+												window.location.reload();
+											});
+					            		}
+					            	},"text");
+					            });
+							}
+						},"text");
+				 });
+			 });
+		 }
 		/*管理员-添加*/
 		function admin_add(title, url, w, h) {
 			var isPerson = $(".select").val();

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.atc.mapper.ReceiveCollectMaterialDescMapper;
 import cn.atc.mapper.ReceiveCollectMaterialMapper;
 import cn.atc.pojo.ReceiveCollectMaterial;
 import cn.atc.service.ReceiveCollectMaterialService;
@@ -23,6 +24,8 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 
 	@Autowired
 	private ReceiveCollectMaterialMapper receiveCollectMaterialMapper;
+	@Autowired
+	private ReceiveCollectMaterialDescMapper receiveCollectMaterialDescMapper;
 	
 	@Override
 	public PageUtil<ReceiveCollectMaterial> getReceiveCollectMaterialByCondition(Map<String, Object> map) {
@@ -48,7 +51,7 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 			currentPageInteger = Integer.parseInt(currentPage);
 		}
 		page.setTotalCount(count);
-		page.setPageSize(10);
+		page.setPageSize(6);
 		page.setCurrentPage(currentPageInteger);
 		map.put("pageSize", page.getPageSize());
 		map.put("startRow",page.getStartRow());
@@ -64,6 +67,32 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		map.put("agreeTime", sdf.format(new Date()));
 		return receiveCollectMaterialMapper.updateIsAgreeById(map);
+	}
+
+	@Override
+	public Integer insertReceive(ReceiveCollectMaterial rcm) {
+		return receiveCollectMaterialMapper.insertReceive(rcm);
+	}
+
+	@Override
+	public Integer auditReceive(ReceiveCollectMaterial rcm) {
+		return receiveCollectMaterialMapper.auditReceive(rcm);
+	}
+
+	@Override
+	public ReceiveCollectMaterial getReason(String id) {
+		return receiveCollectMaterialMapper.getReason(id);
+	}
+
+	@Override
+	public Integer delReveive(String id) {
+		Integer re = receiveCollectMaterialDescMapper.delReveiveDesc(id);
+		return receiveCollectMaterialMapper.delReveive(id);
+	}
+
+	@Override
+	public Integer updateIsAgreeByIdH(Map<String, Object> map) {
+		return receiveCollectMaterialMapper.updateIsAgreeByIdH(map);
 	}
 
 }

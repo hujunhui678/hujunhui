@@ -106,14 +106,15 @@
 		LEFT JOIN department d2 ON d2.`id` = s.`releaseDept`
 		LEFT JOIN admin a3 ON a3.`id` = s.`releasePerson`
 		<where>
-			<if test="isOut!=null and isOut!=0 and isOut!=''">
-				and isOut=#{isOut}
+			<if test="isLj==1">
+				<if test="partTypeId!=null and partTypeId!=0 and partTypeId!=''">
+					and s2.partTypeId=#{partTypeId}
+				</if>
 			</if>
-			<if test="partTypeId!=null and partTypeId!=0 and partTypeId!=''">
-				and s2.partTypeId=#{partTypeId}
-			</if>
-			<if test="finishedProductId!=null and finishedProductId!=0 and finishedProductId!=''">
-				and s2.finishedProductId=#{finishedProductId}
+			<if test="isLj==2">
+				<if test="finishedProductId!=null and finishedProductId!=0 and finishedProductId!=''">
+					and s2.finishedProductId=#{finishedProductId}
+				</if>
 			</if>
 		</where>
 		ORDER BY s.`time` DESC

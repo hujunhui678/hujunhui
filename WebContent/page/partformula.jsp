@@ -63,18 +63,21 @@
 				<form action="${pageContext.request.contextPath }/page/SelPartForm"
 					method="post" id="form">
 					<ul class="search_content clearfix">
-						<li><label class="l_f">成品名称</label><input name="productName" value="${productName}" type="text"
-							class="text_add" placeholder="输入成品名称" style="width: 250px" /></li>
-						<li><label class="l_f">编写时间</label><input  name="createTime" value="${createTime}"
-							class="inline laydate-icon" id="start" style="margin-left: 10px;" /></li>
+						<li><label class="l_f">成品名称</label><input name="productName"
+							value="${productName}" type="text" class="text_add"
+							placeholder="输入成品名称" style="width: 250px" /></li>
+						<li><label class="l_f">编写时间</label><input name="createTime"
+							value="${createTime}" class="inline laydate-icon" id="start"
+							style="margin-left: 10px;" /></li>
 						<li style="width: 90px;"><button type="submit"
 								class="btn_search">
 								<i class="icon-search"></i>查询
 							</button></li>
 						<li style="width: 90px;"><span class="l_f"
 							style="display: block; position: relative; top: -2px;"> <a
-								href="${pageContext.request.contextPath }/page/toAdd" title="编写配方"
-								class="btn btn-warning Order_form"><i class="icon-plus"></i>编写配方</a>
+								href="${pageContext.request.contextPath }/page/toAdd"
+								title="编写配方" class="btn btn-warning Order_form"><i
+									class="icon-plus"></i>编写配方</a>
 						</span></li>
 					</ul>
 			</div>
@@ -101,18 +104,24 @@
 									onclick="partform_show('${item.formulaName}','partform-show.jsp','${item.id}','500','400')">${item.formulaName}</u>
 								</td>
 								<td width="100px">${item.finishedProductsType.productName}</td>
-								<td width="180px">
-									<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:ss:mm" />
-								</td>
+								<td width="180px"><fmt:formatDate
+										value="${item.createTime}" pattern="yyyy-MM-dd HH:ss:mm" /></td>
 								<td class="text-l">${item.admin.name}</td>
-								<td class="td-status"><span
-									class="label label-success radius">已启用</span></td>
-								<td class="td-manage"><a
-									onClick="member_stop(this,'10001')" href="javascript:;"
-									title="停用" class="btn btn-xs btn-success"><i
-										class="icon-ok bigger-120"></i></a> <a title="删除"
-									href="javascript:;" onclick="member_del(this,'1')"
-									class="btn btn-xs btn-warning"><i
+								<td class="td-status"><c:if test="${item.state eq '0'}">
+										<span class="label label-success radius">已启用</span>
+									</c:if> <c:if test="${item.state eq '1'}">
+										<span class="label label-defaunt radius">已停用</span>
+									</c:if></td>
+								<td class="td-manage"><c:if test="${item.state eq '0'}">
+										<a onClick="member_stop(this,'${item.id}')"
+											href="javascript:;" title="停用" class="btn btn-xs btn-success"><i
+											class="icon-ok bigger-120"></i></a>
+									</c:if> <c:if test="${item.state eq '1'}">
+										<a onClick="member_start(this,'${item.id}')"
+											href="javascript:;" title="启用" class="btn btn-xs "><i
+											class="icon-ok bigger-120"></i></a>
+									</c:if> <a title="删除" href="javascript:;"
+									onclick="member_del(this,'1')" class="btn btn-xs btn-warning"><i
 										class="icon-trash  bigger-120"></i></a></td>
 							</tr>
 						</c:forEach>
@@ -150,7 +159,6 @@
 	</div>
 </body>
 </html>
-<
 <script type="text/javascript">
 	jQuery(function($) {
 		$('[data-rel="tooltip"]').tooltip({
@@ -210,45 +218,72 @@
 				.confirm(
 						'确认要停用吗？',
 						function(index) {
-							$(obj)
-									.parents("tr")
-									.find(".td-manage")
-									.prepend(
-											'<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="icon-ok bigger-120"></i></a>');
-							$(obj)
-									.parents("tr")
-									.find(".td-status")
-									.html(
-											'<span class="label label-defaunt radius">已停用</span>');
-							$(obj).remove();
-							layer.msg('已停用!', {
-								icon : 5,
-								time : 1000
-							});
+							$
+									.post(
+											"editState",
+											{
+												'id' : id,
+												'state' : 1
+											},
+											function(data) {
+												if (data == "true") {
+													$(obj)
+															.parents("tr")
+															.find(".td-manage")
+															.prepend(
+																	'<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,'
+																			+ id
+																			+ ')" href="javascript:;" title="启用"><i class="icon-ok bigger-120"></i></a>');
+													$(obj)
+															.parents("tr")
+															.find(".td-status")
+															.html(
+																	'<span class="label label-defaunt radius">已停用</span>');
+													$(obj).remove();
+													layer.msg('已停用!', {
+														icon : 5,
+														time : 1000
+													});
+												}
+											});
 						});
 	}
 
 	/*产品-启用*/
 	function member_start(obj, id) {
+
 		layer
 				.confirm(
 						'确认要启用吗？',
 						function(index) {
-							$(obj)
-									.parents("tr")
-									.find(".td-manage")
-									.prepend(
-											'<a style="text-decoration:none" class="btn btn-xs btn-success" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="icon-ok bigger-120"></i></a>');
-							$(obj)
-									.parents("tr")
-									.find(".td-status")
-									.html(
-											'<span class="label label-success radius">已启用</span>');
-							$(obj).remove();
-							layer.msg('已启用!', {
-								icon : 6,
-								time : 1000
-							});
+							$
+									.post(
+											"editState",
+											{
+												'id' : id,
+												'state' : 0
+											},
+											function(data) {
+												if (data == "true") {
+													$(obj)
+															.parents("tr")
+															.find(".td-manage")
+															.prepend(
+																	'<a style="text-decoration:none" class="btn btn-xs btn-success" onClick="member_stop(this,'
+																			+ id
+																			+ ')" href="javascript:;" title="停用"><i class="icon-ok bigger-120"></i></a>');
+													$(obj)
+															.parents("tr")
+															.find(".td-status")
+															.html(
+																	'<span class="label label-success radius">已启用</span>');
+													$(obj).remove();
+													layer.msg('已启用!', {
+														icon : 6,
+														time : 1000
+													});
+												}
+											});
 						});
 	}
 	/*产品-编辑*/

@@ -4,11 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-/**
- * 各种id生成策略
- */
 public class IDUtil {
-
 	/**
 	 * 图片名生成
 	 */
@@ -21,12 +17,11 @@ public class IDUtil {
 		int end3 = random.nextInt(999);
 		// 如果不足三位前面补0
 		String str = millis + String.format("%03d", end3);
-
 		return str;
 	}
 
 	/**
-	 * 商品id生成
+	 * id生成
 	 */
 	public static long genItemId() {
 		// 取当前时间的长整形值包含毫秒
@@ -51,4 +46,5 @@ public class IDUtil {
 		long storeId = Long.parseLong(numFour.toString() + time);
 		return storeId;
 	}
+	
 }

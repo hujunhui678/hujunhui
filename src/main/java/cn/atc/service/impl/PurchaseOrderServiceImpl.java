@@ -74,4 +74,14 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		public Integer insertPurchaseOrder(Map<String, Object> map) {
 		return purchaseOrderMapper.insertPurchaseOrder(map);
 	}
+
+		@Override
+		public Integer updateAuditStateId(Map<String, Object> map) {
+			return purchaseOrderMapper.updateAuditStateId(map);
+		}
+
+		@Override
+		public Integer updateNotPassDesc(Map<String, Object> map) {
+			return purchaseOrderMapper.updateNotPassDesc(map);
+		}
 }

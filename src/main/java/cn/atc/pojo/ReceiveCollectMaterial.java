@@ -2,6 +2,8 @@ package cn.atc.pojo;
 
 import java.util.List;
 
+
+
 /**
  * 收领料单表
  * 
@@ -9,7 +11,7 @@ import java.util.List;
  *
  */
 public class ReceiveCollectMaterial {
-	private long id;// 收领料单编号
+	private String id;// 收领料单编号
 	private Integer isReceive;// 1表示收料单
 	private String releaseTime;// 发布时间
 	private Integer isAgree;// 1表示已批准
@@ -17,6 +19,7 @@ public class ReceiveCollectMaterial {
 	private long leadingDeptId;// 领用部门(部门表外键)
 	private long receivePersonId;// 领用人(用户表外键)
 	private long releaseDeptId;// 发布部门
+	private long proposerId;//申请人
 	private long releasePersonId;// 发布人
 	private String notPassDesc;// 未通过备注
 	private long auditorId;// 审核人(用户表外键)
@@ -33,10 +36,12 @@ public class ReceiveCollectMaterial {
 	private Admin releasePerson;// 发布人
 	private Admin auditor;// 审核人
 	private Admin approver;// 审批人
-	public long getId() {
+	private Admin proposer;// 申请人
+	
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public Integer getIsReceive() {
@@ -171,12 +176,30 @@ public class ReceiveCollectMaterial {
 	public void setApprover(Admin approver) {
 		this.approver = approver;
 	}
+	public Admin getProposer() {
+		return proposer;
+	}
+	public void setProposer(Admin proposer) {
+		this.proposer = proposer;
+	}
+	public long getProposerId() {
+		return proposerId;
+	}
+	public void setProposerId(long proposerId) {
+		this.proposerId = proposerId;
+	}
 	public ReceiveCollectMaterial(long id, Integer isReceive, String releaseTime, Integer isAgree, Integer auditStateId,
-			long leadingDeptId, long receivePersonId, long releaseDeptId, long releasePersonId, String notPassDesc,
-			long auditorId, String auditTime, long approverId, String agreeTime, long version,
+			long leadingDeptId, long receivePersonId, long releaseDeptId, long proposerId, long releasePersonId,
+			String notPassDesc, long auditorId, String auditTime, long approverId, String agreeTime) {}
+	public ReceiveCollectMaterial() {
+		super();
+	}
+	public ReceiveCollectMaterial(String id, Integer isReceive, String releaseTime, Integer isAgree,
+			Integer auditStateId, long leadingDeptId, long receivePersonId, long releaseDeptId, long releasePersonId,
+			String notPassDesc, long auditorId, String auditTime, long approverId, String agreeTime, long version,
 			List<ReceiveCollectMaterialDesc> receiveCollectMaterialDescList, AuditState auditState,
 			Department leadingDept, Admin receivePerson, Department releaseDept, Admin releasePerson, Admin auditor,
-			Admin approver) {
+			Admin approver, Admin proposer) {
 		super();
 		this.id = id;
 		this.isReceive = isReceive;
@@ -186,6 +209,7 @@ public class ReceiveCollectMaterial {
 		this.leadingDeptId = leadingDeptId;
 		this.receivePersonId = receivePersonId;
 		this.releaseDeptId = releaseDeptId;
+		this.proposerId = proposerId;
 		this.releasePersonId = releasePersonId;
 		this.notPassDesc = notPassDesc;
 		this.auditorId = auditorId;
@@ -201,8 +225,7 @@ public class ReceiveCollectMaterial {
 		this.releasePerson = releasePerson;
 		this.auditor = auditor;
 		this.approver = approver;
+		this.proposer = proposer;
 	}
-	public ReceiveCollectMaterial() {
-		super();
-	}
+	
 }

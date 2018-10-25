@@ -4,7 +4,7 @@
 
 	<select id="queryAll" resultType="Orderform">
 		SELECT
-		o.id,f.productType,o.orderNum,o.state,c.clientCompany,c.clientContact,o.orderDate,o.state
+		o.id,f.productType,o.finishedType,o.orderNum,o.state,c.clientCompany,c.clientContact,o.orderDate,o.state
 		FROM orderform AS o
 		INNER JOIN finishedproductstype AS f
 		ON
@@ -26,6 +26,8 @@
 	<resultMap type="Orderform" id="getOrder">
 		<id column="id" property="id" />
 		<result column="state" property="state"/>
+		<result column="finishedType" property="finishedType"/>
+		<result column="orderNum" property="orderNum"/>
 		<association property="client" javaType="Client">
 			<result column="clientName" property="clientName"/>
 			<result column="clientCompany" property="clientCompany"/>
@@ -35,7 +37,7 @@
 
 	<select id="queryId" resultMap="getOrder">
 		SELECT
-		of.id,of.state,c.clientName,c.clientCompany FROM orderform of
+		of.id,of.state,of.finishedType,of.orderNum,c.clientName,c.clientCompany FROM orderform of
 		JOIN CLIENT c
 		ON
 		of.clientId = c.id

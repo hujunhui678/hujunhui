@@ -32,9 +32,10 @@
 		<gson.version>2.3.1</gson.version>
 		<fastjson.version>1.2.47</fastjson.version>
 		<joda.version>2.9.6</joda.version>
+		<jackson.version>2.9.5</jackson.version>
 	</properties>
-
-
+ 
+ 
 
 	<dependencies>
 		<!-- 单元测试 -->
@@ -196,6 +197,24 @@
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
 		</dependency>
+		<!-- 以下三个是Jackson包，用于long转string -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
 		
 		<!-- 时间相关 -->
 		<dependency>
@@ -203,6 +222,18 @@
 			<artifactId>joda-time</artifactId>
 			<version>${joda.version}</version>
 		</dependency>
+		
+		<!-- Excel导出 -->
+		<dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
 	</dependencies>
 
 	<build>
