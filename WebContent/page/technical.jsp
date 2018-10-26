@@ -360,6 +360,15 @@
 			arr[i] = $(this).val();
 		});
 		var vals = arr.join(",");
+		if(arr.length < 1){
+			layer.msg('请先选择要导出的数据!', {
+				icon : 2,
+				time : 2000
+			});
+			
+			return;
+		}
+		
 		window
 				.open("${pageContext.request.contextPath }/page/toPort?ids="+vals,
 						"_blank");

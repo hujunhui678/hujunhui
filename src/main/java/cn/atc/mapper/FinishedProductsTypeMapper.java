@@ -13,4 +13,5 @@ public interface FinishedProductsTypeMapper {
 
 	Integer insertFinishedProductsType(FinishedProductsType finishedProductsType);// 添加成品类别
 	List<FinishedProductsType> getFinishedproductstype();
+	
 }

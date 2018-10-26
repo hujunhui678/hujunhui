@@ -152,12 +152,6 @@
 	<update id="updateIsAgreeById" parameterType="map">
 		update
 		receivecollectmaterial set
-		isAgree=#{isAgree},agreeTime=#{agreeTime},approver=#{adminId} where
-		id=#{id}
-	</update>
-	<update id="updateIsAgreeByIdH" parameterType="map">
-		update
-		receivecollectmaterial set
 		version=version+1,isAgree=#{isAgree},agreeTime=#{agreeTime},approver=#{adminId}
 		where id=#{id} and version=#{version}
 	</update>

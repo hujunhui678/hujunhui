@@ -163,12 +163,6 @@
 		 </td>
 		 <td>
 	     <a title="订单详细" style="cursor:pointer" xiangxi="openDesc" orderId="${item.id }" class="btn btn-xs btn-info order_detailed" ><i class="fa fa-list bigger-120"></i></a>
-<<<<<<< HEAD
-	     <c:if test="${item.isSignin==0 }">
-	     	<a qianshou="qianshou" shenhe="${item.auditState.id }" qianshouren="${admin.id }" href="javascript:;" title="确认签收" orderId="${item.id }" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
-	     </c:if>
-	  
-=======
 	     <shiro:hasPermission name="purchasetask:signin">
 	     	<c:if test="${item.isSignin==0 }">
 		     	<a qianshou="qianshou" shenhe="${item.auditState.id }" qianshouren="${admin.id }" href="javascript:;" title="确认签收" orderId="${item.id }" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
@@ -179,7 +173,6 @@
 	     		<a shenhe="${item.auditState.id }" href="${pageContext.request.contextPath }/page/topurchasetaskaudit?orderId=${item.id}" title="审核" class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>
 	     	</c:if>
 	     </shiro:hasPermission>
->>>>>>> branch 'master' of https://github.com/hujunhui678/hujunhui.git
 		 <!-- onclick="Delivery_stop(this,'${item.id}')" -->
 	     </td>
 	     

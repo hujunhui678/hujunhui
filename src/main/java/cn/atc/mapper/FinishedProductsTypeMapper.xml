@@ -11,4 +11,5 @@
 		resultType="Finishedproductstype">
 		select * from Finishedproductstype
 	</select>
+	
 </mapper>

@@ -90,9 +90,5 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 		return receiveCollectMaterialMapper.delReveive(id);
 	}
 
-	@Override
-	public Integer updateIsAgreeByIdH(Map<String, Object> map) {
-		return receiveCollectMaterialMapper.updateIsAgreeByIdH(map);
-	}
 
 }

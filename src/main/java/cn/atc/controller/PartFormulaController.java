@@ -18,6 +18,7 @@ import cn.atc.pojo.PartClassify;
 import cn.atc.pojo.PartFormula;
 import cn.atc.pojo.PartFormulaDesc;
 import cn.atc.pojo.PartType;
+import cn.atc.service.FinishedProductsTypeService;
 import cn.atc.service.MaterialService;
 import cn.atc.service.PartClassifyService;
 import cn.atc.service.PartFormulaService;
@@ -40,6 +41,8 @@ public class PartFormulaController {
 
 	@Autowired
 	private PartTypeService partTypeService; // 零件类别
+	@Autowired
+	private FinishedProductsTypeService fts; 
 	// 跳转编写配方表页面
 	@RequestMapping("/SelPartForm")
 	public String toPartForm(Model model, @RequestParam(defaultValue = "1") Integer pageIndex, String productName,
@@ -71,7 +74,7 @@ public class PartFormulaController {
 
 	@RequestMapping("/toAdd")
 	public String toAdd(Model model) {
-		List<FinishedProductsType> finish = partFormulaService.getAllFinish();
+		List<FinishedProductsType> finish = fts.getFinishedproductstype();
 		model.addAttribute("finish", finish);
 		return "partfromula-add";
 	}
