@@ -105,9 +105,6 @@
 			<if test="releaseTime!=''">
 				and r1.releaseTime LIKE CONCAT('%',#{releaseTime},'%')
 			</if>
-			<if test="propose!=''">
-				and a5.`name` LIKE CONCAT('%',#{propose},'%')
-			</if>
 			<if test="isReceive!=null and isReceive!='' and isReceive!=0">
 				and r1.isReceive=#{isReceive}
 			</if>

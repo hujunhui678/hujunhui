@@ -10,7 +10,7 @@ import cn.atc.pojo.Orderform;
 import cn.atc.util.PageUtil;
 
 public interface OrderformService {
-	PageUtil<Orderform> queryAll(int currentPage, int pageSize,String state);
+	PageUtil<Orderform> queryAll(int currentPage, int pageSize,String state,String id);
 	
 	Integer delete(@Param("ids")Long[] id);
 	

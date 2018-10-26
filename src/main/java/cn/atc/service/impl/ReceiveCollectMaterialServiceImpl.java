@@ -51,7 +51,7 @@ public class ReceiveCollectMaterialServiceImpl implements ReceiveCollectMaterial
 			currentPageInteger = Integer.parseInt(currentPage);
 		}
 		page.setTotalCount(count);
-		page.setPageSize(6);
+		page.setPageSize(10);
 		page.setCurrentPage(currentPageInteger);
 		map.put("pageSize", page.getPageSize());
 		map.put("startRow",page.getStartRow());

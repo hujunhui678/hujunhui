@@ -16,6 +16,11 @@ public class ProductionPlanServiceImp implements ProductionPlanService {
 	@Autowired
 	private ProductionPlanMapper productionPlanMapper;
 
+    @Override
+    public List<ProductionPlan> queryAll() {
+        // TODO Auto-generated method stub
+        return productionPlanMapper.queryAll();
+    }
 	@Override
 	public PageUtil<ProductionPlan> getAllProPlan(Map<String, Object> maps) {
 		PageUtil<ProductionPlan> page = new PageUtil<ProductionPlan>();

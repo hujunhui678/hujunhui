@@ -400,7 +400,7 @@ $(function() {
 	        title: '订单详情',
 			maxmin: true, 
 			shadeClose:false,
-	        area : ['500px' , '750px'],
+	        area : ['400px' , '500px'],
 	        content:$('#Delivery_stop'),
 			btn:['导出至Excel表格','关闭'],
 			yes: function(index, layero){		

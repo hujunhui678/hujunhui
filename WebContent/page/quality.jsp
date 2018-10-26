@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
 <html>
@@ -87,34 +87,44 @@ button {
 		<div>
 			<div class="cl pd-20">
 				<div class="cl pd-5 bg-1 bk-gray">
-					<form action="${pageContext.request.contextPath}/page/quality" method="post">
-					<span class="l"> <a href="javascript:;" onclick="datadel()"
-						class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
-							批量删除</a> <a class="btn btn-primary radius" href="javascript:;"
-						onclick="qualityadd('添加人员','${pageContext.request.contextPath}/page/doadd','900','400')"><i
-							class="Hui-iconfont">&#xe600;</i> 添加质检</a> <span class="select-box"
-						style="width: 100px; margin-left: 20px;">
-							
-							<div class="layui-input-block">
-								<select name="deptNo" lay-verify="required" class="select" id="deptNo"
-									name="brandclass" size="1">
-									<option value="0">全部</option>
-									 <option value="1" style="align: center;"
-										<c:if test="${deptNo eq '1' }">selected</c:if>>生产部门</option>
-									<option value="2" <c:if test="${deptNo eq '2' }">selected</c:if>>装配部门</option> 
-								</select>
-							</div>
+					<form action="${pageContext.request.contextPath}/page/quality"
+						method="post">
+						<span class="l"> <a href="javascript:;" onclick="datadel()"
+							class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+								批量删除</a> <a class="btn btn-primary radius" href="javascript:;"
+							onclick="qualityadd('添加人员','${pageContext.request.contextPath}/page/doadd','900','400')"><i
+								class="Hui-iconfont">&#xe600;</i> 添加质检</a> <span class="select-box"
+							style="width: 100px; margin-left: 20px;">
 
-					</span>
+								<div class="layui-input-block">
+									<select name="deptNo" lay-verify="required" class="select"
+										id="deptNo" name="brandclass" size="1">
+										<option value="0">全部</option>
+										<option value="1" style="align: center;"
+											<c:if test="${deptNo eq '1' }">selected</c:if>>生产部门</option>
+										<option value="2"
+											<c:if test="${deptNo eq '2' }">selected</c:if>>装配部门</option>
+									</select>
+								</div>
+
+						</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检测零件型号：<input type="text"
+							name="partType" id="partType" value="${partType}" />
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;质检人：<input type="text"
+							name="name" id="name" value="${name}" />
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态： <select name="state"
+							id="state">
+								<option value="1" <c:if test="${state eq '1' }">selected</c:if>>未通过</option>
+								<option value="2" <c:if test="${state eq '2' }">selected</c:if>>通过</option>
+						</select> 
 						
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检测零件型号：<input type="text" name="partType" id="partType" value="${partType}"/>
-							<input type="submit" value="查询"/>
-						
-					</span> <span class="r">共有数据：<strong>${page.totalCount }</strong> 条
-					</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="查询" />
+
+						</span> <span class="r">共有数据：<strong>${page.totalCount }</strong>
+							条
+						</span>
 					</form>
 				</div>
-				
+
 				<div class="mt-10">
 					<table
 						class="table table-border table-bordered table-hover table-bg">
@@ -125,12 +135,12 @@ button {
 							<tr class="text-c">
 								<th width="25"><input type="checkbox" value="" name=""></th>
 								<th width="40">编号</th>
-								 
-								 <th width="200">质检人</th>
+
+								<th width="200">质检人</th>
 								<th width="200">检测零件型号</th>
 								<th width="200">检测成品型号</th>
 								<th width="200">规定提交时间</th>
-								<th width="200">备注</th>
+								<th width="200">状态</th>
 								<th width="70">操作</th>
 							</tr>
 						</thead>
@@ -140,7 +150,7 @@ button {
 									<td><input type="checkbox" value="${item.id}" name=""
 										id="check"></td>
 									<td>${item.id}</td>
-									
+
 									<%--  <c:if test="${item.deptNo eq '1'}">
 										<td>生产部门</td>
 									</c:if>
@@ -150,24 +160,28 @@ button {
 									<td>${item.adminName}</td>
 									<td>${item.parttypes}</td>
 									<td>${item.finishedtype}</td>
-									<td>
-									<fmt:formatDate value="${item.submissionTime }" pattern="yyyy-MM-dd"/>
-									</td>
-									<td>${item.desc }</td>
-									
+									<td><fmt:formatDate value="${item.submissionTime }"
+											pattern="yyyy-MM-dd" /></td>
+									<td><c:if test="${item.state==1 }">
+											<span class="label label-warning radius">未通过</span>
+										</c:if> <c:if test="${item.state==2 }">
+											<span class="label label-success radius">通过</span>
+										</c:if></td>
+
 									<td class="f-14"><a title="编辑" href="javascript:;"
 										onclick="qualityedit('编辑人员','${pageContext.request.contextPath}/page/doupdate',${item.id },'800','400')"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6df;</i></a>
 										<a title="删除" href="javascript:;"
 										onclick="qualitydel(this,${item.id})" class="ml-5"
 										style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
-										
-										</td>
+
+									</td>
 								</tr>
 
 							</c:forEach>
 							<input id="totalPage" value="${page.totalPage }" type="hidden">
-							<input id="currentPage" value="${page.currentPage }" type="hidden">
+							<input id="currentPage" value="${page.currentPage }"
+								type="hidden">
 						</tbody>
 					</table>
 

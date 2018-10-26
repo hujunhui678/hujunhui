@@ -19,13 +19,14 @@ public class QualityServiceImpl implements QualityService {
 	@Resource(name="qualityMapper")
 	private QualityMapper qualityMapper;
 	@Override
-	public PageUtil<Quality> queryAll(int deptNo,String partType,int startRow,int pageSize) {
+	public PageUtil<Quality> queryAll(int deptNo,String partType,String name,String state,int startRow,int pageSize) {
 		
 		PageUtil<Quality> pageUtil=new PageUtil<Quality>();
 		Map<String , Object> map=new HashMap<String,Object>();
 		
 		map.put("deptNo",deptNo);
-		
+		map.put("name", name);
+		map.put("state", state);
 		
 		/*pageUtil.setPageSize(Integer.parseInt(map.get("pageSize").toString()));
 		pageUtil.setTotalCount(qualityMapper.getQualityTocount());

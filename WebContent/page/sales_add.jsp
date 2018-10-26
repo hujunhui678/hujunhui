@@ -93,23 +93,6 @@
 			</div>
 		</div>
 		
-		
-					<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>订单日期：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="date" class="input-text" value="" placeholder=""
-					id="orderDate" name="orderDate">
-			</div>
-		</div>
-			<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>预计到达日期：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="date" class="input-text" value="" placeholder=""
-					id="estimatedTimeOfArrival" name="estimatedTimeOfArrival">
-			</div>
-		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 				<input class="btn btn-primary radius" type="button" id="sub"

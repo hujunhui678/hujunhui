@@ -8,7 +8,7 @@
 		resultType="Quality">
 		SELECT qualitycertificate.`id`,qualitycertificate.`deptNo`,admin.`name` adminName,partType.`partType` parttypes,
 		finishedproductstype.`productType` finishedtype,qualitycertificate.`submissionTime`,
-		qualitycertificate.`detectionNum`,qualitycertificate.desc
+		qualitycertificate.`detectionNum`,qualitycertificate.desc,qualitycertificate.state
 		FROM qualitycertificate 
 		INNER JOIN admin ON qualitycertificate.`adminPeper`=admin.`id`
 		INNER JOIN partType ON qualitycertificate.`detectionPartTypeId`=partType.`id`
@@ -19,10 +19,15 @@
 				partType like concat('%',#{partType},'%')
 			</if>
 		
-		
-		
 			<if test="deptNo!=0">
 				and deptNo=#{deptNo}
+			</if>
+			
+			<if test="name!=null and name!=''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="state!=null and state != ''">
+				and state = #{state}
 			</if>
 		</trim>
 		limit #{startRow},#{pageSize}
@@ -38,9 +43,7 @@
 			<if test="partType!=null and partType!=''">
 				partType like concat('%',#{partType},'%')
 			</if>
-		
-		
-		
+
 			<if test="deptNo!=0">
 				and deptNo=#{deptNo}
 			</if>
@@ -49,8 +52,8 @@
 
 	<insert id="addQuality" parameterType="Quality">
 		INSERT INTO qualitycertificate(deptNo,adminPeper,detectionPartTypeId,detectionFinishedTypeId,submissionTime,
-		detectionNum,`desc`) VALUES(#{deptNo},#{adminPeper},#{detectionPartTypeId},#{detectionFinishedTypeId},
-		#{submissionTime},#{detectionNum},#{desc})
+		detectionNum,`state`) VALUES(#{deptNo},#{adminPeper},#{detectionPartTypeId},#{detectionFinishedTypeId},
+		#{submissionTime},#{detectionNum},#{state})
 	</insert>
 
 	<delete id="deleteQuality" parameterType="Quality">
@@ -59,8 +62,9 @@
 	
 	
 	<update id="updateQuality" parameterType="Quality">
-		update qualitycertificate set 
-		detectionNum=#{detectionNum},`desc`=#{desc} 
+		update qualitycertificate set deptNo=#{deptNo},adminPeper=#{adminPeper},
+		`detectionPartTypeId`=#{detectionPartTypeId},`detectionFinishedTypeId`=#{detectionFinishedTypeId},
+		detectionNum=#{detectionNum},`state`=#{state} 
 		where id=#{id}
 	</update>
 	

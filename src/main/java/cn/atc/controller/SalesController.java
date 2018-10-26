@@ -1,5 +1,6 @@
 package cn.atc.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.DoubleAdder;
 
@@ -17,6 +18,7 @@ import cn.atc.pojo.Orderform;
 import cn.atc.service.ClientService;
 import cn.atc.service.FinishedProductsTypeService;
 import cn.atc.service.OrderformService;
+import cn.atc.util.DateConverter;
 import cn.atc.util.GsonUtil;
 import cn.atc.util.IDUtils;
 import cn.atc.util.PageUtil;
@@ -32,18 +34,19 @@ public class SalesController {
 	private ClientService client;
 
 	@RequestMapping("/sales")
-	public String Gosales(Model model, String currentPage,String state) {
+	public String Gosales(Model model, String currentPage, String state, String id) {
 		int temp = 1;
 		if (currentPage != null && !currentPage.trim().equals("")) {
 			temp = Integer.parseInt(currentPage);
 		}
 		List<FinishedProductsType> finishedproductstypes = finishedproductstype.getFinishedproductstype();
 		List<Client> clients = client.getClient();
-		PageUtil<Orderform> pageUtil = orderform.queryAll(temp, 5,state);
+		PageUtil<Orderform> pageUtil = orderform.queryAll(temp, 5, state, id);
 		model.addAttribute("pageUtil", pageUtil);
 		model.addAttribute("finishedproductstypes", finishedproductstypes);
 		model.addAttribute("clients", clients);
-	model.addAttribute("state", state);
+		model.addAttribute("id", id);
+		model.addAttribute("state", state);
 		return "sales";
 	}
 
@@ -75,7 +78,7 @@ public class SalesController {
 	@RequestMapping("/addSales")
 	@ResponseBody
 	public String add(Model model, Orderform orderforms) {
-
+		orderforms.setOrderDate(new Date());
 		int add = orderform.add(orderforms);
 		if (add > 0) {
 			return "true";

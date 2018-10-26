@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
 <html>
@@ -25,16 +26,22 @@
 	href="${pageContext.request.contextPath }/statics/static/h-ui.admin/css/style.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/statics/css/jquery.pagination.css" />
- <link href="${pageContext.request.contextPath }/statics/assets/css/bootstrap.min.css" rel="stylesheet" />
- <link rel="stylesheet" href="${pageContext.request.contextPath }/statics/assets/css/ace.min.css" />
- <link rel="stylesheet" href="${pageContext.request.contextPath }/statics/font/css/font-awesome.min.css" />
+<link
+	href="${pageContext.request.contextPath }/statics/assets/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/statics/assets/css/ace.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/statics/font/css/font-awesome.min.css" />
 
 
 
-		<script src="${pageContext.request.contextPath }/statics/js/jquery-1.9.1.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/statics/js/jquery-1.9.1.min.js"></script>
 <script
 	src="${pageContext.request.contextPath }/statics/js/jquery.pagination.min.js"></script>
-        <script src="${pageContext.request.contextPath }/statics/assets/js/bootstrap.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/statics/assets/js/bootstrap.min.js"></script>
 
 <title></title>
 <style>
@@ -91,31 +98,34 @@ button {
 			<div class="cl pd-20">
 				<div class="cl pd-5 bg-1 bk-gray">
 					<form action="${pageContext.request.contextPath }/page/sales"
-		method="post">
-					<span class="l"> 
-					<shiro:hasPermission name="sales:remove">
-					<a href="javascript:;" onclick="datadel()"
-						class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
-							批量删除</a> 
-					</shiro:hasPermission>
-							<shiro:hasPermission name="sales:add">
-							<a class="btn btn-primary radius" href="javascript:;"
-							onclick="admin_add('添加订单','${pageContext.request.contextPath}/page/sales_add.jsp','900','400')"><i
-								class="Hui-iconfont">&#xe600;</i> 添加订单</a>
+						method="post">
+						<span class="l"> <shiro:hasPermission name="sales:remove">
+								<a href="javascript:;" onclick="datadel()"
+									class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+									批量删除</a>
+							</shiro:hasPermission> <shiro:hasPermission name="sales:add">
+								<a class="btn btn-primary radius" href="javascript:;"
+									onclick="admin_add('添加订单','${pageContext.request.contextPath}/page/sales_add.jsp','900','400')"><i
+									class="Hui-iconfont">&#xe600;</i> 添加订单</a>
 							</shiro:hasPermission>
-					</span> <!--   订单状态: <input type="text" name="state"
+						</span>
+						<!--   订单状态: <input type="text" name="state"
 						value="${state}"/><span >(输入:1 未出货,2 已发货, 3 已到达)</span><input type="submit" value="查询" />-->
-						
-					&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp;
-					&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 
-					&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 	&nbsp; 
-					 订单状态: <input type="text" name="state"
-						value="${state}"/><span >(输入:1 未出货 ,2 已发货 ,3 已到达)</span>
 
-						<input type="submit" value="查询" class="btn_search" />
-						  <span
-						class="r">共有数据：<strong>${pageUtil.totalCount }</strong> 条
-					</span>
+						&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+						&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+						&nbsp; &nbsp; &nbsp; 订单状态:
+						<!--  <input type="text" name="state"
+						 value="${state}"/><span >(输入:1 未出货 ,2 已发货 ,3 已到达)</span>-->
+						<select name="state" id="state">
+							<option value="">全部</option>
+							<option value="1" <c:if test="${state eq '1'}">selected</c:if>  >未出货</option>
+							<option value="2" <c:if test="${state eq '2'}">selected</c:if>  >已发货</option>
+							<option value="3" <c:if test="${state eq '3'}">selected</c:if>  >已到达</option>
+						</select> 订单编号<input type="text" name="id" id="id" value="${id}"/> <input type="submit"
+							value="查询" class="btn_search" /> <span class="r">共有数据：<strong>${pageUtil.totalCount }</strong>
+							条
+						</span>
 					</form>
 				</div>
 				<div class="mt-10">
@@ -123,11 +133,12 @@ button {
 						class="table table-border table-bordered table-hover table-bg">
 						<thead>
 							<tr>
-								<th scope="col" colspan="9">销售订单管理</th>
+								<th scope="col" colspan="10">销售订单管理</th>
 							</tr>
 							<tr class="text-c">
 								<th width="25"><input type="checkbox" value="" name=""></th>
 								<th width="40">序号</th>
+								<th width="200">订单编号</th>
 								<th width="200">成品类别</th>
 								<th width="200">订购数量</th>
 								<th width="200">客户公司</th>
@@ -144,39 +155,42 @@ button {
 									<td><input type="checkbox" value="${item.id}" name=""
 										id="check"></td>
 									<td>${index.count}</td>
+									<td>${item.id}</td>
 									<td>${item.productType}</td>
 									<td>${item.orderNum }</td>
 									<td>${item.clientCompany}</td>
 									<td>${item.clientContact}</td>
-									<td>${item.orderDate}</td>
+									<td>
+									<fmt:formatDate value="${item.orderDate}" pattern="yyyy-MM-dd"/>
+									</td>
 									<td><c:if test="${item.state==1 }">
 											<span class="label label-warning radius">未出货</span>
 										</c:if> <c:if test="${item.state==2 }">
 											<span class="label label-success radius">已发货</span>
-										</c:if>
-										<c:if test="${item.state==3 }">
+										</c:if> <c:if test="${item.state==3 }">
 											<span class="label label-info radius">已到达</span>
 										</c:if></td>
 
-									<td class="f-14">
-									<shiro:hasPermission name="sales:edit">
-									<a title="编辑" href="javascript:;"
-										onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/doupdateSales',${item.id },'800','400')"
-										style="text-decoration: none"><i class="Hui-iconfont">&#xe6df;</i></a>
-									</shiro:hasPermission>
-									<shiro:hasPermission name="sales:remove">
-										<a title="删除" href="javascript:;"
-										onclick="person_del(this,${item.id})" class="ml-5"
-										style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
-									</shiro:hasPermission>
-									<c:if test="${item.state==1 }">
-										<shiro:hasPermission name="sales:sendout">
-											<a title="发货" href="javascript:;"
-											onclick="fahuo(${item.id},${item.finishedType},${item.orderNum},'${item.productType }',${admin.id } )" class="ml-5"
-											style="text-decoration: none"><i class="Hui-iconfont">&#xe615;</i></a>
-										</shiro:hasPermission>
-									</c:if>
-									</td>
+									<td class="f-14"><shiro:hasPermission name="sales:edit">
+											<a title="编辑" href="javascript:;"
+												onclick="person_edit('编辑人员','${pageContext.request.contextPath}/page/doupdateSales',${item.id },'800','400')"
+												style="text-decoration: none"><i class="Hui-iconfont">&#xe6df;</i></a>
+										</shiro:hasPermission> 
+										<c:if test="${item.state eq '1' }">
+										<shiro:hasPermission name="sales:remove">
+											<a title="删除" href="javascript:;"
+												onclick="person_del(this,${item.id})" class="ml-5"
+												style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+										</shiro:hasPermission> 
+										</c:if>
+										<c:if test="${item.state==1 }">
+											<shiro:hasPermission name="sales:sendout">
+												<a title="发货" href="javascript:;"
+													onclick="fahuo(${item.id},${item.finishedType},${item.orderNum},'${item.productType }',${admin.id } )"
+													class="ml-5" style="text-decoration: none"><i
+													class="Hui-iconfont">&#xe615;</i></a>
+											</shiro:hasPermission>
+										</c:if></td>
 								</tr>
 
 							</c:forEach>
@@ -273,7 +287,7 @@ button {
 									}
 								},"text");
 							}else{
-								layer.confirm("成品零件数量不足!<br/>缺少零件："+productType+"<br/>缺少数量："+missPart+"<br/>是否发送采购计划？", {
+								layer.confirm("成品零件数量不足!<br/>缺少零件："+productType+"<br/>缺少数量："+missPart+"<br/>是否发送生产计划？", {
 					                title:false,
 					                btnAlign: 'c',
 					                area: ['25rem', '15rem'],

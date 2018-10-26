@@ -11,6 +11,7 @@ import cn.atc.util.PageUtil;
 public interface ProductionPlanService {
 	PageUtil<ProductionPlan> getAllProPlan(Map<String, Object> maps);
 
+	List<ProductionPlan>queryAll();
 	// 根据生产规划，查询出具体生产的零件(类型，分类，数量)
 	List<ProductionPlan> getPartFromulaById(@Param("id") String id);
 

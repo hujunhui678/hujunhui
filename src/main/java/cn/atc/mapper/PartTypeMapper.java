@@ -12,7 +12,7 @@ import cn.atc.pojo.PartType;
 public interface PartTypeMapper {
 	
 	List<PartType> getPartTypes(); // 获取所有零件型号信息
-	
+	public List<PartType> queryAll();
 	Integer insertPartType(PartType partType); // 添加零件型号
 	List<PartType> getAllType();//获取所有零件类型
 }

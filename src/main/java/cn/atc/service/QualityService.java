@@ -9,7 +9,7 @@ import cn.atc.util.PageUtil;
 
 public interface QualityService {
 	//质量检测分页显示
-	PageUtil<Quality> queryAll(int deptNo,String partType,int startRow,int pageSize);
+	PageUtil<Quality> queryAll(int deptNo,String partType,String name,String state,int startRow,int pageSize);
 	
 	//添加
 	public int addQuality(Quality quality);

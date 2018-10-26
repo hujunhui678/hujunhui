@@ -16,4 +16,5 @@ public interface PartTypeService {
 	Integer insertPartType(PartType partType);
 
 	List<PartType> getAllType();//获取所有零件类型
+	public List<PartType> queryAll();
 }

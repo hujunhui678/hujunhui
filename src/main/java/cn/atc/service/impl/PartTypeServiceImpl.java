@@ -14,7 +14,12 @@ public class PartTypeServiceImpl implements PartTypeService {
 
 	@Autowired
 	private PartTypeMapper partTypeMapper;
-	
+	@Override
+	public List<PartType> queryAll() {
+		// TODO Auto-generated method stub
+		return partTypeMapper.queryAll();
+	}
+
 	@Override
 	public List<PartType> getPartTypes() {
 		return partTypeMapper.getPartTypes();
@@ -24,7 +29,7 @@ public class PartTypeServiceImpl implements PartTypeService {
 	public Integer insertPartType(PartType partType) {
 		return partTypeMapper.insertPartType(partType);
 	}
-	
+
 	@Override
 	public List<PartType> getAllType() {
 		return partTypeMapper.getAllType();

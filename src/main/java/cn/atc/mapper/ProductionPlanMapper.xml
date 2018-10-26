@@ -46,10 +46,14 @@
 			<if test="productName != null and productName != ''">
 				and ft.`productName` like concat('%',#{productName},'%')
 			</if>
+			<if test="compilers != null and compilers != ''">
+				and pp.`compilers` = #{compilers}
+			</if>
 			<if test="arrivalTime != null and arrivalTime != ''">
 				and pp.`arrivalTime` like concat(#{arrivalTime},'%')
 			</if>
 		</trim>
+		order by arrivalTime desc
 		limit
 		#{startRow},#{pageSize}
 	</select>
@@ -95,10 +99,14 @@
 			<if test="productName != null and productName != ''">
 				and ft.`productName` like concat('%',#{productName},'%')
 			</if>
+			<if test="compilers != null and compilers != ''">
+				and pp.`compilers` = #{compilers}
+			</if>
 			<if test="arrivalTime != null and arrivalTime != ''">
 				and pp.`arrivalTime` like concat(#{arrivalTime},'%')
 			</if>
 		</trim>
+		order by arrivalTime desc
 	</select>
 
 
@@ -187,9 +195,16 @@
 		</where>
 	</update>
 
-	
+
 	<insert id="addProductionPlan" parameterType="map">
-		insert into productionPlan (id,finishedProductTypeId,produceNum,compilers,arrivalTime,estimatedTimeOfCompletion,auditStateId)
-		values (#{id},#{finishedProductTypeId},#{produceNum},#{compilers},#{arrivalTime},#{estimatedTimeOfCompletion},#{auditStateId})
+		insert into
+		productionPlan
+		(id,finishedProductTypeId,produceNum,compilers,arrivalTime,estimatedTimeOfCompletion,auditStateId)
+		values
+		(#{id},#{finishedProductTypeId},#{produceNum},#{compilers},#{arrivalTime},#{estimatedTimeOfCompletion},#{auditStateId})
 	</insert>
+
+	<select id="queryAll" resultType="cn.atc.pojo.ProductionPlan">
+		select * from productionplan
+	</select>
 </mapper>

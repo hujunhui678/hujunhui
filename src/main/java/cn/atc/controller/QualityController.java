@@ -40,21 +40,23 @@ public class QualityController {
 	
 	@RequestMapping("/quality")
 	public String list(Model model,@RequestParam(defaultValue="0")int deptNo,String currentPage,
-			String partType){
+			String partType,String name,String state){
 		
 		int temp=1;
 		if(currentPage!=null && !currentPage.trim().equals("")){
 			temp=Integer.parseInt(currentPage);
 		}
-		PageUtil<Quality> page=qualityService.queryAll(deptNo,partType,temp, 6);
+		PageUtil<Quality> page=qualityService.queryAll(deptNo,partType,name,state,temp, 6);
 		List<PartType> partTypes=partTypeService.getAllType();
 		List<FinishedProductsType> finishedproductstypes=finishedproductstypeService.getFinishedproductstype();
 		List<Admin> admins=adminService.queryAll();
 		model.addAttribute("page", page);
 		model.addAttribute("deptNo",deptNo);
 		model.addAttribute("partType", partType);
+		model.addAttribute("name", name);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("partTypes", partTypes);
+		model.addAttribute("state", state);
 		model.addAttribute("admins", admins);
 		model.addAttribute("finishedproductstypes", finishedproductstypes);
 		return "quality";
@@ -98,6 +100,12 @@ public class QualityController {
 	
 	public String doupdate(Model model,int id) throws Exception{
 		Quality quality=qualityService.getQualityId(id);
+		List<PartType> partTypes=partTypeService.getAllType();
+		List<FinishedProductsType> finishedproductstypes=finishedproductstypeService.getFinishedproductstype();
+		List<Admin> admins=adminService.queryAll();
+		model.addAttribute("admins", admins);
+		model.addAttribute("partTypes", partTypes);
+		model.addAttribute("finishedproductstypes", finishedproductstypes);
 		model.addAttribute("id", id);
 		model.addAttribute("quality", quality);
 		

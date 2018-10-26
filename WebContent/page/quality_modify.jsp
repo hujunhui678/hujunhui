@@ -52,29 +52,111 @@
 		<div class="row cl" style="display: none;">
 			<label class="form-label col-xs-4 col-sm-3">修改的质检：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				 <input type="text"
-					class="input-text" value="${quality.id}" placeholder="" id="id"
-					name="" disabled="disabled" style="width: 100px; height: 30px">
+				<input type="text" class="input-text" value="${quality.id}"
+					placeholder="" id="id" name="" disabled="disabled"
+					style="width: 100px; height: 30px">
 
 			</div>
 		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">所属部门：</label>
+			<div class="formControls col-xs-8 col-sm-9"
+				style="width: 150px; margin-left: 8.95px;">
+
+				<select name="deptNo" lay-verify="required" class="select"
+					id="deptNo" name="brandclass" size="1" disabled="disabled">
+
+					<option value="1" style="align: center;"
+						<c:if test="${quality.deptNo eq '1' }">selected</c:if>>生产部门</option>
+					<option value="2"
+						<c:if test="${quality.deptNo eq '2' }">selected</c:if>>装配部门</option>
+				</select>
+
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span
+				class="c-red">*</span>检测人：</label>
+			<div class="formControls col-xs-8 col-sm-9"
+				style="width: 150px; margin-left: 8.95px;">
+				<select id="adminPeper" name="adminPeper" class="select-box">
+					<c:forEach var="a" items="${admins}">
+						<option value="${a.id }"
+							<c:if test="${a.id==quality.adminPeper}">selected</c:if>>
+
+							${a.name }</option>
+					</c:forEach>
+				</select>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span
+				class="c-red">*</span>检测零件型号：</label>
+			<div class="formControls col-xs-8 col-sm-9"
+				style="width: 150px; margin-left: 8.95px;">
+				<select id="detectionPartTypeId" name="detectionPartTypeId"
+					class="select-box">
+					<c:forEach var="p" items="${partTypes}">
+						<option value="${p.id }"
+							<c:if test="${p.id==quality.detectionPartTypeId}">selected</c:if>>
+
+							${p.partType }</option>
+					</c:forEach>
+				</select>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span
+				class="c-red">*</span>检测成品型号：</label>
+			<div class="formControls col-xs-8 col-sm-9"
+				style="width: 150px; margin-left: 8.95px;">
+				<select id="detectionFinishedTypeId" name="detectionFinishedTypeId"
+					class="select-box">
+					<c:forEach var="f" items="${finishedproductstypes}">
+						<option value="${f.id }"
+							<c:if test="${ f.id==quality.detectionFinishedTypeId}">selected</c:if>>
+
+							${f.productType }</option>
+					</c:forEach>
+				</select>
+			</div>
+		</div>
+
+
+
+
+		<%-- <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span
+				class="c-red">*</span>规定提交时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="date" class="input-text" value="${quality.submissionTime }" placeholder=""
+					id="submissionTime" name="submissionTime">
+			</div>
+		</div> --%>
+
+
+
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
 				class="c-red">*</span>检测数量：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="${quality.detectionNum }" placeholder=""
-					id="detectionNum" name="detectionNum">
+				<input type="text" class="input-text"
+					value="${quality.detectionNum }" placeholder="" id="detectionNum"
+					name="detectionNum">
 			</div>
 		</div>
-		
+
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red">*</span>备注：</label>
+				class="c-red">*</span>状态：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<%-- <input type="text" class="input-text" value="${quality.desc }" placeholder=""
-					id="desc" name="desc"> --%>
-				<textarea rows="10" cols="30"  placeholder=""
-				id="desc" name="desc">${quality.desc }</textarea>	
+				<select name="state" id="state">
+					<option value="1">未通过</option>
+					<option value="2">通过</option>
+				</select>
 			</div>
 		</div>
 		<div class="row cl">
@@ -82,7 +164,7 @@
 				<input class="btn btn-primary radius" type="button" id="sub"
 					value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
 			</div>
-			
+
 		</div>
 	</form>
 	</article>
@@ -110,37 +192,52 @@
 			//进入修改控制器，获取要修改的人员的信息
 			var isPerson = $("#isPerson").val();
 			var id = $("#id").val();
-			
-		 //修改用户
-			$("#sub").click(function() {
-				
-				var id = $("#id").val();
-				var detectionNum = $("#detectionNum").val();
-				var desc = $("#desc").val();
-				$.post("toupdate", {
-					'id' : id,
-					'detectionNum' : detectionNum,
-					'desc' : desc
-				}, function(data) {
-					if (data == "true") {
-						layer.msg('修改成功!', {
-							icon : 1,
-							time : 1000
-						}, function() {
-							parent.location.reload();
-							layer_close();
-						});
-					}
-				});
-			});
+
+			//修改用户
+			$("#sub")
+					.click(
+							function() {
+
+								var id = $("#id").val();
+								var deptNo = $("#deptNo").val();
+								var adminPeper = $("#adminPeper").val();
+								var detectionPartTypeId = $(
+										"#detectionPartTypeId").val();
+								var detectionFinishedTypeId = $(
+										"#detectionFinishedTypeId").val();
+								/* var submissionTime=$("#submissionTime").val(); */
+								var detectionNum = $("#detectionNum").val();
+								var state = $("#state").val();
+								$
+										.post(
+												"toupdate",
+												{
+													'id' : id,
+													'deptNo' : deptNo,
+													'adminPeper' : adminPeper,
+													'detectionPartTypeId' : detectionPartTypeId,
+													'detectionFinishedTypeId' : detectionFinishedTypeId,
+													'detectionNum' : detectionNum,
+													'state' : state
+												}, function(data) {
+													if (data == "true") {
+														layer.msg('修改成功!', {
+															icon : 1,
+															time : 1000
+														}, function() {
+															parent.location
+																	.reload();
+															layer_close();
+														});
+													}
+												});
+							});
 			$('.skin-minimal input').iCheck({
 				checkboxClass : 'icheckbox-blue',
 				radioClass : 'iradio-blue',
 				increaseArea : '20%'
 			});
 		});
-
-		
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
 </body>

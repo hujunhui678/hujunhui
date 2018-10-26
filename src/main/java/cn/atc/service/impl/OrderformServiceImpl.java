@@ -18,7 +18,7 @@ public class OrderformServiceImpl implements OrderformService {
 	@Autowired
 		private OrderformMapper mapper;
 	@Override
-	public PageUtil<Orderform> queryAll(int currentPage, int pageSize,String state) {
+	public PageUtil<Orderform> queryAll(int currentPage, int pageSize,String state,String id) {
 		PageUtil<Orderform> pageUtil=new PageUtil<Orderform>();
 		int totalCount=mapper.Count();
 		Map<String, Object>map=new HashMap<String, Object>();
@@ -29,6 +29,7 @@ public class OrderformServiceImpl implements OrderformService {
 		map.put("state", state);
 		map.put("pageSize",pageSize);
 		map.put("startRow", startRow);
+		map.put("id", id);
 		
 		List<Orderform>list=mapper.queryAll(map);
 		pageUtil.setLists(list);

@@ -61,19 +61,33 @@
 			<label class="form-label col-xs-4 col-sm-3"><span
 				class="c-red"></span>客户公司：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="${order.client.clientCompany}" placeholder=""
+				<input type="text" class="input-text"
+					value="${order.client.clientCompany}" placeholder=""
 					id="clientCompany" name="clientCompany" disabled="disabled">
 			</div>
 		</div>
-			<div class="row cl">
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">订单状态：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-		<select name="state" id="state">
-		 <option value="0">全部</option>
-					 <option value="1" <c:if test="${order.state eq '1'}">selected</c:if>>未出货</option>
-					  <option value="2" <c:if test="${order.state eq '2'}">selected</c:if>>已发货</option>
-					   <option value="3" <c:if test="${order.state eq '3'}">selected</c:if>>已到达</option>		 
-   					 </select>
+				<select name="state" id="state">
+					<option value="0">全部</option>
+					<c:if test="${order.state eq '1'}">
+						<option value="1"
+							<c:if test="${order.state eq '1'}">selected</c:if>>未出货</option>
+						<option value="2"
+							<c:if test="${order.state eq '2'}">selected</c:if>>已发货</option>
+					</c:if>
+					<c:if test="${order.state eq '2'}">
+						<option value="2"
+							<c:if test="${order.state eq '2'}">selected</c:if>>已发货</option>
+						<option value="3"
+							<c:if test="${order.state eq '3'}">selected</c:if>>已到达</option>
+					</c:if>
+					<c:if test="${order.state eq '3'}">
+						<option value="3"
+							<c:if test="${order.state eq '3'}">selected</c:if>>已到达</option>
+					</c:if>
+				</select>
 			</div>
 		</div>
 		<div class="row cl">
@@ -158,7 +172,7 @@
 							}, "json");
 		});
 		//修改用户
-	$("#sub").click(function() {
+		$("#sub").click(function() {
 			var id = $("#id").val();
 			var state = $("#state").val();
 			$.post("updateSales", {
@@ -177,8 +191,6 @@
 			});
 		});
 
-		
-		
 		$('.skin-minimal input').iCheck({
 			checkboxClass : 'icheckbox-blue',
 			radioClass : 'iradio-blue',

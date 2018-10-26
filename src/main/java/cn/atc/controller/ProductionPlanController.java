@@ -50,6 +50,7 @@ public class ProductionPlanController {
 		maps.put("pageIndex", pageIndex);
 		maps.put("productName", productName);
 		maps.put("arrivalTime", arrivalTime);
+		maps.put("compilers", 1);
 		PageUtil<ProductionPlan> allProPlan = pps.getAllProPlan(maps);
 		model.addAttribute("page", allProPlan);
 		model.addAttribute("productName", productName);
@@ -226,5 +227,21 @@ public class ProductionPlanController {
 			return "true";
 		}
 		return "false";
+	}
+	
+	@RequestMapping("/selCPro")
+	public String selCPro(Model model, @RequestParam(defaultValue = "1") Integer pageIndex, String productName,
+			String arrivalTime) {
+		HashMap<String, Object> maps = new HashMap<String, Object>();
+		maps.put("pageIndex", pageIndex);
+		maps.put("productName", productName);
+		maps.put("arrivalTime", arrivalTime);
+		maps.put("compilers", 2);
+		PageUtil<ProductionPlan> allProPlan = pps.getAllProPlan(maps);
+		model.addAttribute("page", allProPlan);
+		model.addAttribute("productName", productName);
+		model.addAttribute("arrivalTime", arrivalTime);
+		model.addAttribute("pageIndex", pageIndex);
+		return "selCPro";
 	}
 }

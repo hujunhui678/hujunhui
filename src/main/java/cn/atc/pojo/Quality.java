@@ -15,7 +15,7 @@ public class Quality {
 	private Date submissionTime;
 	private int detectionNum;
 	private String desc;
-	
+	private int state;
 	private String parttypes;//检测零件型号
 	private String finishedtype;//检测成品型号
 	private String adminName;
@@ -119,6 +119,14 @@ public class Quality {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
+	}
+	
+	
 	
 	
 }

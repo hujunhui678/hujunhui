@@ -15,6 +15,9 @@
 			<if test="state != null">
 				and state LIKE concat('%',#{state},'%')
 			</if>
+			<if test="id != null and id !=''">
+				and o.id=#{id}
+			</if>
 		</trim>
 		limit
 		#{startRow},#{pageSize}

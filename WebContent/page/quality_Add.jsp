@@ -147,10 +147,12 @@
 
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
-				class="c-red"></span>备注：</label>
+				class="c-red"></span>状态：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea rows="40" cols="10" class="input-text" id="desc"
-					name="desc"></textarea>
+				<select name="state" id="state">
+					<option value="1">未通过</option>
+					<option value="2">通过</option>
+				</select>
 			</div>
 		</div>
 
@@ -198,7 +200,7 @@
 								/* var partImageUrl = $("#partImageUrl").val(); */
 								var detectionNum = $("#detectionNum").val();
 								
-								var desc = $("#desc").val();
+								var state = $("#state").val();
 								$.post("toadd",{
 													'deptNo' : deptNo,
 													'adminPeper':adminPeper,
@@ -206,7 +208,7 @@
 													'detectionFinishedTypeId' : detectionFinishedTypeId,
 													/* 'partImageUrl':partImageUrl, */
 													'detectionNum':detectionNum,
-													'desc':desc,
+													'state':state,
 													'subTime':submissionTime
 												}, function(data) {
 													layer.msg('添加成功!', {
