@@ -23,6 +23,7 @@ public interface AssemblyMapper {
     Assembly selectByPrimaryKey(Long id);
 
     List<Assembly> selectAllWithAssemblyPeople();
+    List<Assembly> selectAllWithAssemblyPeopleByPer(@Param("per")String per);
 
     int updateByExampleSelective(@Param("record") Assembly record, @Param("example") AssemblyExample example);
 

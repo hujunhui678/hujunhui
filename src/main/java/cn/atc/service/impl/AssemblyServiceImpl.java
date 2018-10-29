@@ -44,4 +44,9 @@ public class AssemblyServiceImpl implements AssemblyService {
         return assemblyMapper.selectAllAssemblyPeople();
     }
 
+	@Override
+	public List<Assembly> selectAllWithAssemblyPeopleByPer(String per) {
+		return assemblyMapper.selectAllWithAssemblyPeopleByPer(per);
+	}
+
 }

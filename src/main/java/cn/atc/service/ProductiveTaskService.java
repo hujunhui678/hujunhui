@@ -3,6 +3,8 @@ package cn.atc.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.atc.pojo.*;
 import cn.atc.util.PageUtil;
 
@@ -20,6 +22,7 @@ public interface ProductiveTaskService {
 
 	List<Productivetask> getProductivetaskList();
 
+    List<Productivetask> selectAllWithEntityById(@Param("id")String id);
 	void saveProductiveTask(Productivetask productivetask);
 
 	void deleteProductiveTask(String id);

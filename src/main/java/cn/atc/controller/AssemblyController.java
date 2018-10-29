@@ -24,12 +24,17 @@ public class AssemblyController {
 
     @RequestMapping("/assembly_list")
     @ResponseBody
-    public Msg getAssembly(@RequestParam(value = "pn", defaultValue = "1") Integer pn){
+    public Msg getAssembly(@RequestParam(value = "pn", defaultValue = "1") Integer pn,String per){
         try {
             //在查询前调用，传入页码以及分页的大小
             PageHelper.startPage(pn, 2);
             //直接进行查询
-            List<Assembly> assemblys= assemblyService.getAssemblyList();
+            List<Assembly> assemblys= null;
+            if(per == null) {
+            	assemblys= assemblyService.getAssemblyList();
+            }else {
+            	assemblys = assemblyService.selectAllWithAssemblyPeopleByPer(per);
+            }
             //查询后进行包装，并传入需要连续显示的页数
             PageInfo pageInfo=new PageInfo(assemblys,1);
             return Msg.success().add("pageInfo",pageInfo);

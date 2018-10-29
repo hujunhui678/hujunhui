@@ -120,6 +120,12 @@
     LEFT JOIN employee e
     ON a.assemblyPeople=e.id
   </select>
+  <select id="selectAllWithAssemblyPeopleByPer" resultMap="WithAssemblyPeopleMap">
+    SELECT * FROM assembly a
+    LEFT JOIN employee e
+    ON a.assemblyPeople=e.id
+    WHERE e.`name` LIKE CONCAT('%',#{per},'%')
+  </select>
 <select id="selectAllWithAssemblyPeopleById" parameterType="java.lang.Long" resultMap="WithAssemblyPeopleMap">
   SELECT * FROM assembly a
     LEFT JOIN employee e

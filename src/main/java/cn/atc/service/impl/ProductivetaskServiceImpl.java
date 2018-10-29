@@ -52,4 +52,9 @@ public class ProductivetaskServiceImpl implements ProductiveTaskService {
         }
         return ids;
     }
+
+	@Override
+	public List<Productivetask> selectAllWithEntityById(String id) {
+		return mapper.selectAllWithEntityById(id);
+	}
 }

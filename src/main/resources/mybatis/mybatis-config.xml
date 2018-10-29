@@ -2,7 +2,6 @@
     <!DOCTYPE configuration   
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"   
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
-
 <configuration>
 	<settings>
 		<setting name="lazyLoadingEnabled" value="false" />
@@ -12,5 +11,11 @@
 		<package name="cn.atc.pojo" />
 		<package name="cn.atc.common" />
 	</typeAliases>
-
+	<!--插件 -->
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			<!-- 参数合理化，即不能到达-1页或超过总页数，但是如果配置了点击事件，仍会发出请求 -->
+			<property name="reasonable" value="true" />
+		</plugin>
+	</plugins>
 </configuration>  

@@ -55,14 +55,6 @@
 
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>生产任务书编号：</label>
-			<div class="formControls col-xs-2 col-sm-3">
-				<input type="text" class="input-text" id="id" name="id">
-			</div>
-		</div>
-
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
 					class="c-red">*</span>生产计划：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box" style="width: 180px; margin-left: 8.95px;">
@@ -198,11 +190,6 @@
 
         //提交，添加生产任务
         $("#sub").click(function () {
-            if($("#id").val()===""){
-                layer.alert('生产任务书编号不能为空！', {icon: 5});
-                return ;
-            }
-
 			if($("#estimatedTimeOfCompletion").val()===""){
                 layer.alert('预计完成时间不能为空！', {icon: 5});
                 return ;

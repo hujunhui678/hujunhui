@@ -6,6 +6,8 @@ import cn.atc.pojo.PartFormula;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface AssemblytaskService {
     List<Assemblytask> getAssemblytaskList();
 
@@ -16,6 +18,7 @@ public interface AssemblytaskService {
     Assemblytask selectById(String id);
 
     Assemblytask selectByIdWithEntitys(String id);
+    List<Assemblytask> selectAllWithEntityById(@Param("fin")String fin);
 
     void updateBySelective(Assemblytask assemblytask);
 

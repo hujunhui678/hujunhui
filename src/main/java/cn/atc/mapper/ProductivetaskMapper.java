@@ -20,6 +20,7 @@ public interface ProductivetaskMapper {
     List<Productivetask> selectByExample(ProductivetaskExample example);
 
     List<Productivetask> selectAllWithEntity();
+    List<Productivetask> selectAllWithEntityById(@Param("id")String id);
 
     Productivetask selectByPrimaryKey(String id);
 

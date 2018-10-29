@@ -55,4 +55,9 @@ public class AssemblytaskServiceImpl implements AssemblytaskService {
     public List<PartFormula> getParformulaList() {
         return mapper.selectAllParformulas();
     }
+
+	@Override
+	public List<Assemblytask> selectAllWithEntityById(String fin) {
+		return mapper.selectAllWithEntityById(fin);
+	}
 }

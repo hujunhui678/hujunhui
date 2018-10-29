@@ -53,13 +53,6 @@
 	<form action="#" method="post" class="form form-horizontal"
 		  id="form-assembly-add" style="line-height: 30px;">
 
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>装配任务书编号：</label>
-			<div class="formControls col-xs-2 col-sm-3">
-				<input type="text" class="input-text" id="id" name="id">
-			</div>
-		</div>
 
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span
@@ -190,10 +183,6 @@
 
         //提交，添加装配任务
         $("#sub").click(function () {
-            if($("#id").val()===""){
-                layer.alert('装配任务书编号不能为空！', {icon: 5});
-                return ;
-            }
 
 			if($("#estimatedTimeOfCompletion").val()===""){
                 layer.alert('预计完成时间不能为空！', {icon: 5});

@@ -6,6 +6,8 @@ import cn.atc.pojo.Employee;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface AssemblyService {
     List<Assembly> getAssemblyList();
 
@@ -13,6 +15,7 @@ public interface AssemblyService {
 
     void deleteAssembly(long id);
 
+    List<Assembly> selectAllWithAssemblyPeopleByPer(@Param("per")String per);
     void updateBySelective(Assembly assembly);
 
     Assembly selectByIdWithEntitys(long id);

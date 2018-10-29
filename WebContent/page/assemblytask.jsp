@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-	pageContext.setAttribute("APP_PATH", request.getContextPath()+"/page");
+	pageContext.setAttribute("APP_PATH", request.getContextPath() + "/page");
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!--_meta 作为公共模版分离出去-->
@@ -94,8 +94,9 @@ button {
 							批量删除</a> <a class="btn btn-primary radius" href="javascript:;"
 						onclick="assemblytask_add('添加装配任务','${APP_PATH}/assebmlytask_add.jsp','900','450')"><i
 							class="Hui-iconfont">&#xe600;</i> 添加装配任务</a>
-					</span>
-					</span> <span class="r">共有数据：<strong id="total_info"></strong> 条
+					</span> &nbsp;&nbsp;&nbsp;&nbsp;成品类型 <input type="text" id="fin" /> <input
+						type="button" id="ok" value="查 询" /> <span class="r">共有数据：<strong
+						id="total_info"></strong> 条
 					</span>
 				</div>
 				<div class="mt-10">
@@ -152,142 +153,172 @@ button {
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath }/statics/lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
-
-		$(function () {
+		$(function() {
 			toPage(1);
-        });
+			$("#ok").click(function() {
+				var id = $("#fin").val();
+				selByid(id);
+			});
+		});
 
-        var currentPage;
-        var totalPage;
+		var currentPage;
+		var totalPage;
 		var pageSize;
-
+		function selByid(id) {
+			$.ajax(({
+				url : "${APP_PATH}/assemblytask_list",
+				data : "fin=" + id,
+				type : "GET",
+				success : function(result) {
+					var pageInfo = result.extend.pageInfo;
+					currentPage = pageInfo.pageNum;
+					totalPage = pageInfo.pages;
+					pageSize = pageInfo.pageSize;
+					$("#total_info").empty();
+					$("#total_info").append(pageInfo.total);
+					build_table(result);
+					initPagination();
+				}
+			}))
+		}
 		function toPage(pn) {
-            $.ajax({
-                url:"${APP_PATH}/assemblytask_list",
-                data:"pn="+pn,
-				type:"GET",
-				success:function (result) {
-                    var pageInfo = result.extend.pageInfo;
-                    currentPage=pageInfo.pageNum;
-                    totalPage=pageInfo.pages;
-                    pageSize=pageInfo.pageSize;
-                    $("#total_info").empty();
-                    $("#total_info").append(pageInfo.total);
+			$.ajax({
+				url : "${APP_PATH}/assemblytask_list",
+				data : "pn=" + pn,
+				type : "GET",
+				success : function(result) {
+					var pageInfo = result.extend.pageInfo;
+					currentPage = pageInfo.pageNum;
+					totalPage = pageInfo.pages;
+					pageSize = pageInfo.pageSize;
+					$("#total_info").empty();
+					$("#total_info").append(pageInfo.total);
 
 					build_table(result);
 					initPagination();
 					//build_pageInfo_nav(result);
-                }
-            })
-        }
+				}
+			})
+		}
 
-        function build_table(result) {
-			var body=$("#body_assem").empty();
-			var assems=result.extend.pageInfo.list;
-            $.each(assems, function (index, item) {
-                var tr=$("<tr></tr>").addClass("text-c");
-				var check=$("<td></td>").append(
-				    $("<input>").attr("value",item.id).attr("id","check").attr("type","checkbox")
-				);
-				var id=$("<td></td>").append(item.id);
-				var finishedTypeEntityType=$("<td></td>").append(item.finishedTypeEntity.productType);
-				var leaderName=$("<td></td>").append(item.assemblyLeaderEntity.name);
-				var partformulaEntityName=$("<td></td>").append(item.partformulaEntity.formulaName);
-				var estimatedTimeOfCompletion=$("<td></td>").append(item.estimatedTimeOfCompletion);
-				var desc=$("<td></td>").append(item.desc);
-				var editTd=$("<td></td>").addClass("f-14");
-				var a1=$("<a></a>").attr("title","编辑").attr("href","javascript:;")
-					.attr("onclick","asseblytask_edit('编辑装配任务','${APP_PATH}/assemblytask_modify.jsp',"+item.id+",'800','400')")
-					.attr("style","text-decoration: none")
-					.append(
-					    $("<i></i>").addClass("Hui-iconfont").append("&#xe6df;")
-						);
+		function build_table(result) {
+			var body = $("#body_assem").empty();
+			var assems = result.extend.pageInfo.list;
+			$.each(assems, function(index, item) {
+				var tr = $("<tr></tr>").addClass("text-c");
+				var check = $("<td></td>").append(
+						$("<input>").attr("value", item.id).attr("id", "check")
+								.attr("type", "checkbox"));
+				var id = $("<td></td>").append(item.id);
+				var finishedTypeEntityType = $("<td></td>").append(
+						item.finishedTypeEntity.productType);
+				var leaderName = $("<td></td>").append(
+						item.assemblyLeaderEntity.name);
+				var partformulaEntityName = $("<td></td>").append(
+						item.partformulaEntity.formulaName);
+				var estimatedTimeOfCompletion = $("<td></td>").append(
+						item.estimatedTimeOfCompletion);
+				var desc = $("<td></td>").append(item.desc);
+				var editTd = $("<td></td>").addClass("f-14");
+				var a1 = $("<a></a>").attr("title", "编辑").attr("href",
+						"javascript:;").attr(
+						"onclick",
+						"asseblytask_edit('编辑装配任务','${APP_PATH}/assemblytask_modify.jsp',"
+								+ item.id + ",'800','400')").attr("style",
+						"text-decoration: none").append(
+						$("<i></i>").addClass("Hui-iconfont")
+								.append("&#xe6df;"));
 				debugger
-                var a2=$("<a></a>").addClass("ml-5").attr("title","删除").attr("href","javascript:;")
-                    .attr("onclick","asseblytask_del("+item.id+")")
-                    .attr("style","text-decoration: none")
-                    .append(
-                        $("<i></i>").addClass("Hui-iconfont").append("&#xe6e2;")
-                    );
-                editTd.append(a1).append(a2);
-                tr.append(check);
-                tr.append(id);
-                tr.append(finishedTypeEntityType);
-                tr.append(leaderName);
-                tr.append(partformulaEntityName);
-                tr.append(estimatedTimeOfCompletion);
-                tr.append(desc);
-                tr.append(editTd);
-                body.append(tr);
+				var a2 = $("<a></a>").addClass("ml-5").attr("title", "删除")
+						.attr("href", "javascript:;").attr("onclick",
+								"asseblytask_del(" + item.id + ")").attr(
+								"style", "text-decoration: none").append(
+								$("<i></i>").addClass("Hui-iconfont").append(
+										"&#xe6e2;"));
+				editTd.append(a1).append(a2);
+				tr.append(check);
+				tr.append(id);
+				tr.append(finishedTypeEntityType);
+				tr.append(leaderName);
+				tr.append(partformulaEntityName);
+				tr.append(estimatedTimeOfCompletion);
+				tr.append(desc);
+				tr.append(editTd);
+				body.append(tr);
 			});
-        }
+		}
 
-        function initPagination() {
-            $("#pagination1").pagination( {
-                currentPage:parseInt(currentPage),
-                totalPage:totalPage,
-                callback:function(clickedPage){
-                    toPage(clickedPage);
-                }
-            });
-        }
+		function initPagination() {
+			$("#pagination1").pagination({
+				currentPage : parseInt(currentPage),
+				totalPage : totalPage,
+				callback : function(clickedPage) {
+					toPage(clickedPage);
+				}
+			});
+		}
 
 		/*装配任务-添加*/
 		function assemblytask_add(title, url, w, h) {
 			layer_show(title, url, w, h);
 		}
 
-		 /*装配任务-编辑*/
+		/*装配任务-编辑*/
 		function asseblytask_edit(title, url, id, w, h) {
-			layer_show(title,url+"?id="+id,w,h);
+			layer_show(title, url + "?id=" + id, w, h);
 		}
-
 
 		/*装配任务-单个删除*/
 		function asseblytask_del(id) {
-				layer.confirm('将会删除所有信息,确认要删除此装配任务书吗？',{icon:3}, function(index) {
-					if(id != ""){
-					    sendAjaxDel(id);
-		            }
-				});
+			layer.confirm('将会删除所有信息,确认要删除此装配任务书吗？', {
+				icon : 3
+			}, function(index) {
+				if (id != "") {
+					sendAjaxDel(id);
+				}
+			});
 		}
-		
-		/*装配任务-批量删除*/
-        function delBatch() {
-            var ids = "";
-            $("#check:checked").each(function (index) {
-                ids += $(this).val() + "-";
-            });
-            //去除多余的"-"
-            ids.substring(0, ids.length - 1);
-            if (ids === "") {
-                layer.alert('请先选择要删除的装配任务书!', {icon: 5});
-                return;
-            }
-            layer.confirm('确认进行批量删除吗？', {icon: 3}, function () {
-                if (ids != "") {
-                    sendAjaxDel(ids);
-                }
-            });
-        }
 
-        /*发送ajax删除请求*/
-        function sendAjaxDel(ids) {
-            $.ajax({
-                url: "${APP_PATH}/assemblytask_del/" + ids,
-                type: "DELETE",
-                success: function (result) {
-                    var icon = result.code === 100 ? 1 : 2;
-                    layer.msg(result.msg, {
-                        icon: icon,
-                        time: 1000
-                    }, function () {
-                        location.reload();
-                        layer_close();
-                    });
-                }
-            });
-        }
+		/*装配任务-批量删除*/
+		function delBatch() {
+			var ids = "";
+			$("#check:checked").each(function(index) {
+				ids += $(this).val() + "-";
+			});
+			//去除多余的"-"
+			ids.substring(0, ids.length - 1);
+			if (ids === "") {
+				layer.alert('请先选择要删除的装配任务书!', {
+					icon : 5
+				});
+				return;
+			}
+			layer.confirm('确认进行批量删除吗？', {
+				icon : 3
+			}, function() {
+				if (ids != "") {
+					sendAjaxDel(ids);
+				}
+			});
+		}
+
+		/*发送ajax删除请求*/
+		function sendAjaxDel(ids) {
+			$.ajax({
+				url : "${APP_PATH}/assemblytask_del/" + ids,
+				type : "DELETE",
+				success : function(result) {
+					var icon = result.code === 100 ? 1 : 2;
+					layer.msg(result.msg, {
+						icon : icon,
+						time : 1000
+					}, function() {
+						location.reload();
+						layer_close();
+					});
+				}
+			});
+		}
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
 </body>

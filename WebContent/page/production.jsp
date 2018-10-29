@@ -90,9 +90,7 @@
             <div class="cl pd-5 bg-1 bk-gray">
 					<span class="l"> <a href="javascript:;" onclick="delBatch()"
                                         class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
-							批量删除</a> <a class="btn btn-primary radius" href="javascript:;"
-                                        onclick="production_add('添加生产表','${APP_PATH}/production_add.jsp','900','450')"><i
-                            class="Hui-iconfont">&#xe600;</i> 添加生产表</a>
+							批量删除</a>
 					</span>
                 </span> <span class="r">共有数据：<strong id="total_info"></strong> 条
 					</span>
