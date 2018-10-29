@@ -36,16 +36,25 @@
 
 	
 	<select id="getQualityTocount" resultType="Integer" parameterType="map">
-		SELECT count(1) FROM qualitycertificate
-		
+		SELECT count(1) FROM qualitycertificate 
+		INNER JOIN admin ON qualitycertificate.`adminPeper`=admin.`id`
+		INNER JOIN partType ON qualitycertificate.`detectionPartTypeId`=partType.`id`
+		INNER JOIN finishedproductstype ON qualitycertificate.`detectionFinishedTypeId`=finishedproductstype.`id`
 		
 		<trim prefix="where" prefixOverrides="and | or">
 			<if test="partType!=null and partType!=''">
 				partType like concat('%',#{partType},'%')
 			</if>
-
+		
 			<if test="deptNo!=0">
 				and deptNo=#{deptNo}
+			</if>
+			
+			<if test="name!=null and name!=''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="state!=null and state != ''">
+				and state = #{state}
 			</if>
 		</trim>
 	</select>

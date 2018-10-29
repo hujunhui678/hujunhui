@@ -45,8 +45,6 @@
 		<gson.version>2.3.1</gson.version>
 	</properties>
 
-
-
 	<dependencies>
 		<!-- 单元测试 -->
 		<dependency>

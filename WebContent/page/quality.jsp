@@ -200,6 +200,8 @@ button {
 							var a = $("#totalPage").val();
 							var b = $("#currentPage").val();
 							 var deptNo = $(".select").val();
+							 var name = $("#name").val();
+							 var partType = $("#partType").val();
 							$("#pagination1")
 									.pagination(
 											{
@@ -209,7 +211,7 @@ button {
 													$("#current1")
 															.text(current);
 													window.location.href = "quality?currentPage="
-															+ current+"&deptNo="+deptNo;
+															+ current+"&deptNo="+deptNo+"&name="+name+"&partType="+partType;
 												}
 								});
 						});

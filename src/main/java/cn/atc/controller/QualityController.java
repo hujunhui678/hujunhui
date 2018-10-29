@@ -41,7 +41,6 @@ public class QualityController {
 	@RequestMapping("/quality")
 	public String list(Model model,@RequestParam(defaultValue="0")int deptNo,String currentPage,
 			String partType,String name,String state){
-		
 		int temp=1;
 		if(currentPage!=null && !currentPage.trim().equals("")){
 			temp=Integer.parseInt(currentPage);
