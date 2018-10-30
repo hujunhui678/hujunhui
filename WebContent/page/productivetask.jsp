@@ -96,12 +96,10 @@ button {
 						onclick="productivetask_add('添加生产任务','${APP_PATH}/productivetask_add.jsp','900','500')"><i
 							class="Hui-iconfont">&#xe600;</i> 添加生产任务</a>
 
-					</span>
-					
-						&nbsp;&nbsp;&nbsp;&nbsp;生产编号 <input type="text" name="sid" id="sid" value="${sid}"/> <input
-							type="button" id="ok" value="查 询" />
-					
-					<span class="r">共有数据：<strong id="total_info"></strong> 条
+					</span> &nbsp;&nbsp;&nbsp;&nbsp;生产编号 <input type="text" name="sid"
+						id="sid" value="${sid}" /> <input type="button" id="ok"
+						value="查 询" /> <span class="r">共有数据：<strong
+						id="total_info"></strong> 条
 					</span>
 				</div>
 				<div class="mt-10">
@@ -159,15 +157,14 @@ button {
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath }/statics/lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
-	
 		$(function() {
 			toPage(1);
-			$("#ok").click(function(){
+			$("#ok").click(function() {
 				var id = $("#sid").val();
 				selByid(id);
 			});
 		});
-		
+
 		var currentPage;
 		var totalPage;
 		var pageSize;
@@ -188,7 +185,6 @@ button {
 				}
 			}))
 		}
-	
 
 		function toPage(pn) {
 			$.ajax(({
@@ -225,8 +221,7 @@ button {
 				var monitor = $("<td></td>").append(
 						item.productionLeaderEntity.name);
 				var productionNum = $("<td></td>").append(item.productionNum);
-				var estimatedTimeOfCompletion = $("<td></td>").append(
-						item.estimatedTimeOfCompletion);
+				var estimatedTimeOfCompletion = $("<td></td>").append(timestampToTime(item.estimatedTimeOfCompletion));
 				var desc = $("<td></td>").append(item.desc);
 				var editTd = $("<td></td>").addClass("f-14");
 				var a1 = $("<a></a>").attr("title", "编辑").attr("href",
@@ -266,6 +261,18 @@ button {
 					toPage(clickedPage);
 				}
 			});
+		}
+		function timestampToTime(timestamp) {
+			var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+			var Y = date.getFullYear() + '-';
+			var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1)
+					: date.getMonth() + 1)
+					+ '-';
+			var D = date.getDate() + ' ';
+			var h = date.getHours() + ':';
+			var m = date.getMinutes() + ':';
+			var s = date.getSeconds();
+			return Y + M + D + h + m + s;
 		}
 
 		/*生产任务-添加*/

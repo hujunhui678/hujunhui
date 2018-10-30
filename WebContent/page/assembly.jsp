@@ -213,7 +213,7 @@ button {
 				var assemblyPeopleEntityName = $("<td></td>").append(
 						item.assemblyPeopleEntity.name);
 				var realQuantity = $("<td></td>").append(item.realQuantity);
-				var finishTime = $("<td></td>").append(item.finishTime);
+				var finishTime = $("<td></td>").append(timestampToTime(item.finishTime));
 
 				var editTd = $("<td></td>").addClass("f-14");
 				var a1 = $("<a></a>").attr("title", "编辑").attr("href",
@@ -309,6 +309,19 @@ button {
 				}
 			});
 		}
+		
+		  function timestampToTime(timestamp) {
+				var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+				var Y = date.getFullYear() + '-';
+				var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1)
+						: date.getMonth() + 1)
+						+ '-';
+				var D = date.getDate() + ' ';
+				var h = date.getHours() + ':';
+				var m = date.getMinutes() + ':';
+				var s = date.getSeconds();
+				return Y + M + D + h + m + s;
+			}
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
 </body>

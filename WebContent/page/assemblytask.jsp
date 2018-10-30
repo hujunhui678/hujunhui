@@ -113,7 +113,6 @@ button {
 								<th width="100">装配班长</th>
 								<th width="200">零件配方</th>
 								<th width="100">预计完成时间</th>
-								<th width="100">备注</th>
 								<th width="70">操作</th>
 							</tr>
 						</thead>
@@ -217,8 +216,7 @@ button {
 				var partformulaEntityName = $("<td></td>").append(
 						item.partformulaEntity.formulaName);
 				var estimatedTimeOfCompletion = $("<td></td>").append(
-						item.estimatedTimeOfCompletion);
-				var desc = $("<td></td>").append(item.desc);
+						timestampToTime(item.estimatedTimeOfCompletion));
 				var editTd = $("<td></td>").addClass("f-14");
 				var a1 = $("<a></a>").attr("title", "编辑").attr("href",
 						"javascript:;").attr(
@@ -242,7 +240,6 @@ button {
 				tr.append(leaderName);
 				tr.append(partformulaEntityName);
 				tr.append(estimatedTimeOfCompletion);
-				tr.append(desc);
 				tr.append(editTd);
 				body.append(tr);
 			});
@@ -318,6 +315,18 @@ button {
 					});
 				}
 			});
+		}
+		function timestampToTime(timestamp) {
+			var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+			var Y = date.getFullYear() + '-';
+			var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1)
+					: date.getMonth() + 1)
+					+ '-';
+			var D = date.getDate() + ' ';
+			var h = date.getHours() + ':';
+			var m = date.getMinutes() + ':';
+			var s = date.getSeconds();
+			return Y + M + D + h + m + s;
 		}
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
