@@ -29,6 +29,7 @@ public interface AssemblytaskMapper {
      * @return
      */
     List<Assemblytask> selectAllWithEntity();
+    List<Assemblytask> selectAllWithEntityByids(@Param("taskIds")String[] ids);
     List<Assemblytask> selectAllWithEntityById(@Param("fin")String fin);
 
 

@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -152,5 +153,13 @@ public class AssemblytaskController {
 		List<PartFormula> partformulas = assemblytaskService.getParformulaList();
 		return Msg.success().add("partformulas", partformulas);
 	}
+	
 
+	@RequestMapping(value = "/AsseToPort")
+	public String AsseToPort(String[] ids,Model model) {
+		List<Assemblytask> list = assemblytaskService.selectAllWithEntityByids(ids);
+		model.addAttribute("Asse", list);
+		return "ExportExcelAsse";
+	}
+	
 }

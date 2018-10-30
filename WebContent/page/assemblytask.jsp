@@ -98,6 +98,11 @@ button {
 						type="button" id="ok" value="查 询" /> <span class="r">共有数据：<strong
 						id="total_info"></strong> 条
 					</span>
+					
+					<span>
+					<a class="btn btn-primary radius" href="javascript:;"
+						onclick="excel()"> 导出Excel</a>
+					</span>
 				</div>
 				<div class="mt-10">
 					<table
@@ -258,6 +263,25 @@ button {
 		/*装配任务-添加*/
 		function assemblytask_add(title, url, w, h) {
 			layer_show(title, url, w, h);
+		}
+		//导出Excel
+		function excel() {
+			var arr = new Array();
+			$("#check:checked").each(function(i) {
+				arr[i] = $(this).val();
+			});
+			var vals = arr.join(",");
+			if(arr.length < 1){
+				layer.msg('请先选择要导出的数据!', {
+					icon : 2,
+					time : 2000
+				});
+				
+				return;
+			}
+			window
+					.open("${pageContext.request.contextPath }/page/AsseToPort?ids="+vals,
+							"_blank");
 		}
 
 		/*装配任务-编辑*/

@@ -60,4 +60,9 @@ public class AssemblytaskServiceImpl implements AssemblytaskService {
 	public List<Assemblytask> selectAllWithEntityById(String fin) {
 		return mapper.selectAllWithEntityById(fin);
 	}
+
+	@Override
+	public List<Assemblytask> selectAllWithEntityByids(String[] ids) {
+		return mapper.selectAllWithEntityByids(ids);
+	}
 }

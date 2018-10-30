@@ -20,6 +20,7 @@ public interface AssemblytaskService {
     Assemblytask selectByIdWithEntitys(String id);
     List<Assemblytask> selectAllWithEntityById(@Param("fin")String fin);
 
+    List<Assemblytask> selectAllWithEntityByids(@Param("taskIds")String[] ids);
     void updateBySelective(Assemblytask assemblytask);
 
     List<FinishedProductsType> getFinishedTypesList();

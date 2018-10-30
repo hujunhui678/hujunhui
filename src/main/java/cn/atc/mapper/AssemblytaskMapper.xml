@@ -194,6 +194,22 @@
 		LEFT JOIN admin a ON t.assemblyLeader = a.id
 		LEFT JOIN partformula p ON t.partformulaId = p.id
 	</select>
+	
+	<select id="selectAllWithEntityByids" resultMap="MapWithEntity">
+		SELECT
+		<include refid="ListWithEntity" />
+		FROM assemblytask t LEFT JOIN finishedproductstype f ON t.finishedType
+		= f.id
+		LEFT JOIN admin a ON t.assemblyLeader = a.id
+		LEFT JOIN partformula p ON t.partformulaId = p.id
+		WHERE t.id in
+		<foreach collection="taskIds" item="ids" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
+	</select>
+	
+	
 	<select id="selectAllWithEntityById" resultMap="MapWithEntity">
 		SELECT
 		<include refid="ListWithEntity" />
